@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Unity Controller</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .status.disconnected {
+            background: rgba(255, 82, 82, 0.2);
+            border: 2px solid #ff5252;
+            color: #ff5252;
+        }
+        
+        .status.connecting {
+            background: rgba(255, 193, 7, 0.2);
+            border: 2px solid #ffc107;
+            color: #ffc107;
+        }
+        
+        .status.connected {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4caf50;
+            color: #4caf50;
+        }
+        
+        .connection-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .input-group .field {
+            flex: 1;
+        }
+        
+        .input-group .field.port {
+            flex: 0 0 80px;
+        }
+        
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            border-color: #64b5f6;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-connect {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-connect:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-connect:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-disconnect {
+            background: linear-gradient(135deg, #ff5252 0%, #f44336 100%);
+            color: white;
+        }
+        
+        .message-panel {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .message-panel h2 {
+            margin: 0 0 15px 0;
+            font-size: 1.1rem;
+        }
+        
+        #messageInput {
+            margin-bottom: 15px;
+        }
+        
+        .btn-send {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+        }
+        
+        .btn-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .quick-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .quick-btn {
+            padding: 20px 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .quick-btn:active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0.95);
+        }
+        
+        .log-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .log-panel h3 {
+            margin: 0 0 10px 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        #log {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+        
+        .log-entry {
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .log-entry.sent {
+            color: #81c784;
+        }
+        
+        .log-entry.received {
+            color: #64b5f6;
+        }
+        
+        .log-entry.error {
+            color: #ff5252;
+        }
+        
+        .log-entry.system {
+            color: #ffc107;
+        }
+        
+        /* Phone-specific adjustments */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+            }
+            
+            .quick-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .quick-btn {
+                padding: 25px 15px;
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Unity Browser Controller</h1>
+        
+        <div id="statusIndicator" class="status disconnected">
+            ● Disconnected
+        </div>
+        
+        <div class="connection-panel">
+            <div class="input-group">
+                <div class="field">
+                    <label>Server IP</label>
+                    <input type="text" id="serverIP" placeholder="192.168.1.xxx" value="">
+                </div>
+                <div class="field port">
+                    <label>Port</label>
+                    <input type="number" id="serverPort" value="8080">
+                </div>
+            </div>
+            <button id="connectBtn" class="btn-connect" onclick="toggleConnection()">
+                Connect
+            </button>
+        </div>
+        
+        <div class="message-panel">
+            <h2>📤 Send Message</h2>
+            <input type="text" id="messageInput" placeholder="Type a message..." disabled>
+            <button id="sendBtn" class="btn-send" onclick="sendMessage()" disabled>
+                Send Message
+            </button>
+            
+            <div class="quick-buttons">
+                <button class="quick-btn" onclick="sendQuick('⬆️')" disabled>⬆️</button>
+                <button class="quick-btn" onclick="sendQuick('⬇️')" disabled>⬇️</button>
+                <button class="quick-btn" onclick="sendQuick('⬅️')" disabled>⬅️</button>
+                <button class="quick-btn" onclick="sendQuick('➡️')" disabled>➡️</button>
+                <button class="quick-btn" onclick="sendQuick('🅰️')" disabled>🅰️</button>
+                <button class="quick-btn" onclick="sendQuick('🅱️')" disabled>🅱️</button>
+                <button class="quick-btn" onclick="sendQuick('▶️ Start')" disabled>▶️</button>
+                <button class="quick-btn" onclick="sendQuick('⏸️ Pause')" disabled>⏸️</button>
+            </div>
+        </div>
+        
+        <div class="log-panel">
+            <h3>📋 Connection Log</h3>
+            <div id="log"></div>
+        </div>
+    </div>
+
+    <script>
+        let websocket = null;
+        let isConnected = false;
+        
+        // Try to auto-detect server IP from URL or use common local IPs
+        function initializeIP() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const ipParam = urlParams.get('ip');
+            const portParam = urlParams.get('port');
+            
+            if (ipParam) {
+                document.getElementById('serverIP').value = ipParam;
+            }
+            if (portParam) {
+                document.getElementById('serverPort').value = portParam;
+            }
+        }
+        
+        function updateStatus(status, text) {
+            const indicator = document.getElementById('statusIndicator');
+            indicator.className = 'status ' + status;
+            indicator.innerHTML = text;
+        }
+        
+        function addLog(message, type = 'system') {
+            const log = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry ' + type;
+            const time = new Date().toLocaleTimeString();
+            entry.textContent = `[${time}] ${message}`;
+            log.insertBefore(entry, log.firstChild);
+            
+            // Keep only last 50 entries
+            while (log.children.length > 50) {
+                log.removeChild(log.lastChild);
+            }
+        }
+        
+        function setControlsEnabled(enabled) {
+            document.getElementById('messageInput').disabled = !enabled;
+            document.getElementById('sendBtn').disabled = !enabled;
+            document.querySelectorAll('.quick-btn').forEach(btn => {
+                btn.disabled = !enabled;
+            });
+        }
+        
+        function toggleConnection() {
+            if (isConnected) {
+                disconnect();
+            } else {
+                connect();
+            }
+        }
+        
+        function connect() {
+            const ip = document.getElementById('serverIP').value.trim();
+            const port = document.getElementById('serverPort').value.trim();
+            
+            if (!ip) {
+                addLog('Please enter the server IP address', 'error');
+                return;
+            }
+            
+            const wsUrl = `ws://${ip}:${port}`;
+            addLog(`Connecting to ${wsUrl}...`, 'system');
+            updateStatus('connecting', '● Connecting...');
+            
+            document.getElementById('connectBtn').disabled = true;
+            
+            try {
+                websocket = new WebSocket(wsUrl);
+                
+                websocket.onopen = function(event) {
+                    isConnected = true;
+                    updateStatus('connected', '● Connected');
+                    addLog('Connected to Unity server!', 'system');
+                    
+                    document.getElementById('connectBtn').disabled = false;
+                    document.getElementById('connectBtn').textContent = 'Disconnect';
+                    document.getElementById('connectBtn').className = 'btn-disconnect';
+                    
+                    setControlsEnabled(true);
+                };
+                
+                websocket.onmessage = function(event) {
+                    addLog(`Received: ${event.data}`, 'received');
+                    
+                    // Try to parse JSON response
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.type === 'welcome') {
+                            addLog(`Server says: ${data.message}`, 'received');
+                        }
+                    } catch (e) {
+                        // Not JSON, that's fine
+                    }
+                };
+                
+                websocket.onerror = function(error) {
+                    addLog('Connection error!', 'error');
+                    console.error('WebSocket error:', error);
+                };
+                
+                websocket.onclose = function(event) {
+                    isConnected = false;
+                    updateStatus('disconnected', '● Disconnected');
+                    addLog(`Connection closed (code: ${event.code})`, 'system');
+                    
+                    document.getElementById('connectBtn').disabled = false;
+                    document.getElementById('connectBtn').textContent = 'Connect';
+                    document.getElementById('connectBtn').className = 'btn-connect';
+                    
+                    setControlsEnabled(false);
+                    websocket = null;
+                };
+                
+            } catch (error) {
+                addLog(`Failed to connect: ${error.message}`, 'error');
+                document.getElementById('connectBtn').disabled = false;
+                updateStatus('disconnected', '● Disconnected');
+            }
+        }
+        
+        function disconnect() {
+            if (websocket) {
+                websocket.close();
+            }
+        }
+        
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            if (!websocket || websocket.readyState !== WebSocket.OPEN) {
+                addLog('Not connected!', 'error');
+                return;
+            }
+            
+            // Send as JSON with input field
+            const payload = JSON.stringify({ type: 'input', input: message });
+            websocket.send(payload);
+            addLog(`Sent: ${message}`, 'sent');
+            
+            input.value = '';
+        }
+        
+        function sendQuick(message) {
+            if (!websocket || websocket.readyState !== WebSocket.OPEN) {
+                addLog('Not connected!', 'error');
+                return;
+            }
+            
+            const payload = JSON.stringify({ type: 'input', input: message });
+            websocket.send(payload);
+            addLog(`Sent: ${message}`, 'sent');
+        }
+        
+        // Handle Enter key in message input
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Initialize on load
+        initializeIP();
+    </script>
+</body>
+</html>

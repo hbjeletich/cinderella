@@ -1,3 +1,6 @@
+// to run server in terminal:
+// ngrok tcp 8080
+
 using UnityEngine;
 using WebSocketSharp;
 using WebSocketSharp.Server;
@@ -60,13 +63,13 @@ public class Server : MonoBehaviour
     {
         if (wssv == null)
         {
-            wssv = new WebSocketServer(port);
+            wssv = new WebSocketServer($"ws://0.0.0.0:{port}");
+            
             // add behaviors here!
-            wssv.AddWebSocketService<PlayerInput>("/");
             wssv.AddWebSocketService<PlayerInput>("/game");
 
             wssv.Start();
-            Debug.Log($"WebSocket server started at ws://{localIP}:{port}/Server");
+            Debug.Log($"WebSocket server started at ws://{localIP}:{port}/game");
         }
     }
 
@@ -98,5 +101,7 @@ public class PlayerInput : WebSocketBehavior
     protected override void OnMessage(MessageEventArgs e)
     {
         Debug.Log($"Received message from client: {e.Data}");
+        // figure out what kind of message it is and send it over the connection manager
+        ConnectionManager.Instance.HandleWebSocketMessage(e.Data, ID);
     }
 }

@@ -10,7 +10,7 @@ using System.Text;
 public class HTTPServer : MonoBehaviour
 {
     public int port = 8000;
-    public string htmlName = "index.html";
+    public string htmlName = "inputbox.html";
 
     private HttpListener httpListener;
     private string localIP;
@@ -56,7 +56,10 @@ public class HTTPServer : MonoBehaviour
         if (httpListener == null)
         {
             httpListener = new HttpListener();
-            httpListener.Prefixes.Add($"http://*:{port}/");
+
+            httpListener.Prefixes.Add($"http://{localIP}:{port}/");
+            httpListener.Prefixes.Add($"http://localhost:{port}/");
+
             httpListener.Start();
             Debug.Log($"HTTP server started at http://{localIP}:{port}/");
 

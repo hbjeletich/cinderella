@@ -2,15 +2,24 @@ using UnityEngine;
 
 public class ConnectionManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    // instance
+    public static ConnectionManager Instance;
+    void Awake()
     {
-        
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void HandleWebSocketMessage(string message, string clientID)
     {
-        
+        Debug.Log($"ConnectionManager received message from {clientID}: {message}");
+        // process the message as needed
     }
 }

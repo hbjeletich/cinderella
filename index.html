@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Enter Name</title>
+</head>
+<body>
+	<h1>Enter your name</h1>
+	<input id="nameInput" type="text" placeholder="Your name" />
+	<button id="sendBtn" disabled>Send</button>
+	<p id="status">Connecting...</p>
+
+	<script>
+		const wsPort = 8080;
+		const wsPath = '/';
+		const ws = new WebSocket("wss://hadlee-giggliest-unpopulously.ngrok-free.dev/");
+
+        ws.onopen = () => console.log("WS connected");
+        ws.onerror = e => console.error("WS error", e);
+
+		const nameInput = document.getElementById('nameInput');
+		const sendBtn = document.getElementById('sendBtn');
+		const status = document.getElementById('status');
+
+		ws.addEventListener('open', () => {
+			status.textContent = 'Connected';
+			sendBtn.disabled = false;
+		});
+
+		sendBtn.addEventListener('click', () => {
+			const name = nameInput.value.trim();
+			if (!name) return;
+			// send the raw name string to Unity; PlayerInput.OnMessage will receive it
+			ws.send(name);
+			status.textContent = `Sent: ${name}`;
+		});
+	</script>
+</body>
+</html>
+

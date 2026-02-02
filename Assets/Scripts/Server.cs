@@ -1,26 +1,26 @@
-// to run server in terminal:
-// ngrok tcp 8080
-
 using UnityEngine;
-using WebSocketSharp;
-using WebSocketSharp.Server;
-using System.Net;
-using System.Net.Sockets; 
+using Fleck;
+using System.Collections.Generic;
 using System;
+using System.Net;
+using System.Net.Sockets;
+
 public class Server : MonoBehaviour
 {
     public int port = 8080;
-    private WebSocketServer wssv;
+    private WebSocketServer server;
     public static Server Instance;
     private string localIP;
 
-    public string LocalIP => localIP;
+    // store connections for ConnectionManager
+    public static Dictionary<string, IWebSocketConnection> Connections = new Dictionary<string, IWebSocketConnection>();
 
+    public string LocalIP => localIP;
     public Action OnWSServerStarted;
 
     void Awake()
     {
-        if(Instance == null)
+        if (Instance == null)
         {
             Instance = this;
             localIP = GetLocalIPAddress();
@@ -41,7 +41,7 @@ public class Server : MonoBehaviour
     {
         StopServer();
     }
-        
+
     private void OnApplicationQuit()
     {
         StopServer();
@@ -49,33 +49,73 @@ public class Server : MonoBehaviour
 
     public void StopServer()
     {
-        if (wssv != null)
+        if (server != null)
         {
-            wssv.Stop();
-            wssv = null;
-            Debug.Log("WebSocket server stopped.");
-
-            OnWSServerStarted?.Invoke();
+            server.Dispose();
+            server = null;
+            Connections.Clear();
+            Debug.Log("Server: WebSocket server stopped.");
         }
     }
 
     public void StartServer()
     {
-        if (wssv == null)
+        if (server == null)
         {
-            wssv = new WebSocketServer($"ws://0.0.0.0:{port}");
-            
-            // add behaviors here!
-            wssv.AddWebSocketService<PlayerInput>("/game");
+            server = new WebSocketServer($"ws://0.0.0.0:{port}");
 
-            wssv.Start();
-            Debug.Log($"WebSocket server started at ws://{localIP}:{port}/game");
+            server.Start(socket =>
+            {
+                string id = socket.ConnectionInfo.Id.ToString();
+
+                // note to self:
+                // these events are called on a different thread, so be careful with Unity API calls
+                // use MainThreadDispatcher if needing to interact with Unity objects
+                socket.OnOpen = () =>
+                {
+                    Debug.Log($"Server: Client connected: {id}");
+                    Connections[id] = socket;
+
+                    MainThreadDispatcher.Instance.Enqueue(() =>
+                    {
+                        // create a new Player for this connection
+                        PlayerManager.Instance.CreatePlayer(id);
+                    });
+                };
+
+                socket.OnMessage = message =>
+                {
+                    Debug.Log($"Server: Received message from client: {message}");
+                    MainThreadDispatcher.Instance.Enqueue(() =>
+                    {  
+                        // handle the message on the main thread
+                        ConnectionManager.Instance.HandleWebSocketMessage(message, id);
+                    });
+                };
+
+                socket.OnClose = () =>
+                {
+                    Debug.Log($"Server: Client disconnected: {id}");
+                    Connections.Remove(id);
+
+                    MainThreadDispatcher.Instance.Enqueue(() =>
+                    {
+                        // remove player
+                        PlayerManager.Instance.RemovePlayer(id);
+                    });
+                };
+
+                socket.OnError = error =>
+                {
+                    Debug.LogError($"Server: Error: {error}");
+                };
+            });
+
+            Debug.Log($"Server: WebSocket server started at ws://{localIP}:{port}");
+            OnWSServerStarted?.Invoke();
         }
     }
 
-
-
-// found this method online to get local IP address
     public static string GetLocalIPAddress()
     {
         var host = Dns.GetHostEntry(Dns.GetHostName());
@@ -87,21 +127,5 @@ public class Server : MonoBehaviour
             }
         }
         return null;
-    }
-
-}
-
-public class PlayerInput : WebSocketBehavior
-{
-    protected override void OnOpen()
-    {
-        Debug.Log($"[WS] Client connected: {ID}");
-    }
-
-    protected override void OnMessage(MessageEventArgs e)
-    {
-        Debug.Log($"Received message from client: {e.Data}");
-        // figure out what kind of message it is and send it over the connection manager
-        ConnectionManager.Instance.HandleWebSocketMessage(e.Data, ID);
     }
 }

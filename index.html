@@ -1,11 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<style>
+		body {
+			/*font-family: "Rubik", sans-serif;*/
+			font-family: "Fredoka", sans-serif;
+			margin: 20px;
+			background: #042A2B;
+			color: #FCFCFC;
+		}
+
+		label {
+			display: block;
+			margin: 2px 10px;
+		}
+		
+		input[type=text] {
+			width: 60%;
+			padding: 8px;
+			margin: 10px 10px;
+			box-sizing: border-box;
+			background-color: #FCFCFC;
+			border: 3px solid #5EB1BF;
+			color: #042A2B;
+		}
+
+		input[type=text]:hover {
+			border: 3px solid #54F2F2;
+		}
+
+		input[type=text]:focus {
+			border-color: #F4E04D;
+			box-shadow: 0px 0px 6px rgba(244, 224, 77, 0.6);
+			outline: none;
+		}
+
+		button {
+			margin: 10px 10px;
+		}
+	</style>
+
+	<!--<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;800&display=swap" rel="stylesheet">-->
+    <link href:"https://fonts.google.com/specimen/Fredoka?query=fredoka" rel="stylesheet">
 	<meta charset="utf-8" />
-	<title>Enter Name</title>
+	<title>Cinderella Game</title>
 </head>
 <body>
-	<h1>Enter your name</h1>
+	<h1>Cinderella</h1>
+	<label>Enter Your Name</label>
 	<input id="nameInput" type="text" placeholder="Your name" />
 	<button id="sendBtn" disabled>Send</button>
 	<p id="status">Connecting...</p>

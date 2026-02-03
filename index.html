@@ -38,6 +38,8 @@
 		button {
 			margin: 10px 10px;
 		}
+
+		.hidden { display: none; }
 	</style>
 
 	<!--<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;800&display=swap" rel="stylesheet">-->
@@ -46,11 +48,12 @@
 	<title>Cinderella Game</title>
 </head>
 <body>
-	<h1>Cinderella</h1>
-	<label>Enter Your Name</label>
+	<h1 id="title">Welcome!</h1>
+	<label id="nameLabel"> Enter Your Name</label>
 	<input id="nameInput" type="text" placeholder="Your name" />
 	<button id="sendBtn" disabled>Send</button>
 	<p id="status">Connecting...</p>
+	<button id="startBtn" class="hidden">Start Game</button>
 
 	<script>
 		const wsPort = 8080;
@@ -59,6 +62,48 @@
 
         ws.onopen = () => console.log("WS connected");
         ws.onerror = e => console.error("WS error", e);
+		ws.onmessage = (e) => {
+			const message = JSON.parse(e.data);
+			// message.type
+			switch (message.type)
+			{
+				case "joined":
+					// variables
+					//message.playerName
+					//message.isHost
+					//message.readyToStart
+
+					// handle HTML here
+					// hide inputs
+					document.getElementById('nameInput').classList.add('hidden');
+					document.getElementById('sendBtn').classList.add('hidden');
+					document.getElementById('nameLabel').classList.add('hidden');
+					
+					// say hello
+					document.getElementById('title').textContent = "Hi, " + message.playerName + "!";
+					
+					if(!message.readyToStart)
+					{
+						document.getElementById('status').textContent = 'Waiting for players...';
+						if(message.isHost)
+						{
+							// show button, but grey
+							document.getElementById('startBtn').classList.remove('hidden');
+							document.getElementById('startBtn').disabled = true;
+						}
+					} else if(message.isHost)
+					{
+						document.getElementById('status').style.display = 'none';
+						document.getElementById('startBtn').disabled = false;
+						
+					} else 
+					{
+						document.getElementById('status').textContent = 'Waiting for host...';
+					}
+
+					break;
+			}
+		}
 
 		const nameInput = document.getElementById('nameInput');
 		const sendBtn = document.getElementById('sendBtn');
@@ -72,8 +117,8 @@
 		sendBtn.addEventListener('click', () => {
 			const name = nameInput.value.trim();
 			if (!name) return;
-			// send the raw name string to Unity; PlayerInput.OnMessage will receive it
-			ws.send(name);
+			// send the JSON to Unity
+			ws.send(JSON.stringify({ type: "join", playerName: name }));
 			status.textContent = `Sent: ${name}`;
 		});
 	</script>

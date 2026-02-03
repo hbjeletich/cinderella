@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class PlayerManager : MonoBehaviour
 {
     public List<Player> players = new List<Player>();
+    public int minPlayers = 2;
+    public int maxPlayers = 3;
     
     public static PlayerManager Instance;
     
@@ -98,5 +100,10 @@ public class PlayerManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public bool ReadyToStart()
+    {
+        return minPlayers <= players.Count;
     }
 }

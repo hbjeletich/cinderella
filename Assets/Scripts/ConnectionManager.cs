@@ -22,17 +22,8 @@ public class ConnectionManager : MonoBehaviour
         }
     }
 
-    public void HandleWebSocketMessage(string message, string clientID)
-    {
-        Debug.Log($"ConnectionManager: Received message from {clientID}: {message}");
-        // process the message as needed
-        // for now, set name
-        Player player = PlayerManager.Instance.GetPlayer(clientID);
-        if (player != null)
-        {
-            player.playerName = message;
-        }
-    }
+    // SEND MESSAGES
+    #region Send Messages
 
     public void SentToAll(string message)
     {
@@ -60,4 +51,57 @@ public class ConnectionManager : MonoBehaviour
             Debug.LogWarning($"ConnectionManager: No connection found for player ID: {playerID}");
         }
     }
+
+    #endregion
+    #region Handle Messages
+
+    // HANDLE MESSAGE
+
+    public void HandleWebSocketMessage(string message, string clientID)
+    {
+        Debug.Log($"ConnectionManager: Received message from {clientID}: {message}");
+        // process the message as needed
+        var baseMessage = JsonUtility.FromJson<Message>(message);
+
+        switch(baseMessage.type)
+        {
+            case "join":
+                HandleJoinMessage(message, clientID);
+                break;
+            case "start_game":
+                break;
+        }
+    }
+
+    // MESSAGE HANDLERS
+
+    private void HandleJoinMessage(string rawMessage, string id)
+    {
+        // parse for player name, create player
+        var message = JsonUtility.FromJson<JoinMessage>(rawMessage);
+        string playerName = message.playerName;
+                
+        Player newPlayer = PlayerManager.Instance.GetPlayer(id); 
+        if(newPlayer == null)
+        {
+            Debug.Log($"ConnectionManager: Player with ID {id} does not exist!");
+            return;
+        }
+        else
+        {
+            newPlayer.playerName = playerName;
+        }
+
+        // send JoinedMessage back
+        var newMsg = new JoinedMessage {
+            type = "joined",
+            playerName = playerName,
+            isHost = newPlayer.isHost,
+            readyToStart = PlayerManager.Instance.ReadyToStart()
+        };
+
+        SendMessageToPlayerID(id, JsonUtility.ToJson(newMsg));
+    }
+
+    #endregion
 }

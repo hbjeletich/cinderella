@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class PlayerManager : MonoBehaviour
 {
     public List<Player> players = new List<Player>();
     public int minPlayers = 2;
     public int maxPlayers = 3;
+
+    public Action<Player> OnPlayerCreated;
     
     public static PlayerManager Instance;
     
@@ -37,6 +40,8 @@ public class PlayerManager : MonoBehaviour
         
         players.Add(newPlayer);
         Debug.Log($"PlayerManager: Created new player with ID: {playerID}");
+
+        OnPlayerCreated?.Invoke(newPlayer);
 
         return newPlayer;
     }
@@ -86,7 +91,7 @@ public class PlayerManager : MonoBehaviour
         
         if (eligiblePlayers.Count > 0)
         {
-            int randomIndex = Random.Range(0, eligiblePlayers.Count);
+            int randomIndex = UnityEngine.Random.Range(0, eligiblePlayers.Count);
             eligiblePlayers[randomIndex].isHost = true;
             Debug.Log($"PlayerManager: New host assigned with ID: {eligiblePlayers[randomIndex].playerID}");
         }

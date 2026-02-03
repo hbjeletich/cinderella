@@ -93,7 +93,7 @@
 						}
 					} else if(message.isHost)
 					{
-						document.getElementById('status').style.display = 'none';
+						document.getElementById('status').classList.add('hidden');
 						document.getElementById('startBtn').disabled = false;
 						
 					} else 
@@ -104,8 +104,8 @@
 					break;
 				case "start_game":
 					document.getElementById('startBtn').classList.add('hidden');
+					document.getElementById('status').classList.remove('hidden');
 					document.getElementById('status').textContent = 'STARTING THE GAME!';
-
 					break;
 			}
 		}

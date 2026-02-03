@@ -133,7 +133,10 @@ public class ConnectionManager : MonoBehaviour
 
     private void HandleStartMessage()
     {
-        SentToAll("start_game");
+        var message = new Message{
+            type = "start_game"
+        };
+        SentToAll(JsonUtility.ToJson(message));
     }
 
     #endregion

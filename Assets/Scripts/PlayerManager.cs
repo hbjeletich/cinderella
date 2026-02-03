@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void CreatePlayer(string playerID)
+    public Player CreatePlayer(string playerID)
     {
         GameObject playerObj = new GameObject($"Player_{playerID}");
         playerObj.transform.parent = this.transform;
@@ -37,6 +37,8 @@ public class PlayerManager : MonoBehaviour
         
         players.Add(newPlayer);
         Debug.Log($"PlayerManager: Created new player with ID: {playerID}");
+
+        return newPlayer;
     }
 
     public void RemovePlayer(string playerID)

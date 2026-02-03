@@ -5,7 +5,9 @@ using System.Collections.Generic;
 public class ConnectionManager : MonoBehaviour
 {
     public Dictionary<string, IWebSocketConnection> Connections => Server.Connections;
-    // public Player hostPlayer { get; private set; }
+    
+
+    private bool readyToStart = false;
 
     // instance
     public static ConnectionManager Instance;
@@ -69,6 +71,7 @@ public class ConnectionManager : MonoBehaviour
                 HandleJoinMessage(message, clientID);
                 break;
             case "start_game":
+                HandleStartMessage();
                 break;
         }
     }
@@ -77,30 +80,60 @@ public class ConnectionManager : MonoBehaviour
 
     private void HandleJoinMessage(string rawMessage, string id)
     {
+        Player newPlayer = PlayerManager.Instance.CreatePlayer(id);
         // parse for player name, create player
         var message = JsonUtility.FromJson<JoinMessage>(rawMessage);
         string playerName = message.playerName;
-                
-        Player newPlayer = PlayerManager.Instance.GetPlayer(id); 
-        if(newPlayer == null)
-        {
-            Debug.Log($"ConnectionManager: Player with ID {id} does not exist!");
-            return;
-        }
-        else
-        {
-            newPlayer.playerName = playerName;
-        }
+        newPlayer.playerName = playerName;
 
-        // send JoinedMessage back
-        var newMsg = new JoinedMessage {
-            type = "joined",
-            playerName = playerName,
-            isHost = newPlayer.isHost,
-            readyToStart = PlayerManager.Instance.ReadyToStart()
-        };
+        // if we are ready to start and we weren't before, send to all. else, send to just one
+        bool nowReady = PlayerManager.Instance.ReadyToStart();
+        if(nowReady == true && readyToStart == false)
+        {
+            readyToStart = true;
+            // update everyone
+            foreach(Player p in PlayerManager.Instance.players)
+            {
+                if(p == newPlayer)
+                {
+                    var newMsg = new JoinedMessage {
+                        type = "joined",
+                        playerName = playerName,
+                        isHost = newPlayer.isHost,
+                        readyToStart = nowReady
+                    };
 
-        SendMessageToPlayerID(id, JsonUtility.ToJson(newMsg));
+                    SendMessageToPlayerID(id, JsonUtility.ToJson(newMsg));
+                }
+                else
+                {
+                    var newMsg = new JoinedMessage {
+                        type = "joined",
+                        playerName = p.playerName,
+                        isHost = p.isHost,
+                        readyToStart = nowReady
+                    };
+
+                    SendMessageToPlayerID(p.playerID, JsonUtility.ToJson(newMsg));
+                }
+            }
+        } else
+        {
+            // send JoinedMessage back just to the one player
+            var newMsg = new JoinedMessage {
+                type = "joined",
+                playerName = playerName,
+                isHost = newPlayer.isHost,
+                readyToStart = PlayerManager.Instance.ReadyToStart()
+            };
+
+            SendMessageToPlayerID(id, JsonUtility.ToJson(newMsg));
+        }
+    }
+
+    private void HandleStartMessage()
+    {
+        SentToAll("start_game");
     }
 
     #endregion

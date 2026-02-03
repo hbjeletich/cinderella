@@ -75,12 +75,6 @@ public class Server : MonoBehaviour
                 {
                     Debug.Log($"Server: Client connected: {id}");
                     Connections[id] = socket;
-
-                    MainThreadDispatcher.Instance.Enqueue(() =>
-                    {
-                        // create a new Player for this connection
-                        PlayerManager.Instance.CreatePlayer(id);
-                    });
                 };
 
                 socket.OnMessage = message =>

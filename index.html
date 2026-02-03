@@ -102,12 +102,18 @@
 					}
 
 					break;
+				case "start_game":
+					document.getElementById('startBtn').classList.add('hidden');
+					document.getElementById('status').textContent = 'STARTING THE GAME!';
+
+					break;
 			}
 		}
 
 		const nameInput = document.getElementById('nameInput');
 		const sendBtn = document.getElementById('sendBtn');
 		const status = document.getElementById('status');
+		const startBtn = document.getElementById('startBtn');
 
 		ws.addEventListener('open', () => {
 			status.textContent = 'Connected';
@@ -119,7 +125,12 @@
 			if (!name) return;
 			// send the JSON to Unity
 			ws.send(JSON.stringify({ type: "join", playerName: name }));
-			status.textContent = `Sent: ${name}`;
+			status.textContent = 'Sent: ${name}';
+		});
+
+		startBtn.addEventListener('click', () => {
+			ws.send(JSON.stringify({ type: "start_game"}));
+			status.textContent = 'Game started!';
 		});
 	</script>
 </body>

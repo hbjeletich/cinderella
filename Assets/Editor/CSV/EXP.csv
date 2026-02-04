@@ -1,0 +1,6 @@
+id,prompt_text,element_type,example_classic
+EXP_01,What is our hero's name?,protagonist_name,Cinderella
+EXP_02,Who makes their life miserable?,antagonist,Wicked Stepmother
+EXP_03,What chore or cruelty do they endure?,abuse,Scrubbing floors
+EXP_04,Who is their one true ally?,only_friend,A kind mouse
+EXP_05,Where is the big event held?,event_location,The Royal Palace

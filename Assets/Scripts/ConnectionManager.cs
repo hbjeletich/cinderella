@@ -89,7 +89,7 @@ public class ConnectionManager : MonoBehaviour
         Player newPlayer = PlayerManager.Instance.CreatePlayer(id);
         // parse for player name, create player
         var message = JsonUtility.FromJson<JoinMessage>(rawMessage);
-        string playerName = message.playerName;
+        string playerName = message.text;
         newPlayer.playerName = playerName;
 
         // if we are ready to start and we weren't before, send to all. else, send to just one
@@ -148,13 +148,13 @@ public class ConnectionManager : MonoBehaviour
 
     private void HandleSubmitPromptMessage(string rawMessage, string id)
     {
-        var message = JsonUtility.FromJson<SubmitPromptMessage>(rawMessage);
+        var message = JsonUtility.FromJson<SubmitMessage>(rawMessage);
         RoundManager.Instance.HandlePromptSubmission(message, id);
     }
 
     private void HandleSubmitReactionMessage(string rawMessage, string id)
     {
-        var message = JsonUtility.FromJson<SubmitReactionMessage>(rawMessage);
+        var message = JsonUtility.FromJson<SubmitMessage>(rawMessage);
         RoundManager.Instance.HandleReactSubmission(message, id);
     }
 

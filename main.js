@@ -60,6 +60,7 @@ ws.onmessage = (e) => {
             show(sendBtn);
 			break;
 		case "show_answer":
+			sendType = "send_react";
 			hideAllInputTypes();
 			show(status);
 			status.textContent = message.text;
@@ -73,9 +74,7 @@ sendBtn.addEventListener('click', () => {
 	const name = textInput.value.trim();
 	if (!name) return;
 
-	sendJSON(ws, { type: sendType, text: name });
-    show(status);
-	status.textContent = 'Thanks!';
+	submitText(name);
     textInput.value = '';  
 });
 
@@ -93,9 +92,14 @@ textInput.addEventListener('keydown', (e) => {
 document.querySelectorAll('.react-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const reaction = btn.dataset.react;
-        sendJSON(ws, { type: "send_react", reaction: reaction });
+		submitText(reaction);
         hide($('reactContainer'));
-        show(status);
-        status.textContent = 'Reaction sent!';
     });
 });
+
+function submitText(string)
+{
+	sendJSON(ws, { type: sendType, text: name });
+    show(status);
+	status.textContent = 'Thanks!';
+}

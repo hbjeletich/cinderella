@@ -11,7 +11,7 @@ public class JoinMessage
 {
     // Client to Server : I have joined!
     public string type = "join";
-    public string playerName;
+    public string text;
 }
 
 [System.Serializable]
@@ -41,10 +41,10 @@ public class ShowPromptMessage
 }
 
 [System.Serializable]
-public class SubmitPromptMessage
+public class SubmitMessage
 {
     // Client to Server : Here is my response!
-    public string type = "send_prompt";
+    public string type;
     public string text;
 }
 
@@ -62,14 +62,5 @@ public class ShowAnswersMessage
     public string type = "show_answer";
     public string text;
     public bool myPrompt = false;
-}
-
-[System.Serializable]
-public class SubmitReactionMessage
-{
-    // Client to Server : Here is my reaction!
-    public string type = "send_react";
-    public string reaction;
-
 }
 

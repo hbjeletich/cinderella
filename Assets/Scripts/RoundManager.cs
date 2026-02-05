@@ -109,7 +109,7 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    public void HandlePromptSubmission(SubmitPromptMessage message, string id)
+    public void HandlePromptSubmission(SubmitMessage message, string id)
     {
         PlayerManager.Instance.SetPlayerReady(id);
 
@@ -128,12 +128,12 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    public void HandleReactSubmission(SubmitReactionMessage message, string id)
+    public void HandleReactSubmission(SubmitMessage message, string id)
     {
         PlayerManager.Instance.SetPlayerReady(id);
 
         Reaction react = new Reaction{
-            reactionName = message.reaction
+            reactionName = message.text
         };
 
         react.reactionType = react.StringToType(react.reactionName);

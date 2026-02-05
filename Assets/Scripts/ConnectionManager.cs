@@ -73,6 +73,12 @@ public class ConnectionManager : MonoBehaviour
             case "start_game":
                 HandleStartMessage();
                 break;
+            case "send_prompt":
+                HandleSubmitPromptMessage(message, clientID);
+                break;
+            case "send_react":
+                HandleSubmitReactionMessage(message, clientID);
+                break;
         }
     }
 
@@ -138,6 +144,18 @@ public class ConnectionManager : MonoBehaviour
         };
         SentToAll(JsonUtility.ToJson(message));
         GameManager.Instance.StartGame();
+    }
+
+    private void HandleSubmitPromptMessage(string rawMessage, string id)
+    {
+        var message = JsonUtility.FromJson<SubmitPromptMessage>(rawMessage);
+        RoundManager.Instance.HandlePromptSubmission(message, id);
+    }
+
+    private void HandleSubmitReactionMessage(string rawMessage, string id)
+    {
+        var message = JsonUtility.FromJson<SubmitReactionMessage>(rawMessage);
+        RoundManager.Instance.HandleReactSubmission(message, id);
     }
 
     #endregion

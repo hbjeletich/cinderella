@@ -37,3 +37,24 @@ button {
 .hidden {
 	display: none;
 }
+
+#reactGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    max-width: 300px;
+    margin: 20px auto;
+}
+
+.react-btn {
+    font-size: 2rem;
+    padding: 15px;
+    background: #5EB1BF;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.react-btn:hover {
+    background: #54F2F2;
+}

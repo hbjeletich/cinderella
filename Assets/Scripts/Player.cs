@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
     public string playerName;
     public bool isHost;
     public int score;
-    public bool hasSubmittedThisRound;
+    public bool hasSubmittedThisRound = false;
     
     void Start()
     {

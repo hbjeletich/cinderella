@@ -22,3 +22,9 @@ export function getInputType(string){
     }
     return null;
 }
+
+export function hideAllInputTypes(){
+    hide($("textInput"));
+    hide($("label"));
+    hide($("sendBtn"));
+}

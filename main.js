@@ -59,6 +59,13 @@ ws.onmessage = (e) => {
             show(getInputType(message.inputType));
             show(sendBtn);
 			break;
+		case "show_answer":
+			hideAllInputTypes();
+			show(status);
+			status.textContent = message.text;
+			show($('reactContainer'));
+			break;
+			
 	}
 };
 
@@ -81,4 +88,14 @@ textInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         sendBtn.click();
     }
+});
+
+document.querySelectorAll('.react-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const reaction = btn.dataset.react;
+        sendJSON(ws, { type: "send_react", reaction: reaction });
+        hide($('reactContainer'));
+        show(status);
+        status.textContent = 'Reaction sent!';
+    });
 });

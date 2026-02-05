@@ -40,3 +40,37 @@ public class ShowPromptMessage
     public string inputType;
 }
 
+[System.Serializable]
+public class SubmitPromptMessage
+{
+    // Client to Server : Here is my response!
+    public string type = "send_prompt";
+    public string text;
+}
+
+[System.Serializable]
+public class PromptsSubmittedMessage
+{
+    // Server to Client : All prompts submitted!
+    public string type = "prompts_submitted";
+}
+
+[System.Serializable]
+public class ShowAnswersMessage
+{
+    // Server to Client : React to Prompt!
+    public string type = "show_answer";
+    public string text;
+    public bool myPrompt = false;
+}
+
+[System.Serializable]
+public class SubmitReactionMessage
+{
+    // Client to Server : Here is my reaction!
+    public string type = "send_react";
+    public string playerID;
+    public string reaction;
+
+}
+

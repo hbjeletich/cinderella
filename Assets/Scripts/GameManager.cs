@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -31,29 +32,23 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        CurrentState = GameState.Lobby;
-    }
-
-    public GameState CurrentState
-    {
-        get { return currentState; }
-        private set
-        {
-            if (currentState != value)
-            {
-                currentState = value;
-                OnGameStateChanged?.Invoke(currentState);
-            }
-        }
+        currentState = GameState.Lobby;
     }
 
     public void SetGameState(GameState newState)
     {
-        CurrentState = newState;
+        currentState = newState;
+        OnGameStateChanged?.Invoke(newState);
     }
 
     public void StartGame()
     {
         SetGameState(GameState.Playing);
+        ChangeScene("Game");
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }

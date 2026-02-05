@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     public int maxPlayers = 3;
 
     public Action<Player> OnPlayerCreated;
+    public Action<Player> OnPlayerReady;
     
     public static PlayerManager Instance;
     
@@ -70,6 +71,30 @@ public class PlayerManager : MonoBehaviour
 
             Debug.Log($"PlayerManager: Removed player with ID: {playerID}");
         }
+    }
+
+    public void ResetPlayerReady()
+    {
+        foreach(Player p in players)
+        {
+            p.hasSubmittedThisRound = false;
+        }
+    }
+
+    public void SetPlayerReady(string playerID)
+    {
+        Player player = GetPlayer(playerID);
+        player.hasSubmittedThisRound = true;
+        OnPlayerReady?.Invoke(player);
+    }
+
+    public bool ArePlayersReady()
+    {
+        foreach(Player p in players)
+        {
+            if(!p.hasSubmittedThisRound) return false;
+        }
+        return true;
     }
 
     private void SetNewHost(Player removedPlayer)

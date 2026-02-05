@@ -14,6 +14,8 @@ ws.onopen = () => {
 	sendBtn.disabled = false;
 };
 
+var sendType = "join";
+
 ws.onerror = e => console.error("WS error", e);
 
 ws.onmessage = (e) => {
@@ -25,7 +27,7 @@ ws.onmessage = (e) => {
 			hide(sendBtn);
 			hide(textLabel);
 
-			title.textContent = 'Hi, ${message.playerName}!';
+			title.textContent = `Hi, ${message.playerName}!`;
 
 			if (!message.readyToStart) {
 				status.textContent = 'Waiting for players...';
@@ -50,6 +52,7 @@ ws.onmessage = (e) => {
 
 		case "show_prompt":
 			// status.textContent = message.text;
+            sendType = "send_prompt";
             hide(status);
             show(textLabel);
             textLabel.textContent = message.text;
@@ -63,7 +66,7 @@ sendBtn.addEventListener('click', () => {
 	const name = textInput.value.trim();
 	if (!name) return;
 
-	sendJSON(ws, { type: "join", playerName: name });
+	sendJSON(ws, { type: sendType, playerName: name });
     show(status);
 	status.textContent = 'Thanks!';
     textInput.value = '';  

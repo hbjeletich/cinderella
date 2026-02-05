@@ -18,7 +18,7 @@ export function getInputType(string){
     switch(string)
     {
         case("text"):
-            return document.getElementById(textInput);
+            return $("textInput");
     }
     return null;
 }

@@ -49,9 +49,9 @@ ws.onmessage = (e) => {
 			break;
 
 		case "show_prompt":
-			status.textContent = message.text;
+			// status.textContent = message.text;
             show(textLabel);
-            textLabel.textContent = "Enter your answer";
+            textLabel.textContent = message.text;
             show(getInputType(message.inputType));
             show(sendBtn);
 			break;
@@ -64,9 +64,16 @@ sendBtn.addEventListener('click', () => {
 
 	sendJSON(ws, { type: "join", playerName: name });
 	status.textContent = `Sent: ${name}`;
+    textInput.value = '';  
 });
 
 startBtn.addEventListener('click', () => {
 	sendJSON(ws, { type: "start_game" });
 	status.textContent = 'Game started!';
+});
+
+textInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        sendBtn.click();
+    }
 });

@@ -6,7 +6,7 @@ const sendBtn = $('sendBtn');
 const status = $('status');
 const startBtn = $('startBtn');
 const title = $('title');
-const nameLabel = $('nameLabel');
+const textLabel = $('label');
 
 ws.onopen = () => {
 	console.log("WS connected");
@@ -23,7 +23,7 @@ ws.onmessage = (e) => {
 		case "joined":
 			hide(textInput);
 			hide(sendBtn);
-			hide(nameLabel);
+			hide(textLabel);
 
 			title.textContent = `Hi, ${message.playerName}!`;
 
@@ -50,8 +50,8 @@ ws.onmessage = (e) => {
 
 		case "show_prompt":
 			status.textContent = message.text;
-            show(nameLabel);
-            nameLabel.textContent = "Enter your answer";
+            show(textLabel);
+            textLabel.textContent = "Enter your answer";
             show(getInputType(message.inputType));
             show(sendBtn);
 			break;

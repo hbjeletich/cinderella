@@ -24,16 +24,16 @@ public class StoryManager : MonoBehaviour
         GameManager.Instance.OnGameStateChanged += OnGameStateChanged;
     }
 
-    public void OnGameStateChanged(GameState newState)
+    public void OnGameStateChanged(GameState newState, GameState lastState)
     {
-        switch(newState)
+        switch(lastState)
         {
-            case(GameState.Playing):
-            // maybe at the beginning we call UI manager to send a ready?? or a welcome?
+            case(GameState.Lobby):
                 RollClimax();
-                roundNumber += 1;
-                StartRound(roundNumber);
+                roundNumber = 1;
                 break;
+            case(lastState.Talking):
+                StartRound();
         }
     }
 

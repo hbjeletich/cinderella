@@ -81,7 +81,10 @@ sendBtn.addEventListener('click', () => {
 	const name = textInput.value.trim();
 	if (!name) return;
 
-	submitText(name);
+	sendJSON(ws, { type: sendType, text: name });
+    show(status);
+	
+	status.textContent = 'Thanks!';
     textInput.value = '';  
 });
 
@@ -99,14 +102,18 @@ textInput.addEventListener('keydown', (e) => {
 document.querySelectorAll('.react-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const reaction = btn.dataset.react;
-		submitText(reaction);
+		
+		sendJSON(ws, { type: sendType, text: reaction });
+		show(status);
+		status.textContent = 'Thanks!';
         hide(reactContainer);
     });
 });
 
-function submitText(string)
-{
-	sendJSON(ws, { type: sendType, text: string });
-    show(status);
-	status.textContent = 'Thanks!';
-}
+// idk why this doesnt work but whatever
+// function submitText(string)
+// {
+// 	sendJSON(ws, { type: sendType, text: string });
+//     show(status);
+// 	status.textContent = 'Thanks!';
+// }

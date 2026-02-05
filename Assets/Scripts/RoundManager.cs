@@ -68,13 +68,12 @@ public class RoundManager : MonoBehaviour
     public void StartExpositionRound()
     {
         int playerCount = PlayerManager.Instance.GetPlayerCount();
-        ExpositionPrompt[] prompts = PromptManager.Instance.GetMultipleRandomPrompts<ExpositionPrompt>(PromptType.Exposition, playerCount);
+        List<ExpositionPrompt> expositionPrompts = PromptManager.Instance.GetMultipleRandomPrompts<ExpositionPrompt>(PromptType.Exposition, playerCount);
 
-        if(prompts == null || prompts.Length == 0)
+        if(expositionPrompts == null || expositionPrompts.Count() == 0)
         {
-            Debug.Log("RoundManager: Exposition prompts array is null or empty!");
+            Debug.Log("RoundManager: Exposition prompts list is null or empty!");
         }
-        List<ExpositionPrompt> expositionPrompts = prompts.ToList();
         // assign prompts to players randomly!
         foreach(Player p in PlayerManager.Instance.players)
         {

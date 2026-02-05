@@ -4,11 +4,12 @@ using System.Linq;
 
 public class PromptManager : MonoBehaviour
 {
-    [Header("Prompt Arrays")]
-    public ExpositionPrompt[] expositionPrompts;
-    public RisingActionPrompt[] risingActionPrompts;
-    public ClimaxPrompt[] climaxPrompts;
-    public ResolutionPrompt[] resolutionPrompts;
+    [Header("Prompt Lists")]
+    // originally arrays because I <3 arrays but i need to change these too much to be arrays!
+    public List<ExpositionPrompt> expositionPrompts = new List<ExpositionPrompt>();
+    public List<RisingActionPrompt> risingActionPrompts = new List<RisingActionPrompt>();
+    public List<ClimaxPrompt> climaxPrompts = new List<ClimaxPrompt>();
+    public List<ResolutionPrompt> resolutionPrompts = new List<ResolutionPrompt>();
 
     public static PromptManager Instance { get; private set; }
 
@@ -28,38 +29,38 @@ public class PromptManager : MonoBehaviour
 
     public T GetRandomPrompt<T>(PromptType type) where T : Prompt
     {
-        T[] pool = GetPromptArray<T>(type);
-        if (pool.Length == 0)
+        List<T> pool = GetPromptList<T>(type);
+        if (pool.Count() == 0)
             return null;
-        return pool[Random.Range(0, pool.Length)];
+        return pool[Random.Range(0, pool.Count())];
     }
 
-    public T[] GetMultipleRandomPrompts<T>(PromptType type, int count) where T : Prompt
+    public List<T> GetMultipleRandomPrompts<T>(PromptType type, int count) where T : Prompt
     {
         switch (type)
         {
             case PromptType.Exposition:
                 return GetExpositionPrompts(
                     count,
-                    expositionPrompts) as T[];
+                    expositionPrompts) as List<T>;
             case PromptType.RisingAction:
-                return GetRandomFromArray(count, risingActionPrompts) as T[];
+                return GetRandomFromList(count, risingActionPrompts) as List<T>;
             case PromptType.Climax:
-                return GetRandomFromArray(count, climaxPrompts) as T[];
+                return GetRandomFromList(count, climaxPrompts) as List<T>;
             case PromptType.Resolution:
-                return GetRandomFromArray(count, resolutionPrompts) as T[];
+                return GetRandomFromList(count, resolutionPrompts) as List<T>;
         }
 
         Debug.LogError("PromptManager: Unknown PromptType!");
-        return System.Array.Empty<T>();
+        return new List<T>();
     }
 
-    private static T[] GetRandomFromArray<T>(int count, T[] source) where T : Prompt
+    private static List<T> GetRandomFromList<T>(int count, List<T> source) where T : Prompt
     {
-        if (source == null || source.Length == 0 || count <= 0)
-            return System.Array.Empty<T>();
+        if (source == null || source.Count() == 0 || count <= 0)
+            return new List<T>();
 
-        List<T> pool = source.ToList();
+        List<T> pool = source;
         List<T> result = new List<T>();
 
         count = Mathf.Clamp(count, 0, pool.Count);
@@ -71,51 +72,55 @@ public class PromptManager : MonoBehaviour
             pool.RemoveAt(index);
         }
 
-        return result.ToArray();
+        return result;
     }
 
-    private static ExpositionPrompt[] GetExpositionPrompts(int count, ExpositionPrompt[] source)
+    private static List<ExpositionPrompt> GetExpositionPrompts(int count, List<ExpositionPrompt> source)
     {
-        if (source == null || source.Length == 0)
-            return System.Array.Empty<ExpositionPrompt>();
+        if (source == null || source.Count() == 0)
+            return new List<ExpositionPrompt>();
 
         List<ExpositionPrompt> necessary = source.Where(p => p.necessity).ToList();
         List<ExpositionPrompt> optional = source.Where(p => !p.necessity).ToList();
 
         int remaining = Mathf.Max(0, count - necessary.Count);
 
-        ExpositionPrompt[] randomOptional = GetRandomFromArray(remaining, optional.ToArray());
+        if(remaining > 0)
+        {
+            List<ExpositionPrompt> randomOptional = GetRandomFromList<ExpositionPrompt>(remaining, optional);
+            necessary.AddRange(randomOptional);
+        }
 
-        return necessary.Concat(randomOptional).Take(count).ToArray();
+        return necessary;
     }
 
-    private T[] GetPromptArray<T>(PromptType type) where T : Prompt
+    private List<T> GetPromptList<T>(PromptType type) where T : Prompt
     {
         switch (type)
         {
             case PromptType.Exposition:
-                return expositionPrompts as T[];
+                return expositionPrompts as List<T>;
 
             case PromptType.RisingAction:
-                return risingActionPrompts as T[];
+                return risingActionPrompts as List<T>;
 
             case PromptType.Climax:
-                return climaxPrompts as T[];
+                return climaxPrompts as List<T>;
 
             case PromptType.Resolution:
-                return resolutionPrompts as T[];
+                return resolutionPrompts as List<T>;
 
             default:
-                return System.Array.Empty<T>();
+                return new List<T>();
         }
     }
 
     public void LoadPrompts()
     {
-        expositionPrompts = Resources.LoadAll<ExpositionPrompt>("Scriptables/Prompts/EXP");
-        risingActionPrompts = Resources.LoadAll<RisingActionPrompt>("Scriptables/Prompts/RA");
-        climaxPrompts = Resources.LoadAll<ClimaxPrompt>("Scriptables/Prompts/CLX");
-        resolutionPrompts = Resources.LoadAll<ResolutionPrompt>("Scriptables/Prompts/RES");
+        expositionPrompts.AddRange(Resources.LoadAll<ExpositionPrompt>("Scriptables/Prompts/EXP"));
+        risingActionPrompts.AddRange(Resources.LoadAll<RisingActionPrompt>("Scriptables/Prompts/RA"));
+        climaxPrompts.AddRange(Resources.LoadAll<ClimaxPrompt>("Scriptables/Prompts/CLX"));
+        resolutionPrompts.AddRange(Resources.LoadAll<ResolutionPrompt>("Scriptables/Prompts/RES"));
 
         Debug.Log("PromptManager: Prompts loaded successfully.");
     }

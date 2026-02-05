@@ -1,4 +1,4 @@
-import { $, show, hide, sendJSON, getInputType } from './utils.js';
+import { $, show, hide, sendJSON, getInputType, hideAllInputTypes } from './utils.js';
 const ws = new WebSocket("wss://hadlee-giggliest-unpopulously.ngrok-free.dev/");
 
 const textInput = $('textInput');
@@ -73,7 +73,7 @@ sendBtn.addEventListener('click', () => {
 	const name = textInput.value.trim();
 	if (!name) return;
 
-	sendJSON(ws, { type: sendType, playerName: name });
+	sendJSON(ws, { type: sendType, text: name });
     show(status);
 	status.textContent = 'Thanks!';
     textInput.value = '';  

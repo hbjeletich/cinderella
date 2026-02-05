@@ -69,7 +69,6 @@ public class SubmitReactionMessage
 {
     // Client to Server : Here is my reaction!
     public string type = "send_react";
-    public string playerID;
     public string reaction;
 
 }

@@ -1,0 +1,9 @@
+id,prompt_text,round,story_beat,option_a,option_b,option_c,resonance_tag
+RA_01,What stops them from going to the event?,2,prevention,Their dress is destroyed,They're locked in,They're simply left behind,classic_prevention
+RA_02,How does the antagonist sabotage them?,2,prevention,Piles on extra chores,Steals their invitation,Spreads rumors they're not welcome,sabotage_type
+RA_03,Who or what comes to save the day?,3,deus_ex,A fairy godmother appears,Magic fish bones grant a wish,Friends band together,helper_type
+RA_04,What gets magically transformed?,3,transformation,A pumpkin -> carriage,Rags -> beautiful gown,Mice -> footmen,transform_classic
+RA_05,What's the signature item they receive?,3,transformation,Glass slippers,Golden shoes,A enchanted mask,signature_item
+RA_06,What warning signals time is running out?,4,time_limit,The clock strikes midnight,The moon begins to set,The music suddenly stops,time_warning
+RA_07,How do they flee the event?,4,escape,Running down the stairs,Vanishing into the crowd,Leaping from a window,escape_method
+RA_08,What do they accidentally leave behind?,4,item_left,A single glass slipper,A golden hairpin,A mysterious note,lost_item

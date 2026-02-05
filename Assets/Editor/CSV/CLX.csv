@@ -1,0 +1,4 @@
+id,prompt_text,climax_type,protagonist_options,antagonist_options
+CLX_ESCAPE,The protagonist must choose how to leave before being discovered,Escaping the Ball,Slip away quietly | Make a dramatic exit | Confront the love interest first,Chase them down | Let them go | Expose them publicly
+CLX_RECOGNITION,The love interest has found them -- what happens?,The Recognition,Reveal your true identity | Pretend not to know them | Run away again,Deny the match | Demand proof | Accept gracefully
+CLX_CONFRONTATION,The final showdown with who wronged them,Confronting the Antagonist,Forgive them publicly | Demand justice | Walk away forever,Beg for forgiveness | Double down on cruelty | Reveal a hidden motive

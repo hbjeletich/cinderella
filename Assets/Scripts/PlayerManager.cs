@@ -109,6 +109,11 @@ public class PlayerManager : MonoBehaviour
         return null;
     }
 
+    public int GetPlayerCount()
+    {
+        return players.Count;
+    }
+
     public bool ReadyToStart()
     {
         return minPlayers <= players.Count;

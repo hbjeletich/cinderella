@@ -27,34 +27,7 @@ public abstract class Prompt : ScriptableObject
                 return PromptType.Climax;
             case("RES"):
                 return PromptType.Resolution;
-            return PromptType.None;
         }
         return PromptType.None;
     }
-}
-
-public class ExpositionPrompt : Prompt
-{
-    public string storyElement;
-}
-
-public class RisingActionPrompt : Prompt
-{
-    public int round;
-    public string storyBeat;
-    public string[] options;
-    public string resonanceTag;
-}
-
-public class ClimaxPrompt : Prompt
-{
-    public string climaxType;
-    public string[] protagonistOptions;
-    public string[] antagonistOptions;
-}
-
-public class ResolutionPrompt : Prompt
-{
-    public string outcomeCategory;
-    public string tone;
 }

@@ -36,11 +36,11 @@ public static class CSVReader
         string promptType = separateID[0];
 
         // delete all old assets
-        Directory.Delete($"Assets/Scriptables/Prompts/{promptType}");
+        Directory.Delete($"Assets/Resources/Scriptables/Prompts/{promptType}");
 
         for(int i = 1; i <= csvLines.Length - 1; i++)
         {
-            string[] row = csvLines[i].Split(",");
+            string[] row = ParseCSVLine(csvLines[i]);
             switch(promptType)
             {
                 // which type of scriptable are we making?
@@ -48,7 +48,7 @@ public static class CSVReader
                     CreateExpositionPrompts(row, promptType, i);
                     break;
                 case("RA"):
-                    CreateResolutionPrompt(row, promptType, i);
+                    CreateRisingActionPrompts(row, promptType, i);
                     break;
                 case("CLX"):
                     CreateClimaxPrompt(row, promptType, i);
@@ -90,14 +90,14 @@ public static class CSVReader
         }
 
         prompt.promptText = row[1];
-        prompt.storyElement = row[2];
+        prompt.storyElement = row[2].Trim('\n', '\r');
 
-        if (!Directory.Exists($"Assets/Scriptables/Prompts/EXP"))
+        if (!Directory.Exists($"Assets/Resources/Scriptables/Prompts/EXP/"))
         {
-            Directory.CreateDirectory($"Assets/Scriptables/Prompts/EXP");
+            Directory.CreateDirectory($"Assets/Resources/Scriptables/Prompts/EXP/");
         }
 
-        string filePath = $"Assets/Scriptables/Prompts/EXP/ExpositionPrompt_{index}.asset";
+        string filePath = $"Assets/Resources/Scriptables/Prompts/EXP/ExpositionPrompt_{index}.asset";
         Debug.Log(filePath);
         AssetDatabase.CreateAsset(prompt, filePath);
     }
@@ -121,9 +121,14 @@ public static class CSVReader
         string[] options = row[4].Split("\n");
         prompt.options = options;
 
-        prompt.resonanceTag = row[5];
+        prompt.resonanceTag = row[5].Trim('\n', '\r');
 
-        string filePath = $"Assets/Scriptables/Prompts/RA/RisingActionPrompt_{index}.asset";
+        if (!Directory.Exists($"Assets/Resources/Scriptables/Prompts/RA/"))
+        {
+            Directory.CreateDirectory($"Assets/Resources/Scriptables/Prompts/RA/");
+        }
+
+        string filePath = $"Assets/Resources/Scriptables/Prompts/RA/RisingActionPrompt_{index}.asset";
         Debug.Log(filePath);
         AssetDatabase.CreateAsset(prompt, filePath);
     }
@@ -141,8 +146,19 @@ public static class CSVReader
         }
 
         prompt.promptText = row[1];
+        prompt.climaxType = row[2];
 
-        string filePath = $"Assets/Scriptables/Prompts/CLX/ClimaxPrompt_{index}.asset";
+        prompt.protagonistOptions = row[3].Split(" | ");
+        prompt.antagonistOptions = row[4].Split(" | ");
+
+        prompt.antagonistOptions[prompt.antagonistOptions.Count() - 1] = prompt.antagonistOptions[prompt.antagonistOptions.Count() - 1].Trim('\n', '\r');
+
+        if (!Directory.Exists($"Assets/Resources/Scriptables/Prompts/CLX/"))
+        {
+            Directory.CreateDirectory($"Assets/Resources/Scriptables/Prompts/CLX/");
+        }
+
+        string filePath = $"Assets/Resources/Scriptables/Prompts/CLX/ClimaxPrompt_{index}.asset";
         Debug.Log(filePath);
         AssetDatabase.CreateAsset(prompt, filePath);
     }
@@ -160,10 +176,50 @@ public static class CSVReader
         }
 
         prompt.promptText = row[1];
+        Debug.Log($"Final text: {prompt.promptText}");
 
-        string filePath = $"Assets/Scriptables/Prompts/RES/ResolutionPrompt_{index}.asset";
+        prompt.outcomeCategory = row[row.Count() - 2];
+        prompt.tone = row[row.Count() - 1].Trim('\n', '\r');
+
+        if (!Directory.Exists($"Assets/Resources/Scriptables/Prompts/RES/"))
+        {
+            Directory.CreateDirectory($"Assets/Resources/Scriptables/Prompts/RES/");
+        }
+
+        string filePath = $"Assets/Resources/Scriptables/Prompts/RES/ResolutionPrompt_{index}.asset";
         Debug.Log(filePath);
         AssetDatabase.CreateAsset(prompt, filePath);
+    }
+
+    public static string[] ParseCSVLine(string line)
+    {
+        List<string> fields = new List<string>();
+        bool inQuotes = false;
+        string currentField = "";
+        
+        for (int i = 0; i < line.Length; i++)
+        {
+            char c = line[i];
+            
+            if (c == '"')
+            {
+                inQuotes = !inQuotes;
+                continue;
+            }
+            else if (c == ',' && !inQuotes)
+            {
+                fields.Add(currentField.Trim('"'));
+                currentField = "";
+            }
+            else
+            {
+                currentField += c;
+            }
+        }
+        
+        fields.Add(currentField.Trim('"'));
+        
+        return fields.ToArray();
     }
     
 }

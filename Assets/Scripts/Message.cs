@@ -31,3 +31,12 @@ public class StartMessage
     public string type = "start_game";
 }
 
+[System.Serializable]
+public class ShowPromptMessage
+{
+    // Server to Client : Here is your prompt!
+    public string type = "show_prompt";
+    public string text;
+    public string inputType;
+}
+

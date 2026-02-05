@@ -1,0 +1,14 @@
+id,prompt_text,outcome_category,tone
+RES_01,"And so [Protagonist] finally escaped [Antagonist], married [Love Interest], and never had to [Abuse] again. [Only Friend] got a medal.",triumphant,comedy
+RES_02,"[Protagonist] stood tall at [Event Location], no longer a servant but an equal. [Love Interest] never let go of their hand.",triumphant,triumphant
+RES_03,"[Protagonist] won. [Antagonist] lost everything. Some say justice was served. Others say it was revenge.",triumphant,dark
+RES_04,"[Protagonist] forgave [Antagonist], which was honestly pretty weird given the whole [Abuse] thing. But hey, character growth!",forgive,comedy
+RES_05,"With quiet dignity, [Protagonist] offered [Antagonist] forgiveness. [Only Friend] wept. Even [Love Interest] was moved.",forgive,triumphant
+RES_06,"[Protagonist] forgave them. It didn't fix anything. But it was the right thing to do.",forgive,tragedy
+RES_07,"In the end, neither could let go. [Protagonist] and [Antagonist] fell together, and [Event Location] would never recover.",mutual_destruction,dark
+RES_08,"Look, nobody knows what happened. [Antagonist] bit someone. [Protagonist] stole a horse. [Event Location] is now a crater.",mutual_destruction,chaos
+RES_09,"They destroyed each other. [Only Friend] visits the ruins sometimes, wondering if it had to end this way.",mutual_destruction,tragedy
+RES_10,"[Protagonist] got out. Didn't look back. Last anyone heard, they were starting a small business with [Only Friend]. Good for them.",escape,comedy
+RES_11,"[Protagonist] walked away from [Antagonist], from [Event Location], from all of it. Freedom tasted like [Transformation Item].",escape,triumphant
+RES_12,"[Protagonist] left everything behind. Even [Love Interest]. Some doors, once closed, stay closed.",escape,bittersweet
+RES_13,"When [Antagonist] revealed the truth—that they'd been protecting [Protagonist] all along—everything changed.",twist_redemption,triumphant

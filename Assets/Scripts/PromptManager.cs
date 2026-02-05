@@ -54,7 +54,7 @@ public class PromptManager : MonoBehaviour
         switch(type)
         {
             case PromptType.Exposition:
-                return GetMultipleRandomPromptsFromArray(num, expositionPrompts);
+                return IncludeNecessaryPrompts(num, expositionPrompts);
 
             case PromptType.RisingAction:
                 return GetMultipleRandomPromptsFromArray(num, risingActionPrompts);
@@ -95,6 +95,32 @@ public class PromptManager : MonoBehaviour
 
         Debug.Log($"PromptManager: Returning {selectedPrompts.Count()} items in array.");
         return selectedPrompts.ToArray();
+    }
+
+    private Prompt[] IncludeNecessaryPrompts(int num, Prompt[] prompts)
+    {
+        List<Prompt> necessaryPrompts = new List<Prompt>();
+        List<Prompt> unnecessaryPrompts = new List<Prompt>();
+        ExpositionPrompt[] expositionPrompts = prompts as ExpositionPrompt[];
+
+
+        foreach(ExpositionPrompt p in expositionPrompts)
+        {
+            if(p.necessity)
+            {
+                necessaryPrompts.Add(p);
+            }
+            else
+            {
+                unnecessaryPrompts.Add(p);
+            }
+        }
+
+        Prompt[] additionalPrompts = GetMultipleRandomPromptsFromArray(num - necessaryPrompts.Count(), unnecessaryPrompts.ToArray());
+        additionalPrompts = additionalPrompts.Concat(necessaryPrompts.ToArray()).ToArray();
+
+        return additionalPrompts;
+
     }
 
     // public RisingActionPrompt GetRisingActionByRound(int round)

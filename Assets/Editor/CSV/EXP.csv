@@ -1,6 +1,9 @@
-id,prompt_text,element_type,example_classic
-EXP_01,What is our hero's name?,protagonist_name,Cinderella
-EXP_02,Who makes their life miserable?,antagonist,Wicked Stepmother
-EXP_03,What chore or cruelty do they endure?,abuse,Scrubbing floors
-EXP_04,Who is their one true ally?,only_friend,A kind mouse
-EXP_05,Where is the big event held?,event_location,The Royal Palace
+id,prompt_text,necessity,element_type,example_classic
+EXP_01,What is our hero's name?,TRUE,protagonist_name,Cinderella
+EXP_02,Who makes their life miserable?,TRUE,antagonist,Wicked Stepmother
+EXP_03,What chore or cruelty do they endure?,FALSE,abuse,Scrubbing floors
+EXP_04,Who is their one true ally?,FALSE,only_friend,A kind mouse
+EXP_05,Where is the big event held?,FALSE,event_location,The Royal Palace
+EXP_06,What magical item does the protagonist leave behind?,FALSE,transformation_item,Glass Slipper
+EXP_07,Who falls in love at first sight with our protagonist?,FALSE,love_interest,Prince Charming
+EXP_08,What important position does our protagonist become at the end?,FALSE,final_role,A princess

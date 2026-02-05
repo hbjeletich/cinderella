@@ -90,7 +90,13 @@ public static class CSVReader
         }
 
         prompt.promptText = row[1];
-        prompt.storyElement = row[2].Trim('\n', '\r');
+        bool necessity = false;
+        if(row[2].Contains("TRUE"))
+        {
+            necessity = true;
+        }
+        prompt.necessity = necessity;
+        prompt.storyElement = row[3].Trim('\n', '\r');
 
         if (!Directory.Exists($"Assets/Resources/Scriptables/Prompts/EXP/"))
         {

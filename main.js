@@ -7,6 +7,7 @@ const status = $('status');
 const startBtn = $('startBtn');
 const title = $('title');
 const textLabel = $('label');
+const reactContainer = $('reactContainer');
 
 ws.onopen = () => {
 	console.log("WS connected");
@@ -63,8 +64,14 @@ ws.onmessage = (e) => {
 			sendType = "send_react";
 			hideAllInputTypes();
 			show(status);
+			if(message.myPrompt)
+			{
+				hide(reactContainer);
+				status.textContent = "This is your answer... don't second guess it...";
+				break;
+			}
 			status.textContent = message.text;
-			show($('reactContainer'));
+			show(reactContainer);
 			break;
 			
 	}
@@ -93,13 +100,13 @@ document.querySelectorAll('.react-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const reaction = btn.dataset.react;
 		submitText(reaction);
-        hide($('reactContainer'));
+        hide(reactContainer);
     });
 });
 
 function submitText(string)
 {
-	sendJSON(ws, { type: sendType, text: name });
+	sendJSON(ws, { type: sendType, text: string });
     show(status);
 	status.textContent = 'Thanks!';
 }

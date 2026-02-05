@@ -25,7 +25,7 @@ ws.onmessage = (e) => {
 			hide(sendBtn);
 			hide(textLabel);
 
-			title.textContent = `Hi, ${message.playerName}!`;
+			title.textContent = 'Hi, ${message.playerName}!';
 
 			if (!message.readyToStart) {
 				status.textContent = 'Waiting for players...';
@@ -45,11 +45,12 @@ ws.onmessage = (e) => {
 		case "start_game":
 			hide(startBtn);
 			show(status);
-			status.textContent = 'STARTING THE GAME!';
+			status.textContent = 'Game started! Waiting for instructions...';
 			break;
 
 		case "show_prompt":
 			// status.textContent = message.text;
+            hide(status);
             show(textLabel);
             textLabel.textContent = message.text;
             show(getInputType(message.inputType));
@@ -63,7 +64,8 @@ sendBtn.addEventListener('click', () => {
 	if (!name) return;
 
 	sendJSON(ws, { type: "join", playerName: name });
-	status.textContent = `Sent: ${name}`;
+    show(status);
+	status.textContent = 'Thanks!';
     textInput.value = '';  
 });
 

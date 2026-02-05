@@ -50,6 +50,8 @@ ws.onmessage = (e) => {
 
 		case "show_prompt":
 			status.textContent = message.text;
+            show(nameLabel);
+            nameLabel.textContent = "Enter your answer";
             show(getInputType(message.inputType));
             show(sendBtn);
 			break;

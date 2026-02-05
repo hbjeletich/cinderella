@@ -15,4 +15,5 @@ MonoBehaviour:
   id: EXP_04
   type: 0
   promptText: Who is their one true ally?
+  necessity: 0
   storyElement: only_friend

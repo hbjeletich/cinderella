@@ -1,13 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 public class PromptManager : MonoBehaviour
 {
-
     [Header("Prompt Arrays")]
     public ExpositionPrompt[] expositionPrompts;
     public RisingActionPrompt[] risingActionPrompts;
@@ -20,152 +16,107 @@ public class PromptManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        LoadPrompts();
     }
 
-    public Prompt GetRandomPrompt(PromptType type)
+    public T GetRandomPrompt<T>(PromptType type) where T : Prompt
     {
-        switch(type)
+        T[] pool = GetPromptArray<T>(type);
+        if (pool.Length == 0)
+            return null;
+        return pool[Random.Range(0, pool.Length)];
+    }
+
+    public T[] GetMultipleRandomPrompts<T>(PromptType type, int count) where T : Prompt
+    {
+        switch (type)
         {
             case PromptType.Exposition:
-                return expositionPrompts[Random.Range(0, expositionPrompts.Length)];
-
+                return GetExpositionPrompts(
+                    count,
+                    expositionPrompts) as T[];
             case PromptType.RisingAction:
-                return risingActionPrompts[Random.Range(0, risingActionPrompts.Length)];
-
+                return GetRandomFromArray(count, risingActionPrompts) as T[];
             case PromptType.Climax:
-                return climaxPrompts[Random.Range(0, climaxPrompts.Length)];
-
+                return GetRandomFromArray(count, climaxPrompts) as T[];
             case PromptType.Resolution:
-                return resolutionPrompts[Random.Range(0, resolutionPrompts.Length)];
+                return GetRandomFromArray(count, resolutionPrompts) as T[];
         }
 
-        return null;
+        Debug.LogError("PromptManager: Unknown PromptType!");
+        return System.Array.Empty<T>();
     }
 
-    public Prompt[] GetMultipleRandomPrompts(PromptType type, int num)
+    private static T[] GetRandomFromArray<T>(int count, T[] source) where T : Prompt
     {
-        switch(type)
+        if (source == null || source.Length == 0 || count <= 0)
+            return System.Array.Empty<T>();
+
+        List<T> pool = source.ToList();
+        List<T> result = new List<T>();
+
+        count = Mathf.Clamp(count, 0, pool.Count);
+
+        for (int i = 0; i < count; i++)
+        {
+            int index = Random.Range(0, pool.Count);
+            result.Add(pool[index]);
+            pool.RemoveAt(index);
+        }
+
+        return result.ToArray();
+    }
+
+    private static ExpositionPrompt[] GetExpositionPrompts(int count, ExpositionPrompt[] source)
+    {
+        if (source == null || source.Length == 0)
+            return System.Array.Empty<ExpositionPrompt>();
+
+        List<ExpositionPrompt> necessary = source.Where(p => p.necessity).ToList();
+        List<ExpositionPrompt> optional = source.Where(p => !p.necessity).ToList();
+
+        int remaining = Mathf.Max(0, count - necessary.Count);
+
+        ExpositionPrompt[] randomOptional = GetRandomFromArray(remaining, optional.ToArray());
+
+        return necessary.Concat(randomOptional).Take(count).ToArray();
+    }
+
+    private T[] GetPromptArray<T>(PromptType type) where T : Prompt
+    {
+        switch (type)
         {
             case PromptType.Exposition:
-                return IncludeNecessaryPrompts(num, expositionPrompts);
+                return expositionPrompts as T[];
 
             case PromptType.RisingAction:
-                return GetMultipleRandomPromptsFromArray(num, risingActionPrompts);
+                return risingActionPrompts as T[];
 
             case PromptType.Climax:
-                return GetMultipleRandomPromptsFromArray(num, climaxPrompts);
+                return climaxPrompts as T[];
 
             case PromptType.Resolution:
-                return GetMultipleRandomPromptsFromArray(num, resolutionPrompts);
-        }
+                return resolutionPrompts as T[];
 
-        return null;
+            default:
+                return System.Array.Empty<T>();
+        }
     }
 
-    private Prompt[] GetMultipleRandomPromptsFromArray(int x, Prompt[] prompts)
+    public void LoadPrompts()
     {
-        // cast to list because they're easier to modify
-        List<Prompt> promptList = prompts.ToList();
-        List<Prompt> selectedPrompts = new List<Prompt>();
+        expositionPrompts = Resources.LoadAll<ExpositionPrompt>("Scriptables/Prompts/EXP");
+        risingActionPrompts = Resources.LoadAll<RisingActionPrompt>("Scriptables/Prompts/RA");
+        climaxPrompts = Resources.LoadAll<ClimaxPrompt>("Scriptables/Prompts/CLX");
+        resolutionPrompts = Resources.LoadAll<ResolutionPrompt>("Scriptables/Prompts/RES");
 
-        Debug.Log($"PromptManager: Need {x} prompts in array");
-
-        x = Mathf.Clamp(x, 0, promptList.Count());
-
-        if(x == promptList.Count())
-        {
-            selectedPrompts = promptList;
-        } else
-        {
-            while(x > 0)
-            {
-                // add random prompt to array
-                int newIndex = Random.Range(0, promptList.Count());
-                selectedPrompts.Add(promptList[newIndex]);
-                promptList.RemoveAt(newIndex);
-            }
-        }
-
-        Debug.Log($"PromptManager: Returning {selectedPrompts.Count()} items in array.");
-        return selectedPrompts.ToArray();
+        Debug.Log("PromptManager: Prompts loaded successfully.");
     }
-
-    private Prompt[] IncludeNecessaryPrompts(int num, Prompt[] prompts)
-    {
-        List<Prompt> necessaryPrompts = new List<Prompt>();
-        List<Prompt> unnecessaryPrompts = new List<Prompt>();
-        ExpositionPrompt[] expositionPrompts = prompts as ExpositionPrompt[];
-
-
-        foreach(ExpositionPrompt p in expositionPrompts)
-        {
-            if(p.necessity)
-            {
-                necessaryPrompts.Add(p);
-            }
-            else
-            {
-                unnecessaryPrompts.Add(p);
-            }
-        }
-
-        Prompt[] additionalPrompts = GetMultipleRandomPromptsFromArray(num - necessaryPrompts.Count(), unnecessaryPrompts.ToArray());
-        additionalPrompts = additionalPrompts.Concat(necessaryPrompts.ToArray()).ToArray();
-
-        return additionalPrompts;
-
-    }
-
-    // public RisingActionPrompt GetRisingActionByRound(int round)
-    // {
-    //     return null;
-    // }
-
-    // under construction!
-    // public Prompt FindPromptByID(string id)
-    // {
-    //     if(id.Contains("EXP"))
-    //     {
-    //         return SearchPromptListByID(id, expositionPrompts);
-    //     }
-
-    //     return null;
-    // }
-
-    // private Prompt SearchPromptListByID(string id, Prompt[] prompts)
-    // {
-    //     foreach(Prompt prompt in prompts)
-    //     {
-    //         if(prompt.id == id)
-    //         {
-    //             return prompt;
-    //         }
-    //     }
-
-    //     return null;
-    // }
-
-#if UNITY_EDITOR
-   [MenuItem("Tools/Load Prompts")]
-    public static void LoadPrompts()
-    {
-        PromptManager manager = FindObjectOfType<PromptManager>();
-        if(manager == null)
-        {
-            Debug.LogError("Cannot find prompt manager!");
-        }
-        
-        manager.expositionPrompts = Resources.LoadAll<ExpositionPrompt>("Scriptables/Prompts/EXP");
-        manager.risingActionPrompts = Resources.LoadAll<RisingActionPrompt>("Scriptables/Prompts/RA");
-        manager.climaxPrompts = Resources.LoadAll<ClimaxPrompt>("Scriptables/Prompts/CLX");
-        manager.resolutionPrompts = Resources.LoadAll<ResolutionPrompt>("Scriptables/Prompts/RES");
-    }
-#endif
 }

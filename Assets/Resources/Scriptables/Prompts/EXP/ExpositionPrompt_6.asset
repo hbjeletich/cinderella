@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af6b71ed2b8fc4175864645e3e90b45c, type: 3}
-  m_Name: ExpositionPrompt_5
+  m_Name: ExpositionPrompt_6
   m_EditorClassIdentifier: Assembly-CSharp::ExpositionPrompt
-  id: EXP_05
+  id: EXP_06
   type: 0
-  promptText: Where is the big event held?
+  promptText: What magical item does the protagonist leave behind?
   necessity: 0
-  storyElement: event_location
+  storyElement: transformation_item

@@ -15,4 +15,5 @@ MonoBehaviour:
   id: EXP_03
   type: 0
   promptText: What chore or cruelty do they endure?
+  necessity: 0
   storyElement: abuse

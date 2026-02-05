@@ -15,4 +15,5 @@ MonoBehaviour:
   id: EXP_01
   type: 0
   promptText: What is our hero's name?
+  necessity: 1
   storyElement: protagonist_name

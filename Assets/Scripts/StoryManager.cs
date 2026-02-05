@@ -39,7 +39,7 @@ public class StoryManager : MonoBehaviour
 
     private void RollClimax()
     {
-        chosenClimax = PromptManager.Instance.GetRandomPrompt(PromptType.Climax) as ClimaxPrompt;
+        chosenClimax = PromptManager.Instance.GetRandomPrompt<ClimaxPrompt>(PromptType.Climax);
     }
 
     public void StartRound(int round)

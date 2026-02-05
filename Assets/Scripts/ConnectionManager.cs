@@ -137,6 +137,7 @@ public class ConnectionManager : MonoBehaviour
             type = "start_game"
         };
         SentToAll(JsonUtility.ToJson(message));
+        GameManager.Instance.StartGame();
     }
 
     #endregion

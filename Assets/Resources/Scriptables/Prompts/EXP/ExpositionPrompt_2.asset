@@ -15,4 +15,5 @@ MonoBehaviour:
   id: EXP_02
   type: 0
   promptText: Who makes their life miserable?
+  necessity: 1
   storyElement: antagonist

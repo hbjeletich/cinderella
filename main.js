@@ -86,6 +86,8 @@ sendBtn.addEventListener('click', () => {
 	
 	status.textContent = 'Thanks!';
     textInput.value = '';  
+	hide(textInput);
+	hide(textLabel);
 });
 
 startBtn.addEventListener('click', () => {

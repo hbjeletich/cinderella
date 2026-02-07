@@ -8,14 +8,8 @@ public class Player : MonoBehaviour
     public int score;
     public bool hasSubmittedThisRound = false;
     
-    void Start()
+    public void SetReady(bool ready)
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        hasSubmittedThisRound = ready;
     }
 }

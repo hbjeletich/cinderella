@@ -1,13 +1,15 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 public class RoundManager : MonoBehaviour
 {
     private Dictionary<Player, string> submissions = new Dictionary<Player, string>();
-    private List<Player> shuffledPlayers = new List<Player>();
     private List<Reaction> reactions = new List<Reaction>();
-    private int submissionIndex = 0;
+
+    public event Action OnAllPromptsSubmitted;
+    public event Action OnAllReactionsSubmitted;
     public static RoundManager Instance { get; private set; }
 
     private void Awake()
@@ -28,8 +30,7 @@ public class RoundManager : MonoBehaviour
         PlayerManager.Instance.ResetPlayerReady();
 
         submissions.Clear();
-        shuffledPlayers.Clear();
-        submissionIndex = 0;
+        reactions.Clear();
     }
 
     public void StartRound(int round)
@@ -42,20 +43,22 @@ public class RoundManager : MonoBehaviour
             StartExpositionRound();
         }
 
-        else if (round > 1 && round <= 3)
+        else if (round > 1 && round <= 4)
         {
             Debug.Log($"RoundManager: Starting rising action round {round - 1}.");
-            //StartRisingActionRound(round-1);
+            StartRisingActionRound(round-1);
         }
 
-        else if (round == 4)
+        else if (round == 5)
         {
             Debug.Log("RoundManager: Starting climax round.");
+            StartClimaxRound();
         }
 
-        else
+        else if (round == 6)
         {
             Debug.Log("RoundManager: Starting resolution round.");
+            StartResolutionRound();
         }
     }
 
@@ -67,20 +70,39 @@ public class RoundManager : MonoBehaviour
 
     public void StartExpositionRound()
     {
+        Debug.Log("RoundManager: Starting exposition round!");
+
         int playerCount = PlayerManager.Instance.GetPlayerCount();
         List<ExpositionPrompt> expositionPrompts = PromptManager.Instance.GetMultipleRandomPrompts<ExpositionPrompt>(PromptType.Exposition, playerCount);
 
         if(expositionPrompts == null || expositionPrompts.Count() == 0)
         {
             Debug.Log("RoundManager: Exposition prompts list is null or empty!");
+            return;
         }
         // assign prompts to players randomly!
         foreach(Player p in PlayerManager.Instance.players)
         {
-            int newIndex = Random.Range(0, expositionPrompts.Count());
+            int newIndex = UnityEngine.Random.Range(0, expositionPrompts.Count());
             SendPromptToPlayer(p, expositionPrompts[newIndex]);
             expositionPrompts.RemoveAt(newIndex);
         }
+    }
+
+    public void StartRisingActionRound(int round)
+    {
+        // rising action
+        Debug.Log("RoundManager: Starting rising action round!");
+    }
+
+    public void StartClimaxRound()
+    {
+        Debug.Log("RoundManager: Starting climax round!");
+    }
+
+    public void StartResolutionRound()
+    {
+        Debug.Log("RoundManager: Starting resolution round!");
     }
 
     public void SendPromptToPlayer(Player player, Prompt prompt)
@@ -94,13 +116,16 @@ public class RoundManager : MonoBehaviour
         ConnectionManager.Instance.SendToPlayer(player, JsonUtility.ToJson(message));
     }
 
-    public void SendReactionScreen(Player answeredPlayer, string answer)
+    public void SendReactPromptsToAllPlayers(Player answeredPlayer)
     {
+        PlayerManager.Instance.ResetPlayerReady();
+        answeredPlayer.SetReady(true);
+
         foreach(Player p in PlayerManager.Instance.players)
         {
             var message = new ShowAnswersMessage{
                 type = "show_answer",
-                text = answer,
+                text = submissions[answeredPlayer],
                 myPrompt = (p == answeredPlayer)
             };
 
@@ -108,28 +133,23 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    public void HandlePromptSubmission(SubmitMessage message, string id)
+    public void HandlePromptSubmission(SubmitMessage message, Player player)
     {
-        PlayerManager.Instance.SetPlayerReady(id);
-
-        Player player = PlayerManager.Instance.GetPlayer(id);
+        player.SetReady(true);
         submissions.Add(player, message.text);
-        Debug.Log($"RoundManager: Player {player} submitted {message.text}");
+        Debug.Log($"RoundManager: Player {player.playerName} submitted {message.text}");
 
         if(PlayerManager.Instance.ArePlayersReady())
         {
-            Debug.Log("All players ready!");
+            Debug.Log("RoundManager: All players ready!");
 
-            PlayerManager.Instance.ResetPlayerReady();
-            shuffledPlayers = submissions.Keys.ToList();
-            ShuffleList(shuffledPlayers);
-            NextPlayerAnswer();
+            OnAllPromptsSubmitted?.Invoke();
         }
     }
 
-    public void HandleReactSubmission(SubmitMessage message, string id)
+    public void HandleReactSubmission(SubmitMessage message, Player player)
     {
-        PlayerManager.Instance.SetPlayerReady(id);
+        player.SetReady(true);
 
         Reaction react = new Reaction{
             reactionName = message.text
@@ -138,45 +158,12 @@ public class RoundManager : MonoBehaviour
         react.reactionType = react.StringToType(react.reactionName);
         reactions.Add(react);
 
+        Debug.Log($"RoundManager: Player {player.playerName} reacted with {message.text}");
+
         if(PlayerManager.Instance.ArePlayersReady())
         {
-            Debug.Log("All players ready!");
-            NextPlayerAnswer();
-        }
-    }
-
-    public void NextPlayerAnswer()
-    {
-        if(submissionIndex >= PlayerManager.Instance.GetPlayerCount())
-        {
-            EndRound();
-        }
-        else
-        {
-            // show submission
-            Player p = shuffledPlayers[submissionIndex];
-            p.hasSubmittedThisRound = true;
-            string answer = submissions[p];
-            Debug.Log($"RoundManager: Showing {p.playerName}'s answer: {answer}");
-
-            // send
-            SendReactionScreen(p, answer);
-
-            // iterate and wait for call from connection manager!
-            submissionIndex += 1;
-        }
-    }
-
-    // Fisher-Yates Shuffle Extension Method
-    public static void ShuffleList<T>(IList<T> list)
-    {
-        int count = list.Count;
-        for (int i = 0; i < count - 1; i++)
-        {
-            int r = Random.Range(i, count);
-            T tmp = list[i];
-            list[i] = list[r];
-            list[r] = tmp;
+            Debug.Log("RoundManager: All reactions received!");
+            OnAllReactionsSubmitted?.Invoke();        
         }
     }
 
@@ -193,5 +180,10 @@ public class RoundManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public Dictionary<Player, string> GetSubmissions()
+    {
+        return new Dictionary<Player, string>(submissions);
     }
 }

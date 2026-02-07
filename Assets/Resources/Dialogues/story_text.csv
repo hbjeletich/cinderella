@@ -1,0 +1,11 @@
+key,text,context
+exposition_intro,"""Welcome. You will be making a version of Cinderella. Let's start with the Exposition. You will each be getting different parts of the setting.""",Shown at start of exposition round
+round_2_intro,"""Now that we know our setting, let's see what happens next. Time for some rising action!""",Shown at start of round 2
+round_3_intro,"""The plot thickens! Another rising action round.""",Shown at start of round 3
+round_4_intro,"""Things are getting more complicated...""",Shown at start of round 4
+climax_intro,"""It's time for the climax! This is where everything comes to a head.""",Shown at start of climax round
+resolution_intro,"""And now, how does our story end?",Show at start of resolution
+reactions_prompt,"""React to this answer!""",Shown during reaction phase
+waiting_for_players,"""Waiting for other players to submit...""",Shown while waiting
+all_players_ready,"""Everyone's ready! Let's see what you came up with.""",Shown when all submissions are in
+game_over,"""Thanks for playing! Here's how the story turned out.""",Shown at end of game

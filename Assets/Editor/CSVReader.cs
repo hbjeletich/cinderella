@@ -40,7 +40,7 @@ public static class CSVReader
 
         for(int i = 1; i <= csvLines.Length - 1; i++)
         {
-            string[] row = ParseCSVLine(csvLines[i]);
+            string[] row = CSVUtils.ParseCSVLine(csvLines[i]);
             switch(promptType)
             {
                 // which type of scriptable are we making?
@@ -196,36 +196,4 @@ public static class CSVReader
         Debug.Log(filePath);
         AssetDatabase.CreateAsset(prompt, filePath);
     }
-
-    public static string[] ParseCSVLine(string line)
-    {
-        List<string> fields = new List<string>();
-        bool inQuotes = false;
-        string currentField = "";
-        
-        for (int i = 0; i < line.Length; i++)
-        {
-            char c = line[i];
-            
-            if (c == '"')
-            {
-                inQuotes = !inQuotes;
-                continue;
-            }
-            else if (c == ',' && !inQuotes)
-            {
-                fields.Add(currentField.Trim('"'));
-                currentField = "";
-            }
-            else
-            {
-                currentField += c;
-            }
-        }
-        
-        fields.Add(currentField.Trim('"'));
-        
-        return fields.ToArray();
-    }
-    
 }

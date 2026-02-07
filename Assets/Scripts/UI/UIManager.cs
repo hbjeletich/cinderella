@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,8 +11,8 @@ public class UIManager : MonoBehaviour
     public PlayerIcon[] playerIcons;
     private int currentPlayerIconIndex = 0;
 
-    [Header("Canvas Prefabs")]
-    private Canvas lobbyCanvas;
+    private LobbyUI lobbyUI;
+    private GameUI gameUI;
 
     public static UIManager Instance { get; private set; }
 
@@ -31,6 +33,40 @@ public class UIManager : MonoBehaviour
     {
         PlayerManager.Instance.OnPlayerCreated += OnPlayerCreated;
         GameManager.Instance.OnSceneChanged += OnSceneChanged;
+    }
+
+    public void ShowNarrative(string text, Action onComplete)
+    {
+        if(gameUI != null)
+        {
+            gameUI.ShowNarrative(text, onComplete);
+        }
+        else
+        {
+            Debug.LogWarning("UIManager: GameUI not found for ShowNarrative");
+            onComplete?.Invoke(); // in case we cant find it game moves forward!
+        }
+    }
+
+    public void ShowSubmission(Player player, string answer, Action onComplete)
+    {
+        if(gameUI != null)
+        {
+            gameUI.ShowSubmission(player, answer, onComplete);
+        }
+        else
+        {
+            gameUI = FindObjectOfType<GameUI>();
+            if(gameUI == null)
+            {
+                Debug.LogWarning("UIManager: GameUI not found for ShowSubmission");
+                onComplete?.Invoke(); // in case we cant find it game moves forward!
+            } 
+            else
+            {
+                gameUI.ShowSubmission(player, answer, onComplete);
+            }
+        }
     }
 
     private void OnPlayerCreated(Player player)
@@ -59,12 +95,35 @@ public class UIManager : MonoBehaviour
             case("Game"):
                 InitGameScene();
                 break;
+            case("Lobby"):
+                InitLobbyScene();
+                break;
         }
     }
 
     private void InitGameScene()
     {
-        // Find game UI manager
+        // wait a few seconds 
+        StartCoroutine(InitGameSceneCoroutine());
+    }
+
+    private void InitLobbyScene()
+    {
+        lobbyUI = FindObjectOfType<LobbyUI>();
+        gameUI = null;
+    }
+
+    private IEnumerator InitGameSceneCoroutine()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        lobbyUI = null;
+        gameUI = FindObjectOfType<GameUI>();
+        
+        if (gameUI == null)
+        {
+            Debug.LogError("UIManager: Could not find GameUI!");
+        }
     }
 
 }

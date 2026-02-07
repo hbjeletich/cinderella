@@ -26,25 +26,51 @@ public class StoryManager : MonoBehaviour
 
     public void OnGameStateChanged(GameState newState, GameState lastState)
     {
-        switch(lastState)
+        if (lastState == GameState.Lobby && newState == GameState.Talking)
         {
-            case(GameState.Lobby):
-                RollClimax();
-                roundNumber = 1;
-                break;
-            case(lastState.Talking):
-                StartRound();
+            RollClimax();
+            roundNumber = 1;
+            StartRound(roundNumber);
         }
     }
 
     private void RollClimax()
     {
         chosenClimax = PromptManager.Instance.GetRandomPrompt<ClimaxPrompt>(PromptType.Climax);
+        Debug.Log($"StoryManager: Climax chosen: {chosenClimax.promptText}");
     }
 
     public void StartRound(int round)
     {
-        // when a round starts, alert the round manager to start a new round and give it the number
-        RoundManager.Instance.StartRound(round);
+        // when a round starts, alert the game manager to start a new round and give it the number
+        GameManager.Instance.StartRound(round);
+    }
+
+    public void OnRoundComplete()
+    {
+        roundNumber++;
+
+        if(roundNumber > 6)
+        {
+            EndGame();
+        }
+        else
+        {
+            StartRound(roundNumber);
+        }
+    }
+
+    private void EndGame()
+    {
+        Debug.Log("StoryManager: Game complete!");
+        GameManager.Instance.SetGameState(GameState.Ended);
+
+        string endText = DialogueManager.Instance.GetDialogue("game_over");
+
+        // probs move this to game manager?
+        // UIManager.Instance.ShowNarrative(endText, onComplete: () =>
+        // {
+        //     // show scores, return to lobby? i'll do this later
+        // });
     }
 }

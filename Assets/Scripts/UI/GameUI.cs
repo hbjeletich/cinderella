@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class GameUI : MonoBehaviour
@@ -18,6 +19,12 @@ public class GameUI : MonoBehaviour
     public void ShowSubmission(Player player, string answer, Action onComplete)
     {
         StartCoroutine(ShowSubmissionCoroutine(player, answer, onComplete));
+    }
+
+    public void ShowOptions(Player player, List<string> answers, Action onComplete)
+    {
+        answers.Insert(0, $"{player.playerName}'s Rising Action:");
+        StartCoroutine(ShowOptionsCoroutine(answers, onComplete));
     }
 
     private IEnumerator ShowNarrativeCoroutine(string text, Action onComplete)
@@ -49,6 +56,23 @@ public class GameUI : MonoBehaviour
         float displayTime = CalculateDisplayTime(answer);
         yield return new WaitForSeconds(displayTime);
 
+        onComplete?.Invoke();
+    }
+
+    private IEnumerator ShowOptionsCoroutine(List<string> answers, Action onComplete)
+    {
+        foreach(string ans in answers)
+        {
+            if(string.IsNullOrWhiteSpace(ans))
+                continue;
+
+            ChangeText(ans);
+
+            float displayTime = CalculateDisplayTime(ans);
+            yield return new WaitForSeconds(displayTime);
+        }
+
+        canvasText.text = "";
         onComplete?.Invoke();
     }
 

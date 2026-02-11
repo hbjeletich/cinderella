@@ -124,6 +124,8 @@ public class RoundManager : MonoBehaviour
 
     public void SendPromptToPlayer(Player player, Prompt prompt, string[] options = null)
     {
+        player.SetLastPrompt(prompt);
+
         var message = new ShowPromptMessage{
             type = "show_prompt",
             text = prompt.promptText,
@@ -162,6 +164,23 @@ public class RoundManager : MonoBehaviour
             var message = new ShowAnswersMessage{
                 type = "show_answer",
                 text = submissions[answeredPlayer],
+                myPrompt = (p == answeredPlayer)
+            };
+
+            ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
+        }
+    }
+
+    public void SendVotePromptsToAllPlayers(Player answeredPlayer, List<string> options)
+    {
+        PlayerManager.Instance.ResetPlayerReady();
+        answeredPlayer.SetReady(true);
+
+        foreach(Player p in PlayerManager.Instance.players)
+        {
+            var message = new ShowAnswerChoicesMessage{
+                type = "show_choices",
+                text = string.Join("|", options),
                 myPrompt = (p == answeredPlayer)
             };
 

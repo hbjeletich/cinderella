@@ -11,7 +11,7 @@ public enum GameState
     Talking, // players should just be listening
     Prompting, // players submitting prompts
     Reacting, // players should be reacting
-    // voting?
+    Voting,
     
     Ended
 }
@@ -177,15 +177,23 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameManager: All prompts submitted, starting reaction phase");
         
         currentSubmissions = RoundManager.Instance.GetSubmissions();
+        int currentRound = StoryManager.Instance.RoundNumber;
         
         shuffledPlayers = currentSubmissions.Keys.ToList();
         ShuffleList(shuffledPlayers);
         
         currentSubmissionIndex = 0;
         
-        SetGameState(GameState.Reacting);
-        
-        ShowNextSubmission();
+        if(currentRound == 1)
+        {
+            SetGameState(GameState.Reacting);
+            ShowNextSubmission();
+        }
+        else
+        {
+            SetGameState(GameState.Voting);
+            ShowNextVoting();
+        }
     }
 
     private void HandleAllReactionsSubmitted()
@@ -213,6 +221,32 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.ShowSubmission(currentPlayer, submission, onComplete: () => {
             RoundManager.Instance.SendReactPromptsToAllPlayers(currentPlayer);
         });
+    }
+
+    private void ShowNextVoting()
+    {
+        if (currentSubmissionIndex >= shuffledPlayers.Count)
+        {
+            EndRound();
+            return;
+        }
+        
+        Player currentPlayer = shuffledPlayers[currentSubmissionIndex];
+        string submission = currentSubmissions[currentPlayer];
+        RisingActionPrompt prompt = currentPlayer.GetLastPrompt() as RisingActionPrompt;
+        if(prompt != null)
+        {
+            Debug.Log($"GameManager: Got last Rising Action Prompt from {currentPlayer.playerName}");
+            List<string> options = prompt.options.ToList();
+            options.Add(submission);
+            ShuffleList<string>(options);
+
+            Debug.Log($"GameManager: Showing submission from {currentPlayer.playerName}");
+        
+            UIManager.Instance.ShowOptions(currentPlayer, options, onComplete: () => {
+                RoundManager.Instance.SendVotePromptsToAllPlayers(currentPlayer, options);
+            });
+        }
     }
 
     private void EndRound()

@@ -4,6 +4,7 @@ public class StoryManager : MonoBehaviour
 {
     private ClimaxPrompt chosenClimax;
     private int roundNumber = 0;
+    public int RoundNumber => roundNumber;
     public static StoryManager Instance { get; private set; }
 
     private void Awake()

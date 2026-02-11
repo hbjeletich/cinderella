@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
 public class UIManager : MonoBehaviour
@@ -65,6 +66,30 @@ public class UIManager : MonoBehaviour
             else
             {
                 gameUI.ShowSubmission(player, answer, onComplete);
+            }
+        }
+    }
+
+    public void ShowOptions(Player player, List<string> answers, Action onComplete)
+    {
+        if(gameUI != null)
+        {
+            foreach(string ans in answers)
+            {
+                gameUI.ShowOptions(player, answers, onComplete);
+            }
+        }
+        else
+        {
+            gameUI = FindObjectOfType<GameUI>();
+            if(gameUI == null)
+            {
+                Debug.LogWarning("UIManager: GameUI not found for ShowSubmission");
+                onComplete?.Invoke(); // in case we cant find it game moves forward!
+            } 
+            else
+            {
+                gameUI.ShowOptions(player, answers, onComplete);
             }
         }
     }

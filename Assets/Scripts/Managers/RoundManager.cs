@@ -93,6 +93,23 @@ public class RoundManager : MonoBehaviour
     {
         // rising action
         Debug.Log("RoundManager: Starting rising action round!");
+
+        int playerCount = PlayerManager.Instance.GetPlayerCount();
+        List<RisingActionPrompt> risingActionPrompts = PromptManager.Instance.GetMultipleRandomPrompts<RisingActionPrompt>(PromptType.RisingAction, playerCount);
+
+        if(risingActionPrompts == null || risingActionPrompts.Count() == 0)
+        {
+            Debug.Log("RoundManager: Rising Action prompts list is null or empty!");
+            return;
+        }
+
+        // assign prompts to players randomly!
+        foreach(Player p in PlayerManager.Instance.players)
+        {
+            int newIndex = UnityEngine.Random.Range(0, risingActionPrompts.Count());
+            SendPromptToPlayer(p, risingActionPrompts[newIndex]);
+            risingActionPrompts.RemoveAt(newIndex);
+        }
     }
 
     public void StartClimaxRound()
@@ -105,7 +122,7 @@ public class RoundManager : MonoBehaviour
         Debug.Log("RoundManager: Starting resolution round!");
     }
 
-    public void SendPromptToPlayer(Player player, Prompt prompt)
+    public void SendPromptToPlayer(Player player, Prompt prompt, string[] options = null)
     {
         var message = new ShowPromptMessage{
             type = "show_prompt",
@@ -114,6 +131,25 @@ public class RoundManager : MonoBehaviour
         };
 
         ConnectionManager.Instance.SendToPlayer(player, JsonUtility.ToJson(message));
+    }
+
+    public void SendOptionsToAllPlayers(Player answeredPlayer, string[] arr)
+    {
+        PlayerManager.Instance.ResetPlayerReady();
+        answeredPlayer.SetReady(true);
+
+        string answers = string.Join("|", arr);
+
+        foreach(Player p in PlayerManager.Instance.players)
+        {
+            var message = new ShowAnswersMessage{
+                type = "show_choices",
+                text = answers,
+                myPrompt = (p == answeredPlayer)
+            };
+
+            ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
+        }
     }
 
     public void SendReactPromptsToAllPlayers(Player answeredPlayer)
@@ -164,6 +200,20 @@ public class RoundManager : MonoBehaviour
         {
             Debug.Log("RoundManager: All reactions received!");
             OnAllReactionsSubmitted?.Invoke();        
+        }
+    }
+
+    public void HandleChoiceSubmission(SubmitMessage message, Player player)
+    {
+        player.SetReady(true);
+        submissions.Add(player, message.text);
+        Debug.Log($"RoundManager: Player {player.playerName} submitted {message.text}");
+
+        if(PlayerManager.Instance.ArePlayersReady())
+        {
+            Debug.Log("RoundManager: All players ready!");
+
+            // OnAllPromptsSubmitted?.Invoke();
         }
     }
 

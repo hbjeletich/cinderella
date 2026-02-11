@@ -39,6 +39,13 @@ public class ShowPromptMessage
     public string text;
     public string inputType;
 }
+public class ShowPromptMessageWithOptions
+{
+    // Server to Client : Here is your prompt!
+    public string type = "show_prompt";
+    public string text;
+    public string inputType;
+}
 
 [System.Serializable]
 public class SubmitMessage
@@ -60,6 +67,15 @@ public class ShowAnswersMessage
 {
     // Server to Client : React to Prompt!
     public string type = "show_answer";
+    public string text;
+    public bool myPrompt = false;
+}
+
+[System.Serializable]
+public class ShowAnswerChoicesMessage
+{
+    // Server to Client : See the answers!
+    public string type = "show_choices";
     public string text;
     public bool myPrompt = false;
 }

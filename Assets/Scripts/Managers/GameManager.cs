@@ -166,6 +166,12 @@ public class GameManager : MonoBehaviour
         RoundManager.Instance.HandleReactSubmission(message, player);
     }
 
+    public void HandleChoiceSubmission(SubmitMessage message, string id)
+    {
+        Player player = PlayerManager.Instance.GetPlayer(id);
+        RoundManager.Instance.HandleChoiceSubmission(message, player);
+    }
+
     private void HandleAllPromptsSubmitted()
     {
         Debug.Log("GameManager: All prompts submitted, starting reaction phase");

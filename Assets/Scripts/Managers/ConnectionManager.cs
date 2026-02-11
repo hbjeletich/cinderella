@@ -79,6 +79,9 @@ public class ConnectionManager : MonoBehaviour
             case "send_react":
                 HandleSubmitReactionMessage(message, clientID);
                 break;
+            case "send_choice":
+                HandleSubmitChoiceMessage(message, clientID);
+                break;
         }
     }
 
@@ -149,16 +152,19 @@ public class ConnectionManager : MonoBehaviour
     private void HandleSubmitPromptMessage(string rawMessage, string id)
     {
         var message = JsonUtility.FromJson<SubmitMessage>(rawMessage);
-        // CHANGE -- i want connection manager to only go to game manager
-        //RoundManager.Instance.HandlePromptSubmission(message, id);
         GameManager.Instance.HandlePromptSubmission(message,id);
     }
 
     private void HandleSubmitReactionMessage(string rawMessage, string id)
     {
         var message = JsonUtility.FromJson<SubmitMessage>(rawMessage);
-        //RoundManager.Instance.HandleReactSubmission(message, id);
         GameManager.Instance.HandleReactSubmission(message,id);
+    }
+
+    private void HandleSubmitChoiceMessage(string rawMessage, string id)
+    {
+        var message = JsonUtility.FromJson<SubmitMessage>(rawMessage);
+        GameManager.Instance.HandleChoiceSubmission(message,id);
     }
 
     #endregion

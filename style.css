@@ -122,3 +122,27 @@ button:disabled {
 	background: #F4E04D;
 	transform: scale(0.95);
 }
+
+#choiceContainer {
+	margin-top: 20px;
+}
+
+#choiceGrid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 12px;
+	max-width: 400px;
+}
+
+.choice-btn {
+	width: 100%;
+	max-width: none;
+	padding: 16px 20px;
+	margin: 0;
+	font-size: 1.125rem;
+	text-align: left;
+	background: #5EB1BF;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+}

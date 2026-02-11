@@ -27,4 +27,5 @@ export function hideAllInputTypes(){
     hide($("textInput"));
     hide($("label"));
     hide($("sendBtn"));
+    hide($("choiceContainer"));
 }

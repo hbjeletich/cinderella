@@ -8,6 +8,8 @@ const startBtn = $('startBtn');
 const title = $('title');
 const textLabel = $('label');
 const reactContainer = $('reactContainer');
+const choiceContainer = $('choiceContainer');
+const choiceGrid = $('choiceGrid');
 
 ws.onopen = () => {
 	console.log("WS connected");
@@ -73,7 +75,37 @@ ws.onmessage = (e) => {
 			status.textContent = message.text;
 			show(reactContainer);
 			break;
+		case "show_choices":
+			sendType = "send_choice";
+			hideAllInputTypes();
+			hide(reactContainer);
+			show(status);
 			
+			if (message.myPrompt) {
+				status.textContent = "This is your answer... don't second guess it...";
+				break;
+			}
+			
+			status.textContent = "Choose an answer carefully!";
+			// parse choices and create buttons
+			const choices = message.text.split('|');
+			choiceGrid.innerHTML = ''; // clear previous choices
+			
+			choices.forEach(choice => {
+				const btn = document.createElement('button');
+				btn.className = 'choice-btn';
+				btn.textContent = choice.trim();
+				btn.addEventListener('click', () => {
+					sendJSON(ws, { type: sendType, text: choice.trim() });
+					hide(choiceContainer);
+					show(status);
+					status.textContent = 'Thanks!';
+				});
+				choiceGrid.appendChild(btn);
+			});
+			
+			show(choiceContainer);
+			break;
 	}
 };
 

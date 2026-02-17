@@ -120,6 +120,7 @@ sendBtn.addEventListener('click', () => {
     textInput.value = '';  
 	hide(textInput);
 	hide(textLabel);
+	hide(sendBtn);
 });
 
 startBtn.addEventListener('click', () => {

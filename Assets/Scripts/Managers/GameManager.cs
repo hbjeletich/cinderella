@@ -217,16 +217,17 @@ public class GameManager : MonoBehaviour
 
     private void HandleAllVotesSubmitted()
     {
-        Debug.Log("GameManager: All votes submitted, revealing choice");
-        
-        string winningChoice = RoundManager.Instance.GetWinningChoice();
-        
-        Player currentPlayer = shuffledPlayers[currentSubmissionIndex];
         SetGameState(GameState.Reacting);
         
+        Player currentPlayer = shuffledPlayers[currentSubmissionIndex];
+        string promptText = currentPlayer.GetLastPrompt()?.promptText;
+        string winningChoice = RoundManager.Instance.GetWinningChoice();
+
+        Debug.Log($"GameManager: All votes submitted, revealing choice. Winning choice: {winningChoice}");
+
         UIManager.Instance.ShowSubmission(currentPlayer, winningChoice, onComplete: () => {
             RoundManager.Instance.SendReactPromptsToAllPlayers(currentPlayer, winningChoice);
-        });
+        }, promptText: promptText);
     }
 
     private void ShowNextSubmission()
@@ -239,18 +240,19 @@ public class GameManager : MonoBehaviour
         
         Player currentPlayer = shuffledPlayers[currentSubmissionIndex];
         string submission = currentSubmissions[currentPlayer];
+        string promptText = currentPlayer.GetLastPrompt()?.promptText;
         
         Debug.Log($"GameManager: Showing submission from {currentPlayer.playerName}");
-        
+
         UIManager.Instance.ShowSubmission(currentPlayer, submission, onComplete: () => {
             RoundManager.Instance.SendReactPromptsToAllPlayers(currentPlayer, submission);
-        });
+        }, promptText: promptText);
     }
 
     private void ShowNextVoting()
     {
         RoundManager.Instance.ClearPerPlayerState();
-        
+
         if (currentSubmissionIndex >= shuffledPlayers.Count)
         {
             EndRound();

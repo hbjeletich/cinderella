@@ -16,9 +16,9 @@ public class GameUI : MonoBehaviour
         StartCoroutine(ShowNarrativeCoroutine(text, onComplete));
     }
 
-    public void ShowSubmission(Player player, string answer, Action onComplete)
+    public void ShowSubmission(Player player, string answer, Action onComplete, string promptText = null)
     {
-        StartCoroutine(ShowSubmissionCoroutine(player, answer, onComplete));
+        StartCoroutine(ShowSubmissionCoroutine(player, answer, onComplete, promptText));
     }
 
     public void ShowOptions(Player player, List<string> answers, Action onComplete)
@@ -29,9 +29,6 @@ public class GameUI : MonoBehaviour
 
     private IEnumerator ShowNarrativeCoroutine(string text, Action onComplete)
     {
-        // delay for the first text to show
-        yield return new WaitForSeconds(CalculateDisplayTime(canvasText.text));
-        
         // split into sentences
         string[] separators = new string[] { ". " };
         string[] sentences = text.Split(separators, StringSplitOptions.None);
@@ -51,19 +48,26 @@ public class GameUI : MonoBehaviour
         onComplete?.Invoke();
     }
 
-    private IEnumerator ShowSubmissionCoroutine(Player player, string answer, Action onComplete)
+    private IEnumerator ShowSubmissionCoroutine(Player player, string answer, Action onComplete, string promptText)
     {
+        if(!string.IsNullOrEmpty(promptText))
+        {
+            ChangeText(promptText);
+            yield return new WaitForSeconds(CalculateDisplayTime(promptText));
+        }
+        
         string displayText = $"{player.playerName}: {answer}";
         ChangeText(displayText);
-
-        float displayTime = CalculateDisplayTime(answer);
-        yield return new WaitForSeconds(displayTime);
-
+        yield return new WaitForSeconds(CalculateDisplayTime(answer));
+        
         onComplete?.Invoke();
     }
 
     private IEnumerator ShowOptionsCoroutine(List<string> answers, Action onComplete)
     {
+        // delay for the first text to show
+        yield return new WaitForSeconds(CalculateDisplayTime(canvasText.text));
+
         foreach(string ans in answers)
         {
             if(string.IsNullOrWhiteSpace(ans))

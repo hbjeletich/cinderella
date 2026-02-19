@@ -49,11 +49,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ShowSubmission(Player player, string answer, Action onComplete)
+    public void ShowSubmission(Player player, string answer, Action onComplete, string promptText = null)
     {
         if(gameUI != null)
         {
-            gameUI.ShowSubmission(player, answer, onComplete);
+            gameUI.ShowSubmission(player, answer, onComplete, promptText);
         }
         else
         {
@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour
             } 
             else
             {
-                gameUI.ShowSubmission(player, answer, onComplete);
+                gameUI.ShowSubmission(player, answer, onComplete, promptText);
             }
         }
     }

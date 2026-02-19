@@ -23,12 +23,15 @@ public class GameUI : MonoBehaviour
 
     public void ShowOptions(Player player, List<string> answers, Action onComplete)
     {
-        answers.Insert(0, $"{player.playerName}'s Rising Action:");
+        canvasText.text = $"{player.playerName}'s Rising Action:";
         StartCoroutine(ShowOptionsCoroutine(answers, onComplete));
     }
 
     private IEnumerator ShowNarrativeCoroutine(string text, Action onComplete)
     {
+        // delay for the first text to show
+        yield return new WaitForSeconds(CalculateDisplayTime(canvasText.text));
+        
         // split into sentences
         string[] separators = new string[] { ". " };
         string[] sentences = text.Split(separators, StringSplitOptions.None);

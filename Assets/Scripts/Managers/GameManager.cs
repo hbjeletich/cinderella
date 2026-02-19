@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
 
         RoundManager.Instance.OnAllPromptsSubmitted += HandleAllPromptsSubmitted;
         RoundManager.Instance.OnAllReactionsSubmitted += HandleAllReactionsSubmitted;
+        RoundManager.Instance.OnAllVotesSubmitted += HandleAllVotesSubmitted;
     }
 
     private void OnDestroy()
@@ -202,7 +203,30 @@ public class GameManager : MonoBehaviour
         
         currentSubmissionIndex++;
         
-        ShowNextSubmission();
+        int currentRound = StoryManager.Instance.RoundNumber;
+    
+        if(currentRound == 1)
+        {
+            ShowNextSubmission();  // exposition flow
+        }
+        else
+        {
+            ShowNextVoting();  // rising action flow
+        }
+    }
+
+    private void HandleAllVotesSubmitted()
+    {
+        Debug.Log("GameManager: All votes submitted, revealing choice");
+        
+        string winningChoice = RoundManager.Instance.GetWinningChoice();
+        
+        Player currentPlayer = shuffledPlayers[currentSubmissionIndex];
+        SetGameState(GameState.Reacting);
+        
+        UIManager.Instance.ShowSubmission(currentPlayer, winningChoice, onComplete: () => {
+            RoundManager.Instance.SendReactPromptsToAllPlayers(currentPlayer, winningChoice);
+        });
     }
 
     private void ShowNextSubmission()
@@ -219,12 +243,14 @@ public class GameManager : MonoBehaviour
         Debug.Log($"GameManager: Showing submission from {currentPlayer.playerName}");
         
         UIManager.Instance.ShowSubmission(currentPlayer, submission, onComplete: () => {
-            RoundManager.Instance.SendReactPromptsToAllPlayers(currentPlayer);
+            RoundManager.Instance.SendReactPromptsToAllPlayers(currentPlayer, submission);
         });
     }
 
     private void ShowNextVoting()
     {
+        RoundManager.Instance.ClearPerPlayerState();
+        
         if (currentSubmissionIndex >= shuffledPlayers.Count)
         {
             EndRound();

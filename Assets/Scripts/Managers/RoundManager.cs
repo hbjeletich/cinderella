@@ -6,10 +6,12 @@ using System;
 public class RoundManager : MonoBehaviour
 {
     private Dictionary<Player, string> submissions = new Dictionary<Player, string>();
+    private Dictionary<Player, string> votes = new Dictionary<Player, string>();
     private List<Reaction> reactions = new List<Reaction>();
 
     public event Action OnAllPromptsSubmitted;
     public event Action OnAllReactionsSubmitted;
+    public event Action OnAllVotesSubmitted;
     public static RoundManager Instance { get; private set; }
 
     private void Awake()
@@ -31,6 +33,7 @@ public class RoundManager : MonoBehaviour
 
         submissions.Clear();
         reactions.Clear();
+        votes.Clear();
     }
 
     public void StartRound(int round)
@@ -154,7 +157,7 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    public void SendReactPromptsToAllPlayers(Player answeredPlayer)
+    public void SendReactPromptsToAllPlayers(Player answeredPlayer, string revealText)
     {
         PlayerManager.Instance.ResetPlayerReady();
         answeredPlayer.SetReady(true);
@@ -163,7 +166,7 @@ public class RoundManager : MonoBehaviour
         {
             var message = new ShowAnswersMessage{
                 type = "show_answer",
-                text = submissions[answeredPlayer],
+                text = revealText,
                 myPrompt = (p == answeredPlayer)
             };
 
@@ -225,14 +228,13 @@ public class RoundManager : MonoBehaviour
     public void HandleChoiceSubmission(SubmitMessage message, Player player)
     {
         player.SetReady(true);
-        submissions.Add(player, message.text);
+        votes.Add(player, message.text);
         Debug.Log($"RoundManager: Player {player.playerName} submitted {message.text}");
 
         if(PlayerManager.Instance.ArePlayersReady())
         {
-            Debug.Log("RoundManager: All players ready!");
-
-            // OnAllPromptsSubmitted?.Invoke();
+            Debug.Log("RoundManager: All votes received!");
+            OnAllVotesSubmitted?.Invoke();
         }
     }
 
@@ -251,8 +253,44 @@ public class RoundManager : MonoBehaviour
         return null;
     }
 
+    public string GetWinningChoice()
+    {
+        Dictionary<string, int> tally = new Dictionary<string, int>();
+        
+        foreach(string choice in votes.Values)
+        {
+            if(tally.ContainsKey(choice))
+                tally[choice]++;
+            else
+                tally[choice] = 1;
+        }
+        
+        int maxVotes = tally.Values.Max();
+        List<string> winners = tally.Where(kv => kv.Value == maxVotes)
+                                    .Select(kv => kv.Key)
+                                    .ToList();
+        
+        if(winners.Count == 1)
+            return winners[0];
+        
+        // tie — pick random
+        return winners[UnityEngine.Random.Range(0, winners.Count)];
+    }
+
+    public void ClearPerPlayerState()
+    {
+        votes.Clear();
+        reactions.Clear();
+        PlayerManager.Instance.ResetPlayerReady();
+    }
+
     public Dictionary<Player, string> GetSubmissions()
     {
         return new Dictionary<Player, string>(submissions);
+    }
+
+    public Dictionary<Player, string> GetVotes()
+    {
+        return new Dictionary<Player, string>(votes);
     }
 }

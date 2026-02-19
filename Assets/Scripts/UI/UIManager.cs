@@ -74,10 +74,8 @@ public class UIManager : MonoBehaviour
     {
         if(gameUI != null)
         {
-            foreach(string ans in answers)
-            {
-                gameUI.ShowOptions(player, answers, onComplete);
-            }
+            // removed a foor loop here if anything weird happens its not my fault
+            gameUI.ShowOptions(player, answers, onComplete);
         }
         else
         {

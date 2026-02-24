@@ -144,6 +144,8 @@ public class GameManager : MonoBehaviour
         // if i find i need to reference these a few times, i will refashion this
         Player protagonist = protagonistAntagonist[0];
         Player antagonist = protagonistAntagonist[1];
+
+        Debug.Log($"GameManager: Protagonist is {protagonist.playerName}, Antagonist is {antagonist.playerName}");
         
         string introText = DialogueManager.Instance.GetDialogue("climax_intro");
         // swap in player names

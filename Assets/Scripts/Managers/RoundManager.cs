@@ -40,6 +40,7 @@ public class RoundManager : MonoBehaviour
 
     private void ResetAll()
     {
+        Debug.Log("RoundManager: Resetting all round state.");
         PlayerManager.Instance.ResetPlayerReady();
 
         submissions.Clear();
@@ -54,7 +55,7 @@ public class RoundManager : MonoBehaviour
 
     public void StartRound(int round)
     {
-        ResetAll();
+        // i removed a reset here.... hopefully it does not mess everything up!
 
         if (round == 1)
         {
@@ -235,6 +236,12 @@ public class RoundManager : MonoBehaviour
 
     private void SendClimaxOptionsToPlayer(Player player, string[] options, string role)
     {
+        if(player == null)
+        {
+            Debug.LogError($"RoundManager: Cannot send climax options to null player for role {role}!");
+            return;
+        }
+        
         player.SetLastPrompt(StoryManager.Instance.GetChosenClimax());
         
         var message = new ShowAnswerChoicesMessage{
@@ -338,6 +345,8 @@ public class RoundManager : MonoBehaviour
         // for now just pick randomly, but could be based on scores or something later
         protagonistPlayer = PlayerManager.Instance.GetHighestScoringPlayer();
         antagonistPlayer = PlayerManager.Instance.GetLowestScoringPlayer();
+
+        Debug.Log($"RoundManager: Rolled protagonist {protagonistPlayer.playerName} and antagonist {antagonistPlayer.playerName}!");
 
         return new List<Player>{protagonistPlayer, antagonistPlayer};
     }

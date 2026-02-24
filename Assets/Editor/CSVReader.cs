@@ -124,10 +124,13 @@ public static class CSVReader
         prompt.round = int.Parse(row[2]);
         prompt.storyBeat = row[3];
 
-        string[] options = row[4].Split("\n");
-        prompt.options = options;
+        List<string> options = new List<string>();
+        options.Add(row[4].Trim('\n', '\r'));
+        options.Add(row[5].Trim('\n', '\r'));
+        options.Add(row[6].Trim('\n', '\r'));
+        prompt.options = options.ToArray();
 
-        prompt.resonanceTag = row[5].Trim('\n', '\r');
+        prompt.resonanceTag = row[7].Trim('\n', '\r');
 
         if (!Directory.Exists($"Assets/Resources/Scriptables/Prompts/RA/"))
         {

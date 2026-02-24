@@ -19,4 +19,6 @@ MonoBehaviour:
   storyBeat: transformation
   options:
   - Glass slippers
-  resonanceTag: Golden shoes
+  - Golden shoes
+  - A enchanted mask
+  resonanceTag: signature_item

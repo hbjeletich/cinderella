@@ -74,4 +74,9 @@ public class StoryManager : MonoBehaviour
         //     // show scores, return to lobby? i'll do this later
         // });
     }
+
+    public ClimaxPrompt GetChosenClimax()
+    {
+        return chosenClimax;
+    }
 }

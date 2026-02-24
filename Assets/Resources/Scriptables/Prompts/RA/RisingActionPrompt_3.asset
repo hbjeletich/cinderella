@@ -19,4 +19,6 @@ MonoBehaviour:
   storyBeat: deus_ex
   options:
   - A fairy godmother appears
-  resonanceTag: Magic fish bones grant a wish
+  - Magic fish bones grant a wish
+  - Friends band together
+  resonanceTag: helper_type

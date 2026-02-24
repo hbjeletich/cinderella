@@ -143,4 +143,16 @@ public class PlayerManager : MonoBehaviour
     {
         return minPlayers <= players.Count;
     }
+
+    public Player GetHighestScoringPlayer()
+    {
+        // TODO: actual scoring
+        return players[0];
+    }
+
+    public Player GetLowestScoringPlayer()
+    {
+        // TODO: actual scoring
+        return players[players.Count - 1];
+    }
 }

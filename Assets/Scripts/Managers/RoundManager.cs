@@ -12,7 +12,18 @@ public class RoundManager : MonoBehaviour
     public event Action OnAllPromptsSubmitted;
     public event Action OnAllReactionsSubmitted;
     public event Action OnAllVotesSubmitted;
+    public event Action OnClimaxChoicesReady;
     public static RoundManager Instance { get; private set; }
+
+    // for climax round use
+    private bool isClimaxPicking = false;
+    private string protagonistChoice;
+    private string antagonistChoice;
+    private Player protagonistPlayer;
+    private Player antagonistPlayer;
+
+    public string GetProtagonistChoice() => protagonistChoice;
+    public string GetAntagonistChoice() => antagonistChoice;
 
     private void Awake()
     {
@@ -34,6 +45,11 @@ public class RoundManager : MonoBehaviour
         submissions.Clear();
         reactions.Clear();
         votes.Clear();
+
+        protagonistChoice = null;
+        antagonistChoice = null;
+        protagonistPlayer = null;
+        antagonistPlayer = null;
     }
 
     public void StartRound(int round)
@@ -118,6 +134,28 @@ public class RoundManager : MonoBehaviour
     public void StartClimaxRound()
     {
         Debug.Log("RoundManager: Starting climax round!");
+
+        isClimaxPicking = true;
+        
+        ClimaxPrompt climax = StoryManager.Instance.GetChosenClimax();
+        
+        // send options to the two players
+        SendClimaxOptionsToPlayer(protagonistPlayer, climax.protagonistOptions, "protagonist");
+        SendClimaxOptionsToPlayer(antagonistPlayer, climax.antagonistOptions, "antagonist");
+        
+        // send waiting message to everyone else
+        foreach(Player p in PlayerManager.Instance.players)
+        {
+            if(p != protagonistPlayer && p != antagonistPlayer)
+            {
+                var message = new ShowAnswersMessage{
+                    type = "show_answer",
+                    text = "The heroes and villains are choosing their fate...",
+                    myPrompt = true
+                };
+                ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
+            }
+        }
     }
 
     public void StartResolutionRound()
@@ -160,16 +198,20 @@ public class RoundManager : MonoBehaviour
     public void SendReactPromptsToAllPlayers(Player answeredPlayer, string revealText)
     {
         PlayerManager.Instance.ResetPlayerReady();
-        answeredPlayer.SetReady(true);
-
+        
         foreach(Player p in PlayerManager.Instance.players)
         {
+            bool isMyPrompt = (answeredPlayer != null && p == answeredPlayer);
+            
+            if(isMyPrompt)
+                p.SetReady(true);
+            
             var message = new ShowAnswersMessage{
                 type = "show_answer",
                 text = revealText,
-                myPrompt = (p == answeredPlayer)
+                myPrompt = isMyPrompt
             };
-
+            
             ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
         }
     }
@@ -187,6 +229,34 @@ public class RoundManager : MonoBehaviour
                 myPrompt = (p == answeredPlayer)
             };
 
+            ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
+        }
+    }
+
+    private void SendClimaxOptionsToPlayer(Player player, string[] options, string role)
+    {
+        player.SetLastPrompt(StoryManager.Instance.GetChosenClimax());
+        
+        var message = new ShowAnswerChoicesMessage{
+            type = "show_choices",
+            text = string.Join("|", options),
+            myPrompt = false
+        };
+        
+        ConnectionManager.Instance.SendToPlayer(player, JsonUtility.ToJson(message));
+    }
+
+    public void SendClimaxVoteToAllPlayers(List<string> options)
+    {
+        PlayerManager.Instance.ResetPlayerReady();
+        
+        foreach(Player p in PlayerManager.Instance.players)
+        {
+            var message = new ShowAnswerChoicesMessage{
+                type = "show_choices",
+                text = string.Join("|", options),
+                myPrompt = false
+            };
             ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
         }
     }
@@ -227,6 +297,24 @@ public class RoundManager : MonoBehaviour
 
     public void HandleChoiceSubmission(SubmitMessage message, Player player)
     {
+        // for climax round
+        if(isClimaxPicking)
+        {
+            if(player == protagonistPlayer)
+                protagonistChoice = message.text;
+            else if(player == antagonistPlayer)
+                antagonistChoice = message.text;
+            
+            if(protagonistChoice != null && antagonistChoice != null)
+            {
+                Debug.Log("RoundManager: Both climax choices received!");
+                isClimaxPicking = false;
+                OnClimaxChoicesReady?.Invoke();
+            }
+            return;
+        }
+
+        // for other choices
         player.SetReady(true);
         votes.Add(player, message.text);
         Debug.Log($"RoundManager: Player {player.playerName} submitted {message.text}");
@@ -236,6 +324,22 @@ public class RoundManager : MonoBehaviour
             Debug.Log("RoundManager: All votes received!");
             OnAllVotesSubmitted?.Invoke();
         }
+    }
+
+    public List<Player> RollProtagonistAntagonist()
+    {
+        List<Player> players = PlayerManager.Instance.players;
+        if(players.Count < 2)
+        {
+            Debug.LogError("RoundManager: Not enough players to roll protagonist and antagonist!");
+            return null;
+        }
+
+        // for now just pick randomly, but could be based on scores or something later
+        protagonistPlayer = PlayerManager.Instance.GetHighestScoringPlayer();
+        antagonistPlayer = PlayerManager.Instance.GetLowestScoringPlayer();
+
+        return new List<Player>{protagonistPlayer, antagonistPlayer};
     }
 
     private string GetInputType(PromptType type)

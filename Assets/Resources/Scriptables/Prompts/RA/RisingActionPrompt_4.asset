@@ -19,4 +19,6 @@ MonoBehaviour:
   storyBeat: transformation
   options:
   - A pumpkin -> carriage
-  resonanceTag: Rags -> beautiful gown
+  - Rags -> beautiful gown
+  - Mice -> footmen
+  resonanceTag: transform_classic

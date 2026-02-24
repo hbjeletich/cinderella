@@ -19,4 +19,6 @@ MonoBehaviour:
   storyBeat: escape
   options:
   - Running down the stairs
-  resonanceTag: Vanishing into the crowd
+  - Vanishing into the crowd
+  - Leaping from a window
+  resonanceTag: escape_method

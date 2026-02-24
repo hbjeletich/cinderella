@@ -19,4 +19,6 @@ MonoBehaviour:
   storyBeat: prevention
   options:
   - Their dress is destroyed
-  resonanceTag: They're locked in
+  - They're locked in
+  - They're simply left behind
+  resonanceTag: classic_prevention

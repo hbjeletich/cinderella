@@ -19,4 +19,6 @@ MonoBehaviour:
   storyBeat: item_left
   options:
   - A single glass slipper
-  resonanceTag: A golden hairpin
+  - A golden hairpin
+  - A mysterious note
+  resonanceTag: lost_item

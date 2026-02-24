@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
         RoundManager.Instance.OnAllPromptsSubmitted += HandleAllPromptsSubmitted;
         RoundManager.Instance.OnAllReactionsSubmitted += HandleAllReactionsSubmitted;
         RoundManager.Instance.OnAllVotesSubmitted += HandleAllVotesSubmitted;
+        RoundManager.Instance.OnClimaxChoicesReady += HandleClimaxChoicesReady;
     }
 
     private void OnDestroy()
@@ -60,6 +61,8 @@ public class GameManager : MonoBehaviour
         {
             RoundManager.Instance.OnAllPromptsSubmitted -= HandleAllPromptsSubmitted;
             RoundManager.Instance.OnAllReactionsSubmitted -= HandleAllReactionsSubmitted;
+            RoundManager.Instance.OnAllVotesSubmitted -= HandleAllVotesSubmitted;
+            RoundManager.Instance.OnClimaxChoicesReady -= HandleClimaxChoicesReady;
         }
     }
 
@@ -137,8 +140,16 @@ public class GameManager : MonoBehaviour
 
     private void StartClimaxRound()
     {
-        string introText = DialogueManager.Instance.GetDialogue("climax_intro");
+        List<Player> protagonistAntagonist = RoundManager.Instance.RollProtagonistAntagonist();
+        // if i find i need to reference these a few times, i will refashion this
+        Player protagonist = protagonistAntagonist[0];
+        Player antagonist = protagonistAntagonist[1];
         
+        string introText = DialogueManager.Instance.GetDialogue("climax_intro");
+        // swap in player names
+        introText = introText.Replace("{protagonist}", protagonist.playerName);
+        introText = introText.Replace("{antagonist}", antagonist.playerName);
+
         UIManager.Instance.ShowNarrative(introText, onComplete: () => {
             SetGameState(GameState.Prompting);
             RoundManager.Instance.StartRound(5);
@@ -199,35 +210,70 @@ public class GameManager : MonoBehaviour
 
     private void HandleAllReactionsSubmitted()
     {
-        Debug.Log("GameManager: All reactions submitted for current answer");
+        int currentRound = StoryManager.Instance.RoundNumber;
+        
+        if(currentRound == 5)
+        {
+            // climax is done, end round
+            EndRound();
+            return;
+        }
         
         currentSubmissionIndex++;
         
-        int currentRound = StoryManager.Instance.RoundNumber;
-    
         if(currentRound == 1)
-        {
-            ShowNextSubmission();  // exposition flow
-        }
+            ShowNextSubmission();
         else
-        {
-            ShowNextVoting();  // rising action flow
-        }
+            ShowNextVoting();
     }
 
     private void HandleAllVotesSubmitted()
     {
-        SetGameState(GameState.Reacting);
+        Debug.Log("GameManager: All votes submitted, revealing choice");
         
-        Player currentPlayer = shuffledPlayers[currentSubmissionIndex];
-        string promptText = currentPlayer.GetLastPrompt()?.promptText;
         string winningChoice = RoundManager.Instance.GetWinningChoice();
+        int currentRound = StoryManager.Instance.RoundNumber;
+        
+        if(currentRound == 5)
+        {
+            // climax — no single "current player", show with climax context
+            string climaxText = StoryManager.Instance.GetChosenClimax().promptText;
+            
+            SetGameState(GameState.Reacting);
+            
+            UIManager.Instance.ShowSubmission(null, winningChoice, onComplete: () => {
+                RoundManager.Instance.SendReactPromptsToAllPlayers(null, winningChoice);
+            }, promptText: climaxText);
+        }
+        else
+        {
+            // rising action — show as normal submission from the player, then react as normal
+            Player currentPlayer = shuffledPlayers[currentSubmissionIndex];
+            string promptText = currentPlayer.GetLastPrompt()?.promptText;
+            
+            SetGameState(GameState.Reacting);
+            
+            UIManager.Instance.ShowSubmission(currentPlayer, winningChoice, onComplete: () => {
+                RoundManager.Instance.SendReactPromptsToAllPlayers(currentPlayer, winningChoice);
+            }, promptText: promptText);
+        }
+    }
 
-        Debug.Log($"GameManager: All votes submitted, revealing choice. Winning choice: {winningChoice}");
-
-        UIManager.Instance.ShowSubmission(currentPlayer, winningChoice, onComplete: () => {
-            RoundManager.Instance.SendReactPromptsToAllPlayers(currentPlayer, winningChoice);
-        }, promptText: promptText);
+    private void HandleClimaxChoicesReady()
+    {
+        Debug.Log("GameManager: Both climax choices in, sending vote to all");
+        
+        string protagonistChoice = RoundManager.Instance.GetProtagonistChoice();
+        string antagonistChoice = RoundManager.Instance.GetAntagonistChoice();
+        
+        List<string> options = new List<string>{ protagonistChoice, antagonistChoice };
+        ShuffleList(options);
+        
+        SetGameState(GameState.Voting);
+        
+        UIManager.Instance.ShowOptions(null, options, onComplete: () => {
+            RoundManager.Instance.SendClimaxVoteToAllPlayers(options);
+        });
     }
 
     private void ShowNextSubmission()

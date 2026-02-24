@@ -19,4 +19,6 @@ MonoBehaviour:
   storyBeat: time_limit
   options:
   - The clock strikes midnight
-  resonanceTag: The moon begins to set
+  - The moon begins to set
+  - The music suddenly stops
+  resonanceTag: time_warning

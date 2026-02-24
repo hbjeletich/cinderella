@@ -19,4 +19,6 @@ MonoBehaviour:
   storyBeat: prevention
   options:
   - Piles on extra chores
-  resonanceTag: Steals their invitation
+  - Steals their invitation
+  - Spreads rumors they're not welcome
+  resonanceTag: sabotage_type

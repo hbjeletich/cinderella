@@ -23,7 +23,11 @@ public class GameUI : MonoBehaviour
 
     public void ShowOptions(Player player, List<string> answers, Action onComplete)
     {
-        canvasText.text = $"{player.playerName}'s Rising Action:";
+        if(player != null)
+            canvasText.text = $"{player.playerName}'s Rising Action:";
+        else
+            canvasText.text = "The fate of the story is in your hands...";
+        
         StartCoroutine(ShowOptionsCoroutine(answers, onComplete));
     }
 
@@ -50,13 +54,19 @@ public class GameUI : MonoBehaviour
 
     private IEnumerator ShowSubmissionCoroutine(Player player, string answer, Action onComplete, string promptText)
     {
+        
         if(!string.IsNullOrEmpty(promptText))
         {
             ChangeText(promptText);
             yield return new WaitForSeconds(CalculateDisplayTime(promptText));
         }
         
-        string displayText = $"{player.playerName}: {answer}";
+        string displayText = null;
+        if(player != null) 
+            displayText = $"{player.playerName}: {answer}";
+        else 
+            displayText = answer;
+            
         ChangeText(displayText);
         yield return new WaitForSeconds(CalculateDisplayTime(answer));
         

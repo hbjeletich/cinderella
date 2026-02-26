@@ -24,7 +24,8 @@ public class PromptManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        LoadPrompts();
+        // now do this in inspector instead
+        //LoadPrompts();
     }
 
     public T GetRandomPrompt<T>(PromptType type) where T : Prompt

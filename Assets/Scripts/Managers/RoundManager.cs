@@ -7,7 +7,7 @@ public class RoundManager : MonoBehaviour
 {
     private Dictionary<Player, string> submissions = new Dictionary<Player, string>();
     private Dictionary<Player, string> votes = new Dictionary<Player, string>();
-    private List<Reaction> reactions = new List<Reaction>();
+    private Dictionary<Player, Reaction> reactions = new Dictionary<Player, Reaction>();
 
     public event Action OnAllPromptsSubmitted;
     public event Action OnAllReactionsSubmitted;
@@ -291,7 +291,7 @@ public class RoundManager : MonoBehaviour
         };
 
         react.reactionType = react.StringToType(react.reactionName);
-        reactions.Add(react);
+        reactions[player] = react;
 
         Debug.Log($"RoundManager: Player {player.playerName} reacted with {message.text}");
 
@@ -405,5 +405,34 @@ public class RoundManager : MonoBehaviour
     public Dictionary<Player, string> GetVotes()
     {
         return new Dictionary<Player, string>(votes);
+    }
+
+    public Dictionary<Player, Reaction> GetReactions()
+    {
+        return new Dictionary<Player, Reaction>(reactions);
+    }
+
+    public ReactionType GetMajorityReactionType()
+    {
+        Dictionary<ReactionType, int> tally = new Dictionary<ReactionType, int>();
+        
+        foreach(var react in reactions.Values)
+        {
+            if(tally.ContainsKey(react.reactionType))
+                tally[react.reactionType]++;
+            else
+                tally[react.reactionType] = 1;
+        }
+        
+        int maxCount = tally.Values.Max();
+        List<ReactionType> winners = tally.Where(kv => kv.Value == maxCount)
+                                          .Select(kv => kv.Key)
+                                          .ToList();
+        
+        if(winners.Count == 1)
+            return winners[0];
+        
+        // tie — random tiebreak
+        return winners[UnityEngine.Random.Range(0, winners.Count)];
     }
 }

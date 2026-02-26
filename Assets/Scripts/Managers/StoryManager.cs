@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class StoryManager : MonoBehaviour
 {
@@ -6,6 +7,12 @@ public class StoryManager : MonoBehaviour
     private int roundNumber = 0;
     public int RoundNumber => roundNumber;
     public static StoryManager Instance { get; private set; }
+
+    // global tone tally across all rounds
+    private Dictionary<ReactionType, int> toneTally = new Dictionary<ReactionType, int>();
+    
+    // what reaction each answer got
+    private List<SubmissionTone> submissionTones = new List<SubmissionTone>();
 
     private void Awake()
     {
@@ -79,4 +86,65 @@ public class StoryManager : MonoBehaviour
     {
         return chosenClimax;
     }
+
+    public void RecordReactions(Dictionary<Player, Reaction> reactions)
+    {
+        // tally global tone
+        foreach(var kvp in reactions)
+        {
+            ReactionType rt = kvp.Value.reactionType;
+            if(toneTally.ContainsKey(rt))
+                toneTally[rt]++;
+            else
+                toneTally[rt] = 1;
+        }
+        
+        Debug.Log($"StoryManager: Tone tally updated. {toneTally.Count} distinct tones tracked.");
+    }
+
+    public void RecordSubmissionTone(Player player, string submission, ReactionType majorityReaction)
+    {
+        submissionTones.Add(new SubmissionTone{
+            player = player,
+            submission = submission,
+            majorityReaction = majorityReaction
+        });
+        
+        Debug.Log($"StoryManager: Recorded tone for {player.playerName}'s submission: {majorityReaction}");
+    }
+
+    public Dictionary<ReactionType, int> GetToneTally()
+    {
+        return toneTally;
+    }
+
+    public List<SubmissionTone> GetSubmissionTones()
+    {
+        return submissionTones;
+    }
+
+    public ReactionType GetDominantTone()
+    {
+        ReactionType dominant = ReactionType.None;
+        int highest = 0;
+        
+        foreach(var tally in toneTally)
+        {
+            if(tally.Value > highest)
+            {
+                highest = tally.Value;
+                dominant = tally.Key;
+            }
+        }
+        
+        return dominant;
+    }
+}
+
+[System.Serializable]
+public struct SubmissionTone
+{
+    public Player player;
+    public string submission;
+    public ReactionType majorityReaction;
 }

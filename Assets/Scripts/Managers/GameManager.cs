@@ -30,6 +30,11 @@ public class GameManager : MonoBehaviour
     private List<Player> shuffledPlayers;
     private int currentSubmissionIndex = 0;
 
+    [Header("Scoring")]
+    public int answerPickedPoints = 500;
+    public int votedWithMajorityPoints = 200;
+    public int reactionConsensusPoints = 100;
+
     public GameState CurrentState => currentState;
 
     private void Awake()
@@ -214,6 +219,30 @@ public class GameManager : MonoBehaviour
     {
         int currentRound = StoryManager.Instance.RoundNumber;
         
+        // reaction scoring
+        ReactionType majority = RoundManager.Instance.GetMajorityReactionType();
+        Dictionary<Player, Reaction> reactions = RoundManager.Instance.GetReactions();
+        
+        foreach(var reaction in reactions)
+        {
+            if(reaction.Value.reactionType == majority)
+            {
+                reaction.Key.score += reactionConsensusPoints;
+                Debug.Log($"Scoring: {reaction.Key.playerName} earned {reactionConsensusPoints} pts (reaction consensus)");
+            }
+        }
+        
+        // tone tracking
+        StoryManager.Instance.RecordReactions(reactions);
+        
+        // per-submission tone
+        if(currentSubmissionIndex < shuffledPlayers.Count)
+        {
+            Player reactedTo = shuffledPlayers[currentSubmissionIndex];
+            string submission = currentSubmissions[reactedTo];
+            StoryManager.Instance.RecordSubmissionTone(reactedTo, submission, majority);
+        }
+        
         if(currentRound == 5)
         {
             // climax is done, end round
@@ -236,9 +265,32 @@ public class GameManager : MonoBehaviour
         string winningChoice = RoundManager.Instance.GetWinningChoice();
         int currentRound = StoryManager.Instance.RoundNumber;
         
+        // scoring time!
+        // answer got picked
+        foreach(var submission in currentSubmissions)
+        {
+            if(submission.Value == winningChoice)
+            {
+                submission.Key.score += answerPickedPoints;
+                Debug.Log($"GameManager: {submission.Key.playerName} earned {answerPickedPoints} pts (answer picked)");
+                break;
+            }
+        }
+        
+        // voted with majority
+        Dictionary<Player, string> votes = RoundManager.Instance.GetVotes();
+        foreach(var vote in votes)
+        {
+            if(vote.Value == winningChoice)
+            {
+                vote.Key.score += votedWithMajorityPoints;
+                Debug.Log($"GameManager: {vote.Key.playerName} earned {votedWithMajorityPoints} pts (voted with majority)");
+            }
+        }
+        
         if(currentRound == 5)
         {
-            // climax — no single "current player", show with climax context
+            // climax — show with climax context
             string climaxText = StoryManager.Instance.GetChosenClimax().promptText;
             
             SetGameState(GameState.Reacting);

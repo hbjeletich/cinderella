@@ -93,6 +93,54 @@ public class GameUI : MonoBehaviour
         onComplete?.Invoke();
     }
 
+    public void ShowScoreboard(int roundNumber, List<Player> sortedPlayers, Action onComplete)
+    {
+        StartCoroutine(ShowScoreboardCoroutine(roundNumber, sortedPlayers, onComplete));
+    }
+
+    private IEnumerator ShowScoreboardCoroutine(int roundNumber, List<Player> sortedPlayers, Action onComplete)
+    {
+        string header = $"Round {roundNumber} Complete!";
+        ChangeText(header);
+        yield return new WaitForSeconds(baseTextTime);
+
+        for (int i = 0; i < sortedPlayers.Count; i++)
+        {
+            int place = sortedPlayers.Count - i;
+            string label = GetOrdinal(place);
+            Player player = sortedPlayers[i];
+            string line = $"{label}: {player.playerName} — {player.score} pts";
+            ChangeText(line);
+            yield return new WaitForSeconds(CalculateDisplayTime(line));
+        }
+
+        canvasText.text = "";
+        onComplete?.Invoke();
+    }
+
+    private string GetOrdinal(int n)
+    {
+        // im sure theres a better way to do this
+        // but it works for the small player count!
+        string finalString = "";
+        switch (n)
+        {
+            case 1:
+                finalString = $"{n}st";
+                break;
+            case 2:
+                finalString = $"{n}nd";
+                break;
+            case 3:
+                finalString = $"{n}rd";
+                break;
+            default:
+                finalString = $"{n}th";
+                break;
+        }
+        return finalString;
+    }
+
     private float CalculateDisplayTime(string text)
     {
         // base time plus time per character

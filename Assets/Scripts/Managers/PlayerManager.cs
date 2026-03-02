@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -146,13 +147,18 @@ public class PlayerManager : MonoBehaviour
 
     public Player GetHighestScoringPlayer()
     {
-        // TODO: actual scoring
-        return players[0];
+        return players.OrderByDescending(p => p.score).First();
     }
 
     public Player GetLowestScoringPlayer()
     {
-        // TODO: actual scoring
-        return players[players.Count - 1];
+        return players.OrderBy(p => p.score).First();
+    }
+
+    public List<Player> GetPlayersSortedByScore()
+    {
+        List<Player> sorted = new List<Player>(players);
+        sorted.Sort((a, b) => a.score.CompareTo(b.score));
+        return sorted;
     }
 }

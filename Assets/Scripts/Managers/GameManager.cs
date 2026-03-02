@@ -380,6 +380,18 @@ public class GameManager : MonoBehaviour
     private void EndRound()
     {
         Debug.Log("GameManager: Round complete!");
+        StartCoroutine(EndRoundCoroutine());
+    }
+
+    private IEnumerator EndRoundCoroutine()
+    {
+        int currentRound = StoryManager.Instance.RoundNumber;
+        List<Player> sorted = PlayerManager.Instance.GetPlayersSortedByScore();
+
+        bool scoreboardDone = false;
+        UIManager.Instance.ShowScoreboard(currentRound, sorted, () => scoreboardDone = true);
+        yield return new WaitUntil(() => scoreboardDone);
+
         RoundManager.Instance.EndRound();
         StoryManager.Instance.OnRoundComplete();
     }

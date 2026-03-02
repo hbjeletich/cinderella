@@ -92,6 +92,27 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ShowScoreboard(int roundNumber, List<Player> sortedPlayers, Action onComplete)
+    {
+        if (gameUI != null)
+        {
+            gameUI.ShowScoreboard(roundNumber, sortedPlayers, onComplete);
+        }
+        else
+        {
+            gameUI = FindObjectOfType<GameUI>();
+            if (gameUI == null)
+            {
+                Debug.LogWarning("UIManager: GameUI not found for ShowScoreboard");
+                onComplete?.Invoke(); // in case we cant find it game moves forward!
+            }
+            else
+            {
+                gameUI.ShowScoreboard(roundNumber, sortedPlayers, onComplete);
+            }
+        }
+    }
+
     private void OnPlayerCreated(Player player)
     {
         // todo: switch this to be lobby related!

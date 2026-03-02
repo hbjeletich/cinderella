@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ExpositionPrompt
   id: EXP_03
   type: 0
-  promptText: What chore or cruelty do they endure?
+  promptText: What chore or cruelty does our protagonist endure?
   necessity: 0
-  storyElement: abuse
+  storyElement: Abuse

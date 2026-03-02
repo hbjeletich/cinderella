@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class StoryManager : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class StoryManager : MonoBehaviour
     public int RoundNumber => roundNumber;
     public static StoryManager Instance { get; private set; }
 
-    // global tone tally across all rounds
+    // tone tally across all rounds
     private Dictionary<ReactionType, int> toneTally = new Dictionary<ReactionType, int>();
 
     // what reaction each answer got
@@ -103,6 +104,29 @@ public class StoryManager : MonoBehaviour
         return new Dictionary<string, string>(storyVariables);
     }
 
+    public ResolutionPrompt GetResolutionPrompt()
+    {
+        string targetOutcome = GetChosenClimax().outcomeCategory;
+        string targetTone = GetDominantTone().ToString().ToLower();
+
+        List<ResolutionPrompt> all = PromptManager.Instance.GetAllPrompts<ResolutionPrompt>(PromptType.Resolution);
+
+        List<ResolutionPrompt> byOutcome = all.Where(p => p.outcomeCategory == targetOutcome).ToList();
+        if (byOutcome.Count == 0) byOutcome = all;
+
+        List<ResolutionPrompt> byTone = byOutcome.Where(p => p.tone == targetTone).ToList();
+        if (byTone.Count == 0) byTone = byOutcome;
+
+        return byTone[UnityEngine.Random.Range(0, byTone.Count)];
+    }
+
+    public string FillPlaceholders(string text)
+    {
+        foreach (var variable in storyVariables)
+            text = text.Replace($"[{variable.Key}]", variable.Value);
+        return text;
+    }
+
     public ClimaxPrompt GetChosenClimax()
     {
         return chosenClimax;
@@ -110,14 +134,14 @@ public class StoryManager : MonoBehaviour
 
     public void RecordReactions(Dictionary<Player, Reaction> reactions)
     {
-        // tally global tone
-        foreach(var kvp in reactions)
+        // tally tone
+        foreach(var reaction in reactions)
         {
-            ReactionType rt = kvp.Value.reactionType;
-            if(toneTally.ContainsKey(rt))
-                toneTally[rt]++;
+            ReactionType reactionType = reaction.Value.reactionType;
+            if(toneTally.ContainsKey(reactionType))
+                toneTally[reactionType]++;
             else
-                toneTally[rt] = 1;
+                toneTally[reactionType] = 1;
         }
         
         Debug.Log($"StoryManager: Tone tally updated. {toneTally.Count} distinct tones tracked.");

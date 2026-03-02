@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ExpositionPrompt
   id: EXP_04
   type: 0
-  promptText: Who is their one true ally?
+  promptText: Who is our protagonist's one true ally?
   necessity: 0
-  storyElement: only_friend
+  storyElement: Only Friend

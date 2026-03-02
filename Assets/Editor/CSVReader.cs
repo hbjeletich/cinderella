@@ -160,7 +160,7 @@ public static class CSVReader
         prompt.protagonistOptions = row[3].Split(" | ");
         prompt.antagonistOptions = row[4].Split(" | ");
 
-        prompt.antagonistOptions[prompt.antagonistOptions.Count() - 1] = prompt.antagonistOptions[prompt.antagonistOptions.Count() - 1].Trim('\n', '\r');
+        prompt.outcomeCategory = row[5].Trim('\n', '\r');
 
         if (!Directory.Exists($"Assets/Resources/Scriptables/Prompts/CLX/"))
         {

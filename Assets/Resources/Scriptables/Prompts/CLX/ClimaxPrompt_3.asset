@@ -16,6 +16,7 @@ MonoBehaviour:
   type: 2
   promptText: The final showdown with who wronged them
   climaxType: Confronting the Antagonist
+  outcomeCategory: forgive
   protagonistOptions:
   - Forgive them publicly
   - Demand justice

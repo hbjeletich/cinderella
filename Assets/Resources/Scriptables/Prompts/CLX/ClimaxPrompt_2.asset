@@ -16,6 +16,7 @@ MonoBehaviour:
   type: 2
   promptText: The love interest has found them -- what happens?
   climaxType: The Recognition
+  outcomeCategory: recognition
   protagonistOptions:
   - Reveal your true identity
   - Pretend not to know them

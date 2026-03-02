@@ -16,4 +16,4 @@ MonoBehaviour:
   type: 0
   promptText: Where is the big event held?
   necessity: 0
-  storyElement: event_location
+  storyElement: Event Location

@@ -166,10 +166,13 @@ public class GameManager : MonoBehaviour
     private void StartResolutionRound()
     {
         string introText = DialogueManager.Instance.GetDialogue("resolution_intro");
-        
+        ResolutionPrompt resolution = StoryManager.Instance.GetResolutionPrompt();
+        string filledText = StoryManager.Instance.FillPlaceholders(resolution.promptText);
+
         UIManager.Instance.ShowNarrative(introText, onComplete: () => {
-            SetGameState(GameState.Prompting);
-            RoundManager.Instance.StartRound(6);
+            UIManager.Instance.ShowNarrative(filledText, onComplete: () => {
+                StoryManager.Instance.OnRoundComplete();
+            });
         });
     }
 

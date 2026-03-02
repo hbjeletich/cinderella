@@ -16,4 +16,4 @@ MonoBehaviour:
   type: 0
   promptText: What magical item does the protagonist leave behind?
   necessity: 0
-  storyElement: transformation_item
+  storyElement: Transformation Item

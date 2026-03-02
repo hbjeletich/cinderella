@@ -601,6 +601,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dcb0e005d8c34e26827d190beaa508b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  answerPickedPoints: 500
+  votedWithMajorityPoints: 200
+  reactionConsensusPoints: 100
 --- !u!4 &681099162
 Transform:
   m_ObjectHideFlags: 0
@@ -1145,10 +1148,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36f6f122009b845caa7008b554944305, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PromptManager
-  expositionPrompts: []
-  risingActionPrompts: []
-  climaxPrompts: []
-  resolutionPrompts: []
+  expositionPrompts:
+  - {fileID: 11400000, guid: 7db3f80a5939f49d68bf1d33b141c241, type: 2}
+  - {fileID: 11400000, guid: d08d597381af04b0ab220e87dc09ac2b, type: 2}
+  - {fileID: 11400000, guid: 7cc035bb98e504fbe817accbd726cb63, type: 2}
+  - {fileID: 11400000, guid: 4c144104c60894e5db8862e523636de7, type: 2}
+  - {fileID: 11400000, guid: 9500d783a8ba841239039fe55f9df4d2, type: 2}
+  - {fileID: 11400000, guid: fb06d5af85f864344a2abd8eada6096c, type: 2}
+  - {fileID: 11400000, guid: 7d9caa25c1a074932a9e22912b4d5bfa, type: 2}
+  - {fileID: 11400000, guid: dd86da9b2e42a4177b7844deed4ce17c, type: 2}
+  risingActionPrompts:
+  - {fileID: 11400000, guid: 9aa161a5f7c094c4684e447a64486c0c, type: 2}
+  - {fileID: 11400000, guid: f35649c10ed8e42fb9860eaf606c960b, type: 2}
+  - {fileID: 11400000, guid: 42f24dc52da9d47d892360c70c7759d8, type: 2}
+  - {fileID: 11400000, guid: 0498821602c984b3987b776393fbb050, type: 2}
+  - {fileID: 11400000, guid: 991860a0f2d87439c9be412dee9f4946, type: 2}
+  - {fileID: 11400000, guid: f8d2ca2f5edfb40caad23cbb534b13de, type: 2}
+  - {fileID: 11400000, guid: 5dbdc07c4bcae45b1a181e70822f4a5f, type: 2}
+  - {fileID: 11400000, guid: 6c8ad421289624d13953dc6df3490006, type: 2}
+  climaxPrompts:
+  - {fileID: 11400000, guid: c252aff8fa2604d549635d1406d29a72, type: 2}
+  - {fileID: 11400000, guid: 22f1ff67826de4665afe6e7b1d94c40d, type: 2}
+  - {fileID: 11400000, guid: 1d17ea3d5853b4c62800e98e50861d9d, type: 2}
+  resolutionPrompts:
+  - {fileID: 11400000, guid: b6e42d8ee15404a1789c8703eb96d41c, type: 2}
+  - {fileID: 11400000, guid: 6beaa30f14cf64f98925c2fe596b18a9, type: 2}
+  - {fileID: 11400000, guid: a99d2179f19204175aa0d40505fd6c64, type: 2}
+  - {fileID: 11400000, guid: 8569563a62ef447f290f30f9897b6903, type: 2}
+  - {fileID: 11400000, guid: 2d0812ebd24ae47ecb59bc5f13cdb586, type: 2}
+  - {fileID: 11400000, guid: 639fdad8704bd4a86a24e57786916dce, type: 2}
+  - {fileID: 11400000, guid: 81ed0d212c3b2481bbc5a88ee13439c7, type: 2}
+  - {fileID: 11400000, guid: c6580c42dc0c046c1b1223ffa0a62252, type: 2}
+  - {fileID: 11400000, guid: 9f484d909cc4843efa40afcc000681f3, type: 2}
+  - {fileID: 11400000, guid: d093a6ddea8f641cf80c526bdf22a6d8, type: 2}
+  - {fileID: 11400000, guid: 343ac6b690eca4464866cad00fb6940c, type: 2}
+  - {fileID: 11400000, guid: 622fd35123986421286255ac3e8e0547, type: 2}
+  - {fileID: 11400000, guid: 0393b127358554eb690fa907ab6f1d9e, type: 2}
 --- !u!4 &1287763315
 Transform:
   m_ObjectHideFlags: 0

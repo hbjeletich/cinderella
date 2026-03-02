@@ -11,6 +11,7 @@ public class PromptManagerEditor : Editor
         PromptManager promptManager = (PromptManager)target;
         if (GUILayout.Button("Load Prompts"))
         {
+            promptManager.ClearPrompts();
             promptManager.LoadPrompts();
         }
     }

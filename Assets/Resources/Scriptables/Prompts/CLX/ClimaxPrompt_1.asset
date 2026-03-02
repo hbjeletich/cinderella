@@ -16,6 +16,7 @@ MonoBehaviour:
   type: 2
   promptText: The protagonist must choose how to leave before being discovered
   climaxType: Escaping the Ball
+  outcomeCategory: escape
   protagonistOptions:
   - Slip away quietly
   - Make a dramatic exit

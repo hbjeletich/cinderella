@@ -116,6 +116,11 @@ public class PromptManager : MonoBehaviour
         }
     }
 
+    public List<T> GetAllPrompts<T>(PromptType type) where T : Prompt
+    {
+        return GetPromptList<T>(type);
+    }
+
     public void LoadPrompts()
     {
         expositionPrompts.AddRange(Resources.LoadAll<ExpositionPrompt>("Scriptables/Prompts/EXP"));
@@ -124,5 +129,15 @@ public class PromptManager : MonoBehaviour
         resolutionPrompts.AddRange(Resources.LoadAll<ResolutionPrompt>("Scriptables/Prompts/RES"));
 
         Debug.Log("PromptManager: Prompts loaded successfully.");
+    }
+
+    public void ClearPrompts()
+    {
+        expositionPrompts.Clear();
+        risingActionPrompts.Clear();
+        climaxPrompts.Clear();
+        resolutionPrompts.Clear();
+
+        Debug.Log("PromptManager: Prompts cleared.");
     }
 }

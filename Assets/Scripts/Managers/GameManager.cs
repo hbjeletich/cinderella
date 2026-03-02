@@ -197,12 +197,22 @@ public class GameManager : MonoBehaviour
         
         currentSubmissions = RoundManager.Instance.GetSubmissions();
         int currentRound = StoryManager.Instance.RoundNumber;
-        
+
+        if (currentRound == 1)
+        {
+            foreach (var submission in currentSubmissions)
+            {
+                ExpositionPrompt prompt = submission.Key.GetLastPrompt() as ExpositionPrompt;
+                if (prompt != null)
+                    StoryManager.Instance.RecordStoryVariable(prompt.storyElement, submission.Value);
+            }
+        }
+
         shuffledPlayers = currentSubmissions.Keys.ToList();
         ShuffleList(shuffledPlayers);
-        
+
         currentSubmissionIndex = 0;
-        
+
         if(currentRound == 1)
         {
             SetGameState(GameState.Reacting);
@@ -264,7 +274,19 @@ public class GameManager : MonoBehaviour
         
         string winningChoice = RoundManager.Instance.GetWinningChoice();
         int currentRound = StoryManager.Instance.RoundNumber;
-        
+
+        // record story decision
+        if (currentRound != 5)
+        {
+            RisingActionPrompt prompt = shuffledPlayers[currentSubmissionIndex].GetLastPrompt() as RisingActionPrompt;
+            if (prompt != null)
+                StoryManager.Instance.RecordStoryVariable(prompt.storyBeat, winningChoice);
+        }
+        else
+        {
+            StoryManager.Instance.RecordStoryVariable(StoryManager.Instance.GetChosenClimax().climaxType, winningChoice);
+        }
+
         // scoring time!
         // answer got picked
         foreach(var submission in currentSubmissions)

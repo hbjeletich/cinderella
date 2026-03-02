@@ -10,9 +10,13 @@ public class StoryManager : MonoBehaviour
 
     // global tone tally across all rounds
     private Dictionary<ReactionType, int> toneTally = new Dictionary<ReactionType, int>();
-    
+
     // what reaction each answer got
     private List<SubmissionTone> submissionTones = new List<SubmissionTone>();
+
+    // story variables accumulated across rounds for use in resolution
+    // storyElement (exposition), storyBeat (rising action), or climaxType (climax)
+    private Dictionary<string, string> storyVariables = new Dictionary<string, string>();
 
     private void Awake()
     {
@@ -80,6 +84,23 @@ public class StoryManager : MonoBehaviour
         // {
         //     // show scores, return to lobby? i'll do this later
         // });
+    }
+
+    public void RecordStoryVariable(string key, string value)
+    {
+        storyVariables[key] = value;
+        Debug.Log($"StoryManager: Recorded story variable [{key}] = \"{value}\"");
+    }
+
+    public string GetStoryVariable(string key)
+    {
+        storyVariables.TryGetValue(key, out string value);
+        return value;
+    }
+
+    public Dictionary<string, string> GetAllStoryVariables()
+    {
+        return new Dictionary<string, string>(storyVariables);
     }
 
     public ClimaxPrompt GetChosenClimax()

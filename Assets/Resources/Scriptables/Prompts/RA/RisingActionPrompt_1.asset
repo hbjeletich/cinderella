@@ -15,7 +15,7 @@ MonoBehaviour:
   id: RA_01
   type: 1
   promptText: What stops them from going to the event?
-  round: 2
+  round: 1
   storyBeat: prevention
   options:
   - Their dress is destroyed

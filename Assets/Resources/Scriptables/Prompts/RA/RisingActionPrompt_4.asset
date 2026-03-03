@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RisingActionPrompt
   id: RA_04
   type: 1
-  promptText: What gets magically transformed?
-  round: 3
-  storyBeat: transformation
+  promptText: Who or what comes to save the day?
+  round: 2
+  storyBeat: deus_ex
   options:
-  - A pumpkin -> carriage
-  - Rags -> beautiful gown
-  - Mice -> footmen
-  resonanceTag: transform_classic
+  - A fairy godmother appears
+  - Magic fish bones grant a wish
+  - Friends band together
+  resonanceTag: helper_type

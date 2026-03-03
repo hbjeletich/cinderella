@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RisingActionPrompt
   id: RA_06
   type: 1
-  promptText: What warning signals time is running out?
-  round: 4
-  storyBeat: time_limit
+  promptText: What's the signature item they receive?
+  round: 2
+  storyBeat: transformation
   options:
-  - The clock strikes midnight
-  - The moon begins to set
-  - The music suddenly stops
-  resonanceTag: time_warning
+  - Glass slippers
+  - Golden shoes
+  - A enchanted mask
+  resonanceTag: signature_item

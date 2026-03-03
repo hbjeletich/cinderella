@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RisingActionPrompt
   id: RA_07
   type: 1
-  promptText: How do they flee the event?
-  round: 4
-  storyBeat: escape
+  promptText: What warning signals time is running out?
+  round: 3
+  storyBeat: time_limit
   options:
-  - Running down the stairs
-  - Vanishing into the crowd
-  - Leaping from a window
-  resonanceTag: escape_method
+  - The clock strikes midnight
+  - The moon begins to set
+  - The music suddenly stops
+  resonanceTag: time_warning

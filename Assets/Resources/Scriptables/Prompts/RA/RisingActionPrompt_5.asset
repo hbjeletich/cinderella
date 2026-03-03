@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RisingActionPrompt
   id: RA_05
   type: 1
-  promptText: What's the signature item they receive?
-  round: 3
+  promptText: What gets magically transformed?
+  round: 2
   storyBeat: transformation
   options:
-  - Glass slippers
-  - Golden shoes
-  - A enchanted mask
-  resonanceTag: signature_item
+  - A pumpkin -> carriage
+  - Rags -> beautiful gown
+  - Mice -> footmen
+  resonanceTag: transform_classic

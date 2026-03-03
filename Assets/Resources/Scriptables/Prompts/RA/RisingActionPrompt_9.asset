@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a86336882a70442aad0f89f1eebb3de, type: 3}
   m_Name: RisingActionPrompt_9
   m_EditorClassIdentifier: Assembly-CSharp::RisingActionPrompt
-  id: RA_08
+  id: RA_09
   type: 1
-  promptText: TESTPROMPT
-  round: 4
-  storyBeat: testprompt
+  promptText: What do they accidentally leave behind?
+  round: 3
+  storyBeat: item_left
   options:
   - A single glass slipper
   - A golden hairpin
   - A mysterious note
-  resonanceTag: testprompt
+  resonanceTag: lost_item

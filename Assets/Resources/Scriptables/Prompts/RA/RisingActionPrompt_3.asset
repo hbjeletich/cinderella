@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RisingActionPrompt
   id: RA_03
   type: 1
-  promptText: Who or what comes to save the day?
-  round: 3
-  storyBeat: deus_ex
+  promptText: How do they get ready for the event?
+  round: 1
+  storyBeat: dress_up
   options:
-  - A fairy godmother appears
-  - Magic fish bones grant a wish
-  - Friends band together
-  resonanceTag: helper_type
+  - They fix up their mother's dress
+  - They shotgun one million beers
+  - Birds do their makeup
+  resonanceTag: dress_up_type

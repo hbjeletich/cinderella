@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RisingActionPrompt
   id: RA_08
   type: 1
-  promptText: What do they accidentally leave behind?
-  round: 4
-  storyBeat: item_left
+  promptText: How do they flee the event?
+  round: 3
+  storyBeat: escape
   options:
-  - A single glass slipper
-  - A golden hairpin
-  - A mysterious note
-  resonanceTag: lost_item
+  - Running down the stairs
+  - Vanishing into the crowd
+  - Leaping from a window
+  resonanceTag: escape_method

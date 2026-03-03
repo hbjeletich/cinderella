@@ -15,7 +15,7 @@ MonoBehaviour:
   id: RA_02
   type: 1
   promptText: How does the antagonist sabotage them?
-  round: 2
+  round: 1
   storyBeat: prevention
   options:
   - Piles on extra chores

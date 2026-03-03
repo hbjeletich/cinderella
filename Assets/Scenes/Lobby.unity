@@ -1166,6 +1166,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f8d2ca2f5edfb40caad23cbb534b13de, type: 2}
   - {fileID: 11400000, guid: 5dbdc07c4bcae45b1a181e70822f4a5f, type: 2}
   - {fileID: 11400000, guid: 6c8ad421289624d13953dc6df3490006, type: 2}
+  - {fileID: 11400000, guid: 6c8ad421289624d13953dc6df3490006, type: 2}
   climaxPrompts:
   - {fileID: 11400000, guid: c252aff8fa2604d549635d1406d29a72, type: 2}
   - {fileID: 11400000, guid: 22f1ff67826de4665afe6e7b1d94c40d, type: 2}

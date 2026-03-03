@@ -22,8 +22,17 @@ public class RoundManager : MonoBehaviour
     private Player protagonistPlayer;
     private Player antagonistPlayer;
 
+    // for rising action group system
+    private List<List<Player>> groups = new List<List<Player>>();
+    private List<RisingActionPrompt> groupPrompts = new List<RisingActionPrompt>();
+    private int currentGroupIndex = 0;
+
     public string GetProtagonistChoice() => protagonistChoice;
     public string GetAntagonistChoice() => antagonistChoice;
+    public List<List<Player>> GetGroups() => groups;
+    public int GetCurrentGroupIndex() => currentGroupIndex;
+    public void SetCurrentGroupIndex(int index) => currentGroupIndex = index;
+    public RisingActionPrompt GetGroupPrompt(int groupIndex) => groupPrompts[groupIndex];
 
     private void Awake()
     {
@@ -51,6 +60,10 @@ public class RoundManager : MonoBehaviour
         antagonistChoice = null;
         protagonistPlayer = null;
         antagonistPlayer = null;
+
+        groups.Clear();
+        groupPrompts.Clear();
+        currentGroupIndex = 0;
     }
 
     public void StartRound(int round)
@@ -111,24 +124,171 @@ public class RoundManager : MonoBehaviour
 
     public void StartRisingActionRound(int round)
     {
-        // rising action
-        Debug.Log("RoundManager: Starting rising action round!");
+        Debug.Log($"RoundManager: Starting rising action round {round}!");
 
-        int playerCount = PlayerManager.Instance.GetPlayerCount();
-        List<RisingActionPrompt> risingActionPrompts = PromptManager.Instance.GetMultipleRandomPrompts<RisingActionPrompt>(PromptType.RisingAction, playerCount);
+        // create player groups
+        groups = CreateGroups(PlayerManager.Instance.players);
+        int groupCount = groups.Count;
 
-        if(risingActionPrompts == null || risingActionPrompts.Count() == 0)
+        Debug.Log($"RoundManager: Created {groupCount} groups for {PlayerManager.Instance.GetPlayerCount()} players.");
+
+        // get round-filtered prompts, one per group
+        List<RisingActionPrompt> prompts = PromptManager.Instance.GetRisingActionPromptsByRound(round, groupCount);
+        groupPrompts = prompts;
+
+        if(prompts == null || prompts.Count < groupCount)
         {
-            Debug.Log("RoundManager: Rising Action prompts list is null or empty!");
+            Debug.LogError("RoundManager: Not enough rising action prompts for groups!");
             return;
         }
 
-        // assign prompts to players randomly!
+        // send each group their shared prompt — all groups answer simultaneously
+        for(int g = 0; g < groupCount; g++)
+        {
+            RisingActionPrompt prompt = prompts[g];
+            foreach(Player p in groups[g])
+            {
+                SendPromptToPlayer(p, prompt);
+            }
+            Debug.Log($"RoundManager: Group {g} ({groups[g].Count} players) got prompt: {prompt.promptText}");
+        }
+
+        currentGroupIndex = 0;
+    }
+
+    private List<List<Player>> CreateGroups(List<Player> allPlayers)
+    {
+        List<Player> shuffled = new List<Player>(allPlayers);
+        // shuffle
+        for(int i = 0; i < shuffled.Count - 1; i++)
+        {
+            int r = UnityEngine.Random.Range(i, shuffled.Count);
+            Player temp = shuffled[i];
+            shuffled[i] = shuffled[r];
+            shuffled[r] = temp;
+        }
+
+        List<List<Player>> result = new List<List<Player>>();
+        int count = shuffled.Count;
+
+        // determine group sizes based on player count
+        List<int> sizes = new List<int>();
+        int remaining = count;
+        while(remaining > 0 && sizes.Count < 3)
+        {
+            if(remaining >= 5)
+            {
+                // if over or equal 5, get rid of 3 of them
+                sizes.Add(3);
+                remaining -= 3;
+            }
+            else if(remaining == 4)
+            {
+                // if 4 left, make two groups of 2
+                sizes.Add(2);
+                sizes.Add(2);
+                remaining = 0;
+            }
+            else
+            {
+                // add the rest
+                sizes.Add(remaining);
+                remaining = 0;
+            }
+        }
+
+        int index = 0;
+        foreach(int size in sizes)
+        {
+            List<Player> group = new List<Player>();
+            for(int i = 0; i < size; i++)
+            {
+                group.Add(shuffled[index]);
+                index++;
+            }
+            result.Add(group);
+        }
+
+        return result;
+    }
+
+    public Dictionary<Player, string> GetGroupSubmissions(int groupIndex)
+    {
+        Dictionary<Player, string> groupSubs = new Dictionary<Player, string>();
+        if(groupIndex < 0 || groupIndex >= groups.Count) return groupSubs;
+
+        foreach(Player p in groups[groupIndex])
+        {
+            if(submissions.ContainsKey(p))
+                groupSubs[p] = submissions[p];
+        }
+        return groupSubs;
+    }
+
+    public List<string> BuildVotingOptions(int groupIndex, out HashSet<string> playerAnswers)
+    {
+        Dictionary<Player, string> groupSubs = GetGroupSubmissions(groupIndex);
+        RisingActionPrompt prompt = groupPrompts[groupIndex];
+
+        playerAnswers = new HashSet<string>(groupSubs.Values);
+        List<string> options = new List<string>(groupSubs.Values);
+
+        // fill to 4 with decoys from the prompt's options
+        int decoyCount = 4 - options.Count;
+        if(decoyCount > 0 && prompt.options != null && prompt.options.Length > 0)
+        {
+            // get decoys that don't match any player answer
+            List<string> availableDecoys = new List<string>();
+            foreach(string option in prompt.options)
+            {
+                if(!playerAnswers.Contains(option))
+                    availableDecoys.Add(option);
+            }
+
+            for(int i = 0; i < decoyCount && availableDecoys.Count > 0; i++)
+            {
+                int idx = UnityEngine.Random.Range(0, availableDecoys.Count);
+                options.Add(availableDecoys[idx]);
+                availableDecoys.RemoveAt(idx);
+            }
+        }
+
+        // shuffle all options
+        for(int i = 0; i < options.Count - 1; i++)
+        {
+            int r = UnityEngine.Random.Range(i, options.Count);
+            string temp = options[i];
+            options[i] = options[r];
+            options[r] = temp;
+        }
+
+        return options;
+    }
+
+    public Player GetAuthorOfAnswer(int groupIndex, string answer)
+    {
+        Dictionary<Player, string> groupSubs = GetGroupSubmissions(groupIndex);
+        foreach(var kvp in groupSubs)
+        {
+            if(kvp.Value == answer)
+                return kvp.Key;
+        }
+        return null; // decoy
+    }
+
+    public void SendGroupVoteToAllPlayers(int groupIndex, List<string> options)
+    {
+        PlayerManager.Instance.ResetPlayerReady();
+
         foreach(Player p in PlayerManager.Instance.players)
         {
-            int newIndex = UnityEngine.Random.Range(0, risingActionPrompts.Count());
-            SendPromptToPlayer(p, risingActionPrompts[newIndex]);
-            risingActionPrompts.RemoveAt(newIndex);
+            var message = new ShowAnswerChoicesMessage{
+                type = "show_choices",
+                text = string.Join("|", options),
+                myPrompt = false // everyone votes, no exclusions
+            };
+
+            ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
         }
     }
 
@@ -342,7 +502,6 @@ public class RoundManager : MonoBehaviour
             return null;
         }
 
-        // for now just pick randomly, but could be based on scores or something later
         protagonistPlayer = PlayerManager.Instance.GetHighestScoringPlayer();
         antagonistPlayer = PlayerManager.Instance.GetLowestScoringPlayer();
 
@@ -379,9 +538,14 @@ public class RoundManager : MonoBehaviour
         }
         
         int maxVotes = tally.Values.Max();
-        List<string> winners = tally.Where(kv => kv.Value == maxVotes)
-                                    .Select(kv => kv.Key)
-                                    .ToList();
+
+        // collect all choices that tied for the most votes
+        List<string> winners = new List<string>();
+        foreach(var choice in tally)
+        {
+            if(choice.Value == maxVotes)
+                winners.Add(choice.Key);
+        }
         
         if(winners.Count == 1)
             return winners[0];
@@ -425,9 +589,12 @@ public class RoundManager : MonoBehaviour
         }
         
         int maxCount = tally.Values.Max();
-        List<ReactionType> winners = tally.Where(kv => kv.Value == maxCount)
-                                          .Select(kv => kv.Key)
-                                          .ToList();
+        List<ReactionType> winners = new List<ReactionType>();
+        foreach(var reaction in tally)
+        {
+            if(reaction.Value == maxCount)
+                winners.Add(reaction.Key);
+        }
         
         if(winners.Count == 1)
             return winners[0];

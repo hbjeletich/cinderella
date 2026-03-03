@@ -121,6 +121,26 @@ public class PromptManager : MonoBehaviour
         return GetPromptList<T>(type);
     }
 
+    public List<RisingActionPrompt> GetRisingActionPromptsByRound(int round, int count)
+    {
+        List<RisingActionPrompt> byRound = risingActionPrompts.Where(p => p.round == round).ToList();
+        
+        if(byRound.Count >= count)
+        {
+            return GetRandomFromList(count, byRound);
+        }
+
+        // not enough round-specific prompts — fill from the full pool
+        Debug.LogWarning($"PromptManager: Only {byRound.Count} prompts for round {round}, need {count}. Filling from full pool.");
+        List<RisingActionPrompt> result = new List<RisingActionPrompt>(byRound);
+        int remaining = count - result.Count;
+
+        List<RisingActionPrompt> fallback = risingActionPrompts.Where(p => !result.Contains(p)).ToList();
+        result.AddRange(GetRandomFromList(remaining, fallback));
+
+        return result;
+    }
+
     public void LoadPrompts()
     {
         expositionPrompts.AddRange(Resources.LoadAll<ExpositionPrompt>("Scriptables/Prompts/EXP"));

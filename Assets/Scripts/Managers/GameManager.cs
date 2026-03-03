@@ -30,6 +30,10 @@ public class GameManager : MonoBehaviour
     private List<Player> shuffledPlayers;
     private int currentSubmissionIndex = 0;
 
+    // rising action group reveal state
+    private HashSet<string> currentGroupPlayerAnswers;
+    private string currentGroupWinningChoice;
+
     [Header("Scoring")]
     public int answerPickedPoints = 500;
     public int votedWithMajorityPoints = 200;
@@ -203,28 +207,27 @@ public class GameManager : MonoBehaviour
 
         if (currentRound == 1)
         {
+            // exposition: record story variables, then show each submission for reactions
             foreach (var submission in currentSubmissions)
             {
                 ExpositionPrompt prompt = submission.Key.GetLastPrompt() as ExpositionPrompt;
                 if (prompt != null)
                     StoryManager.Instance.RecordStoryVariable(prompt.storyElement, submission.Value);
             }
-        }
 
-        shuffledPlayers = currentSubmissions.Keys.ToList();
-        ShuffleList(shuffledPlayers);
+            shuffledPlayers = currentSubmissions.Keys.ToList();
+            ShuffleList(shuffledPlayers);
+            currentSubmissionIndex = 0;
 
-        currentSubmissionIndex = 0;
-
-        if(currentRound == 1)
-        {
             SetGameState(GameState.Reacting);
             ShowNextSubmission();
         }
-        else
+        else if (currentRound >= 2 && currentRound <= 4)
         {
+            // rising action: group-by-group reveal flow
+            RoundManager.Instance.SetCurrentGroupIndex(0);
             SetGameState(GameState.Voting);
-            ShowNextVoting();
+            ShowNextGroupVoting();
         }
     }
 
@@ -248,14 +251,6 @@ public class GameManager : MonoBehaviour
         // tone tracking
         StoryManager.Instance.RecordReactions(reactions);
         
-        // per-submission tone
-        if(currentSubmissionIndex < shuffledPlayers.Count)
-        {
-            Player reactedTo = shuffledPlayers[currentSubmissionIndex];
-            string submission = currentSubmissions[reactedTo];
-            StoryManager.Instance.RecordSubmissionTone(reactedTo, submission, majority);
-        }
-        
         if(currentRound == 5)
         {
             // climax is done, end round
@@ -263,12 +258,40 @@ public class GameManager : MonoBehaviour
             return;
         }
         
-        currentSubmissionIndex++;
+        if(currentRound >= 2 && currentRound <= 4)
+        {
+            // rising action — record tone for the winning answer, then advance to next group
+            int groupIdx = RoundManager.Instance.GetCurrentGroupIndex();
+            Player author = RoundManager.Instance.GetAuthorOfAnswer(groupIdx, currentGroupWinningChoice);
+            StoryManager.Instance.RecordSubmissionTone(author, currentGroupWinningChoice, majority);
+            
+            // move to next group
+            RoundManager.Instance.SetCurrentGroupIndex(groupIdx + 1);
+            
+            if(RoundManager.Instance.GetCurrentGroupIndex() >= RoundManager.Instance.GetGroups().Count)
+            {
+                // all groups done
+                EndRound();
+            }
+            else
+            {
+                // next group's voting
+                SetGameState(GameState.Voting);
+                ShowNextGroupVoting();
+            }
+            return;
+        }
         
-        if(currentRound == 1)
-            ShowNextSubmission();
-        else
-            ShowNextVoting();
+        // exposition — per-submission tone, then advance
+        if(currentSubmissionIndex < shuffledPlayers.Count)
+        {
+            Player reactedTo = shuffledPlayers[currentSubmissionIndex];
+            string submission = currentSubmissions[reactedTo];
+            StoryManager.Instance.RecordSubmissionTone(reactedTo, submission, majority);
+        }
+        
+        currentSubmissionIndex++;
+        ShowNextSubmission();
     }
 
     private void HandleAllVotesSubmitted()
@@ -278,44 +301,78 @@ public class GameManager : MonoBehaviour
         string winningChoice = RoundManager.Instance.GetWinningChoice();
         int currentRound = StoryManager.Instance.RoundNumber;
 
-        // record story decision
-        if (currentRound != 5)
+        if(currentRound >= 2 && currentRound <= 4)
         {
-            RisingActionPrompt prompt = shuffledPlayers[currentSubmissionIndex].GetLastPrompt() as RisingActionPrompt;
-            if (prompt != null)
+            // rising action group vote result
+            int groupIdx = RoundManager.Instance.GetCurrentGroupIndex();
+            RisingActionPrompt prompt = RoundManager.Instance.GetGroupPrompt(groupIdx);
+            currentGroupWinningChoice = winningChoice;
+            
+            // record the story variable
+            if(prompt != null)
                 StoryManager.Instance.RecordStoryVariable(prompt.storyBeat, winningChoice);
-        }
-        else
-        {
-            StoryManager.Instance.RecordStoryVariable(StoryManager.Instance.GetChosenClimax().climaxType, winningChoice);
+            
+            // score: author of winning answer gets points (if it was a player, not a decoy)
+            Player author = RoundManager.Instance.GetAuthorOfAnswer(groupIdx, winningChoice);
+            if(author != null)
+            {
+                author.score += answerPickedPoints;
+                Debug.Log($"GameManager: {author.playerName} earned {answerPickedPoints} pts (answer picked)");
+            }
+            
+            // voted with majority
+            Dictionary<Player, string> votes = RoundManager.Instance.GetVotes();
+            foreach(var vote in votes)
+            {
+                if(vote.Value == winningChoice)
+                {
+                    vote.Key.score += votedWithMajorityPoints;
+                    Debug.Log($"GameManager: {vote.Key.playerName} earned {votedWithMajorityPoints} pts (voted with majority)");
+                }
+            }
+            
+            // show winning answer on TV, then reveal author, then react
+            SetGameState(GameState.Reacting);
+            
+            string authorName = (author != null) ? author.playerName : "the narrator";
+            string revealText = $"\"{winningChoice}\" — written by {authorName}!";
+            
+            UIManager.Instance.ShowSubmission(author, winningChoice, onComplete: () => {
+                // now show author reveal as narrative, then send react prompts
+                UIManager.Instance.ShowNarrative($"This was {authorName}'s answer!", onComplete: () => {
+                    RoundManager.Instance.SendReactPromptsToAllPlayers(null, winningChoice);
+                });
+            }, promptText: prompt?.promptText);
+            
+            return;
         }
 
-        // scoring time!
-        // answer got picked
-        foreach(var submission in currentSubmissions)
-        {
-            if(submission.Value == winningChoice)
-            {
-                submission.Key.score += answerPickedPoints;
-                Debug.Log($"GameManager: {submission.Key.playerName} earned {answerPickedPoints} pts (answer picked)");
-                break;
-            }
-        }
-        
-        // voted with majority
-        Dictionary<Player, string> votes = RoundManager.Instance.GetVotes();
-        foreach(var vote in votes)
-        {
-            if(vote.Value == winningChoice)
-            {
-                vote.Key.score += votedWithMajorityPoints;
-                Debug.Log($"GameManager: {vote.Key.playerName} earned {votedWithMajorityPoints} pts (voted with majority)");
-            }
-        }
-        
         if(currentRound == 5)
         {
-            // climax — show with climax context
+            // climax vote
+            StoryManager.Instance.RecordStoryVariable(StoryManager.Instance.GetChosenClimax().climaxType, winningChoice);
+
+            // score
+            foreach(var submission in currentSubmissions)
+            {
+                if(submission.Value == winningChoice)
+                {
+                    submission.Key.score += answerPickedPoints;
+                    Debug.Log($"GameManager: {submission.Key.playerName} earned {answerPickedPoints} pts (answer picked)");
+                    break;
+                }
+            }
+            
+            Dictionary<Player, string> votes = RoundManager.Instance.GetVotes();
+            foreach(var vote in votes)
+            {
+                if(vote.Value == winningChoice)
+                {
+                    vote.Key.score += votedWithMajorityPoints;
+                    Debug.Log($"GameManager: {vote.Key.playerName} earned {votedWithMajorityPoints} pts (voted with majority)");
+                }
+            }
+
             string climaxText = StoryManager.Instance.GetChosenClimax().promptText;
             
             SetGameState(GameState.Reacting);
@@ -323,18 +380,6 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.ShowSubmission(null, winningChoice, onComplete: () => {
                 RoundManager.Instance.SendReactPromptsToAllPlayers(null, winningChoice);
             }, promptText: climaxText);
-        }
-        else
-        {
-            // rising action — show as normal submission from the player, then react as normal
-            Player currentPlayer = shuffledPlayers[currentSubmissionIndex];
-            string promptText = currentPlayer.GetLastPrompt()?.promptText;
-            
-            SetGameState(GameState.Reacting);
-            
-            UIManager.Instance.ShowSubmission(currentPlayer, winningChoice, onComplete: () => {
-                RoundManager.Instance.SendReactPromptsToAllPlayers(currentPlayer, winningChoice);
-            }, promptText: promptText);
         }
     }
 
@@ -374,32 +419,35 @@ public class GameManager : MonoBehaviour
         }, promptText: promptText);
     }
 
-    private void ShowNextVoting()
+    /// <summary>
+    /// Rising action group-by-group reveal: show the group's prompt on TV, then send vote options.
+    /// </summary>
+    private void ShowNextGroupVoting()
     {
-        RoundManager.Instance.ClearPerPlayerState();
+        int groupIdx = RoundManager.Instance.GetCurrentGroupIndex();
+        var groups = RoundManager.Instance.GetGroups();
 
-        if (currentSubmissionIndex >= shuffledPlayers.Count)
+        if(groupIdx >= groups.Count)
         {
             EndRound();
             return;
         }
-        
-        Player currentPlayer = shuffledPlayers[currentSubmissionIndex];
-        string submission = currentSubmissions[currentPlayer];
-        RisingActionPrompt prompt = currentPlayer.GetLastPrompt() as RisingActionPrompt;
-        if(prompt != null)
-        {
-            Debug.Log($"GameManager: Got last Rising Action Prompt from {currentPlayer.playerName}");
-            List<string> options = prompt.options.ToList();
-            options.Add(submission);
-            ShuffleList<string>(options);
 
-            Debug.Log($"GameManager: Showing submission from {currentPlayer.playerName}");
-        
-            UIManager.Instance.ShowOptions(currentPlayer, options, onComplete: () => {
-                RoundManager.Instance.SendVotePromptsToAllPlayers(currentPlayer, options);
+        RoundManager.Instance.ClearPerPlayerState();
+
+        RisingActionPrompt prompt = RoundManager.Instance.GetGroupPrompt(groupIdx);
+        HashSet<string> playerAnswers;
+        List<string> options = RoundManager.Instance.BuildVotingOptions(groupIdx, out playerAnswers);
+        currentGroupPlayerAnswers = playerAnswers;
+
+        Debug.Log($"GameManager: Showing Group {groupIdx} voting — prompt: {prompt.promptText}, {options.Count} options");
+
+        // show the prompt on TV first, then send vote choices to all players
+        UIManager.Instance.ShowNarrative(prompt.promptText, onComplete: () => {
+            UIManager.Instance.ShowOptions(null, options, onComplete: () => {
+                RoundManager.Instance.SendGroupVoteToAllPlayers(groupIdx, options);
             });
-        }
+        });
     }
 
     private void EndRound()

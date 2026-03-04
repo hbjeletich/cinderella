@@ -16,12 +16,12 @@ MonoBehaviour:
   type: 2
   promptText: The protagonist must choose how to leave before being discovered
   climaxType: Escaping the Ball
-  outcomeCategory: escape
   protagonistOptions:
-  - Slip away quietly
-  - Make a dramatic exit
-  - Confront the love interest first
+  - '[Protagonist] slips away quietly'
+  - '[Protagonist] makes a dramatic exit'
+  - '[Protagonist] confronts [Antagonist] first'
   antagonistOptions:
-  - Chase them down
-  - Let them go
-  - Expose them publicly
+  - '[Antagonist] chases them down'
+  - '[Antagonist] lets them go'
+  - '[Antagonist] exposes them publicly'
+  outcomeCategory: 

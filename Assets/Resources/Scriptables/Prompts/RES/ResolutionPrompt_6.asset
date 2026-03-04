@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_6
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_06
+  id: RES_RISE_2_DEFAULT
   type: 3
-  promptText: '[Protagonist] forgave them. It didn''t fix anything. But it was the
-    right thing to do.'
-  outcomeCategory: forgive
-  tone: tragedy
+  promptText: 'Just when all seemed lost, [deus_ex]. With a wave of magic, [transformation].
+    [Protagonist] received something special: [signature_item].'
+  segmentType: 2
+  tone: 
+  climaxOutcome: 

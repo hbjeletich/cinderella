@@ -160,4 +160,85 @@ public class PromptManager : MonoBehaviour
 
         Debug.Log("PromptManager: Prompts cleared.");
     }
+
+    public ResolutionPrompt GetResolutionSegment(ResolutionSegmentType segmentType, string tone = null)
+    {
+        List<ResolutionPrompt> toneMatches = new List<ResolutionPrompt>();
+        List<ResolutionPrompt> allMatches = new List<ResolutionPrompt>();
+
+        foreach(ResolutionPrompt p in resolutionPrompts)
+        {
+            if(p.segmentType != segmentType)
+                continue;
+
+            allMatches.Add(p);
+
+            if(!string.IsNullOrEmpty(tone) && p.tone == tone)
+                toneMatches.Add(p);
+        }
+
+        if(toneMatches.Count > 0)
+            return toneMatches[Random.Range(0, toneMatches.Count)];
+
+        if(allMatches.Count > 0)
+            return allMatches[Random.Range(0, allMatches.Count)];
+
+        return null;
+    }
+
+    public ResolutionPrompt GetClosingSegment(string tone, string climaxOutcome = null)
+    {
+        List<ResolutionPrompt> allClosing = new List<ResolutionPrompt>();
+        List<ResolutionPrompt> outcomeMatches = new List<ResolutionPrompt>();
+        List<ResolutionPrompt> outcomeAndTone = new List<ResolutionPrompt>();
+        List<ResolutionPrompt> toneOnly = new List<ResolutionPrompt>();
+
+        foreach(ResolutionPrompt p in resolutionPrompts)
+        {
+            if(p.segmentType != ResolutionSegmentType.Closing)
+                continue;
+
+            allClosing.Add(p);
+
+            bool matchesOutcome = !string.IsNullOrEmpty(climaxOutcome) 
+                && !string.IsNullOrEmpty(p.climaxOutcome) 
+                && p.climaxOutcome == climaxOutcome;
+
+            bool matchesTone = !string.IsNullOrEmpty(tone) 
+                && !string.IsNullOrEmpty(p.tone) 
+                && p.tone == tone;
+
+            if(matchesOutcome)
+            {
+                outcomeMatches.Add(p);
+                if(matchesTone)
+                    outcomeAndTone.Add(p);
+            }
+
+            if(matchesTone)
+                toneOnly.Add(p);
+        }
+
+        // best match: outcome + tone
+        if(outcomeAndTone.Count > 0)
+            return outcomeAndTone[Random.Range(0, outcomeAndTone.Count)];
+
+        // next: outcome only
+        if(outcomeMatches.Count > 0)
+            return outcomeMatches[Random.Range(0, outcomeMatches.Count)];
+
+        // next: tone only
+        if(toneOnly.Count > 0)
+            return toneOnly[Random.Range(0, toneOnly.Count)];
+
+        // last resort: any closing
+        if(allClosing.Count > 0)
+        {
+            Debug.LogWarning($"PromptManager: No closing for outcome '{climaxOutcome}' + tone '{tone}', using random.");
+            return allClosing[Random.Range(0, allClosing.Count)];
+        }
+
+        Debug.LogWarning("PromptManager: No closing segments found at all!");
+        return null;
+    }
 }

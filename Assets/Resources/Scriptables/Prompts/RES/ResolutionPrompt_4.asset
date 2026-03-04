@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_4
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_04
+  id: RES_RISE_1_DARK
   type: 3
-  promptText: '[Protagonist] forgave [Antagonist], which was honestly pretty weird
-    given the whole [Abuse] thing. But hey, character growth!'
-  outcomeCategory: forgive
-  tone: comedy
+  promptText: "[Antagonist] struck first \u2014 [prevention]. But [Protagonist] was
+    not so easily broken. In the darkness, they prepared: [dress_up]."
+  segmentType: 1
+  tone: dark
+  climaxOutcome: 

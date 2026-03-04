@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_10
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_10
+  id: RES_RISE_3_DEFAULT
   type: 3
-  promptText: '[Protagonist] got out. Didn''t look back. Last anyone heard, they
-    were starting a small business with [Only Friend]. Good for them.'
-  outcomeCategory: escape
-  tone: comedy
+  promptText: "But time was running out \u2014 [time_limit]. [Protagonist] chose
+    to flee: [escape]. In their rush, they left something behind \u2014 [item_left]."
+  segmentType: 3
+  tone: 
+  climaxOutcome: 

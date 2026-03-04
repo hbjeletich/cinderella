@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_3
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_03
+  id: RES_RISE_1_COMEDY
   type: 3
-  promptText: '[Protagonist] won. [Antagonist] lost everything. Some say justice
-    was served. Others say it was revenge.'
-  outcomeCategory: triumphant
-  tone: dark
+  promptText: "In a move that surprised no one, [Antagonist] tried to stop them \u2014
+    [prevention]. [Protagonist] responded by doing the only logical thing: [dress_up]."
+  segmentType: 1
+  tone: comedy
+  climaxOutcome: 

@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_8
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_08
+  id: RES_RISE_2_DARK
   type: 3
-  promptText: Look, nobody knows what happened. [Antagonist] bit someone. [Protagonist]
-    stole a horse. [Event Location] is now a crater.
-  outcomeCategory: mutual_destruction
-  tone: chaos
+  promptText: "From the shadows, help arrived \u2014 [deus_ex]. With cold precision,
+    [transformation]. [Protagonist] was given [signature_item]. No one questioned
+    it."
+  segmentType: 2
+  tone: dark
+  climaxOutcome: 

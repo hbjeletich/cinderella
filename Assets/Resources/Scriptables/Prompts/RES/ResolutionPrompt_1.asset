@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_1
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_01
+  id: RES_EXP_01
   type: 3
-  promptText: And so [Protagonist] finally escaped [Antagonist], married [Love Interest],
-    and never had to [Abuse] again. [Only Friend] got a medal.
-  outcomeCategory: triumphant
-  tone: comedy
+  promptText: "Once upon a time, there was a hero named [Protagonist]. Life wasn't
+    easy \u2014 every day, [Antagonist] forced them to endure [Abuse]. Their only
+    comfort was their one true ally: [Only Friend]. They dreamed of escaping to [Event
+    Location]. They had their eye on [Love Interest]."
+  segmentType: 0
+  tone: 
+  climaxOutcome: 

@@ -1,14 +1,28 @@
-id,prompt_text,outcome_category,tone
-RES_01,"And so [Protagonist] finally escaped [Antagonist], married [Love Interest], and never had to [Abuse] again. [Only Friend] got a medal.",triumphant,comedy
-RES_02,"[Protagonist] stood tall at [Event Location], no longer a servant but an equal. [Love Interest] never let go of their hand.",triumphant,triumphant
-RES_03,"[Protagonist] won. [Antagonist] lost everything. Some say justice was served. Others say it was revenge.",triumphant,dark
-RES_04,"[Protagonist] forgave [Antagonist], which was honestly pretty weird given the whole [Abuse] thing. But hey, character growth!",forgive,comedy
-RES_05,"With quiet dignity, [Protagonist] offered [Antagonist] forgiveness. [Only Friend] wept. Even [Love Interest] was moved.",forgive,triumphant
-RES_06,"[Protagonist] forgave them. It didn't fix anything. But it was the right thing to do.",forgive,tragedy
-RES_07,"In the end, neither could let go. [Protagonist] and [Antagonist] fell together, and [Event Location] would never recover.",mutual_destruction,dark
-RES_08,"Look, nobody knows what happened. [Antagonist] bit someone. [Protagonist] stole a horse. [Event Location] is now a crater.",mutual_destruction,chaos
-RES_09,"They destroyed each other. [Only Friend] visits the ruins sometimes, wondering if it had to end this way.",mutual_destruction,tragedy
-RES_10,"[Protagonist] got out. Didn't look back. Last anyone heard, they were starting a small business with [Only Friend]. Good for them.",escape,comedy
-RES_11,"[Protagonist] walked away from [Antagonist], from [Event Location], from all of it. Freedom tasted like [Transformation Item].",escape,triumphant
-RES_12,"[Protagonist] left everything behind. Even [Love Interest]. Some doors, once closed, stay closed.",escape,bittersweet
-RES_13,"When [Antagonist] revealed the truth—that they'd been protecting [Protagonist] all along—everything changed.",twist_redemption,triumphant
+id,prompt_text,segment_type,tone,climax_outcome
+RES_EXP_01,"Once upon a time, there was a hero named [Protagonist]. Life wasn't easy — every day, [Antagonist] forced them to endure [Abuse]. Their only comfort was their one true ally: [Only Friend]. They dreamed of escaping to [Event Location]. They had their eye on [Love Interest].",exposition,,
+RES_RISE_1_DEFAULT,"[Antagonist] had other plans though — [prevention]. But [Protagonist] wasn't giving up that easily — [dress_up].",rising_1,,
+RES_RISE_1_COMEDY,"In a move that surprised no one, [Antagonist] tried to stop them — [prevention]. [Protagonist] responded by doing the only logical thing: [dress_up].",rising_1,comedy,
+RES_RISE_1_DARK,"[Antagonist] struck first — [prevention]. But [Protagonist] was not so easily broken. In the darkness, they prepared: [dress_up].",rising_1,dark,
+RES_RISE_1_TRIUMPHANT,"[Antagonist] tried to hold them back — [prevention]. But nothing could stop [Protagonist]. With determination: [dress_up].",rising_1,triumphant,
+RES_RISE_2_DEFAULT,"Just when all seemed lost, [deus_ex]. With a wave of magic, [transformation]. [Protagonist] received something special: [signature_item].",rising_2,,
+RES_RISE_2_COMEDY,"Then, out of absolutely nowhere, [deus_ex]. Somehow, [transformation]. To top it off, [Protagonist] got: [signature_item].",rising_2,comedy,
+RES_RISE_2_DARK,"From the shadows, help arrived — [deus_ex]. With cold precision, [transformation]. [Protagonist] was given [signature_item]. No one questioned it.",rising_2,dark,
+RES_RISE_2_TRIUMPHANT,"Hope arrived just in time — [deus_ex]. In a blinding flash, [transformation]. [Protagonist] held [signature_item] and knew the tide had turned.",rising_2,triumphant,
+RES_RISE_3_DEFAULT,"But time was running out — [time_limit]. [Protagonist] chose to flee: [escape]. In their rush, they left something behind — [item_left].",rising_3,,
+RES_RISE_3_COMEDY,"Things got weird fast — [time_limit]. [Protagonist] panicked and [escape]. Behind them, forgotten on the ground: [item_left]. Classic.",rising_3,comedy,
+RES_RISE_3_DARK,"The clock was ticking — [time_limit]. There was no choice. [escape]. They left behind [item_left]. It would haunt them.",rising_3,dark,
+RES_RISE_3_CHAOS,"Everything went sideways — [time_limit]. [escape]. [item_left] went flying. Nobody knows where it landed.",rising_3,chaos,
+RES_CLX_01,"Then came the moment of truth. [climax_type]. [climax_choice].",climax,,
+RES_CLOSE_ESC_COMEDY,"And so [Protagonist] finally escaped [Antagonist] and never had to [Abuse] again. [Only Friend] got a medal. [Love Interest] got confused. Everyone went home.",closing,comedy,escape
+RES_CLOSE_ESC_DARK,"[Protagonist] got out. But freedom has a price. [Only Friend] was left behind. [Love Interest] waited at [Event Location] for someone who never came back.",closing,dark,escape
+RES_CLOSE_ESC_TRIUMPHANT,"[Protagonist] walked free. [Antagonist] could only watch. At last, no more [Abuse]. [Love Interest] was waiting with open arms.",closing,triumphant,escape
+RES_CLOSE_REC_COMEDY,"[Love Interest] finally recognized [Protagonist] and immediately tripped over [Transformation Item]. [Antagonist] fainted. [Only Friend] took a selfie.",closing,comedy,recognition
+RES_CLOSE_REC_TRIUMPHANT,"[Love Interest] looked into [Protagonist]'s eyes and saw the truth. No more hiding. [Antagonist] had lost. [Only Friend] wept with joy at [Event Location].",closing,triumphant,recognition
+RES_CLOSE_REC_DARK,"[Love Interest] found them. But recognition cuts both ways. [Protagonist] could never go back to who they were before. [Antagonist] smiled, knowing the damage was done.",closing,dark,recognition
+RES_CLOSE_FORG_COMEDY,"[Protagonist] forgave [Antagonist], which was honestly pretty weird given the whole [Abuse] thing. [Only Friend] started a slow clap. [Love Interest] was very confused.",closing,comedy,forgive
+RES_CLOSE_FORG_TRIUMPHANT,"With quiet dignity, [Protagonist] offered [Antagonist] forgiveness. [Only Friend] wept. Even [Love Interest] was moved. [Event Location] had never seen such grace.",closing,triumphant,forgive
+RES_CLOSE_FORG_TRAGEDY,"[Protagonist] forgave them. It didn't fix anything. But it was the right thing to do. [Only Friend] understood. [Love Interest] didn't.",closing,tragedy,forgive
+RES_CLOSE_FORG_BITTERSWEET,"[Protagonist] let go of the anger. [Antagonist] said nothing. Some wounds don't close, but they can stop bleeding. [Only Friend] held their hand on the way home.",closing,bittersweet,forgive
+RES_CLOSE_FALLBACK_COMEDY,"And that was that. [Protagonist] survived. [Antagonist] probably didn't learn anything. [Only Friend] wrote a book about it. It flopped.",closing,comedy,
+RES_CLOSE_FALLBACK_DARK,"The story ended. But stories like these never really end. [Protagonist] still dreams of [Event Location]. [Antagonist] still dreams of [Protagonist].",closing,dark,
+RES_CLOSE_FALLBACK_CHAOS,"Nobody knows what happened next. [Antagonist] bit someone. [Protagonist] stole a horse. [Event Location] is now a crater. [Only Friend] started a podcast about it.",closing,chaos,

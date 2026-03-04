@@ -16,12 +16,12 @@ MonoBehaviour:
   type: 2
   promptText: The final showdown with who wronged them
   climaxType: Confronting the Antagonist
-  outcomeCategory: forgive
   protagonistOptions:
-  - Forgive them publicly
-  - Demand justice
-  - Walk away forever
+  - '[Protagonist] forgives [Antagonist] publicly'
+  - '[Protagonist] demands justice'
+  - '[Protagonist] walks away forever'
   antagonistOptions:
-  - Beg for forgiveness
-  - Double down on cruelty
-  - Reveal a hidden motive
+  - '[Antagonist] begs for forgiveness'
+  - '[Antagonist] doubles down on cruelty'
+  - '[Antagonist] reveals a hidden motive'
+  outcomeCategory: 

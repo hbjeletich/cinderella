@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_9
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_09
+  id: RES_RISE_2_TRIUMPHANT
   type: 3
-  promptText: They destroyed each other. [Only Friend] visits the ruins sometimes,
-    wondering if it had to end this way.
-  outcomeCategory: mutual_destruction
-  tone: tragedy
+  promptText: "Hope arrived just in time \u2014 [deus_ex]. In a blinding flash, [transformation].
+    [Protagonist] held [signature_item] and knew the tide had turned."
+  segmentType: 2
+  tone: triumphant
+  climaxOutcome: 

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_11
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_11
+  id: RES_RISE_3_COMEDY
   type: 3
-  promptText: '[Protagonist] walked away from [Antagonist], from [Event Location],
-    from all of it. Freedom tasted like [Transformation Item].'
-  outcomeCategory: escape
-  tone: triumphant
+  promptText: "Things got weird fast \u2014 [time_limit]. [Protagonist] panicked
+    and [escape]. Behind them, forgotten on the ground: [item_left]. Classic."
+  segmentType: 3
+  tone: comedy
+  climaxOutcome: 

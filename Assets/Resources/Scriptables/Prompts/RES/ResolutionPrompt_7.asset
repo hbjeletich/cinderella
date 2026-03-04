@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_7
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_07
+  id: RES_RISE_2_COMEDY
   type: 3
-  promptText: In the end, neither could let go. [Protagonist] and [Antagonist] fell
-    together, and [Event Location] would never recover.
-  outcomeCategory: mutual_destruction
-  tone: dark
+  promptText: 'Then, out of absolutely nowhere, [deus_ex]. Somehow, [transformation].
+    To top it off, [Protagonist] got: [signature_item].'
+  segmentType: 2
+  tone: comedy
+  climaxOutcome: 

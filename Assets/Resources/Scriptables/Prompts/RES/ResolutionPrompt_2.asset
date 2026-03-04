@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_2
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_02
+  id: RES_RISE_1_DEFAULT
   type: 3
-  promptText: '[Protagonist] stood tall at [Event Location], no longer a servant
-    but an equal. [Love Interest] never let go of their hand.'
-  outcomeCategory: triumphant
-  tone: triumphant
+  promptText: "[Antagonist] had other plans though \u2014 [prevention]. But [Protagonist]
+    wasn't giving up that easily \u2014 [dress_up]."
+  segmentType: 1
+  tone: 
+  climaxOutcome: 

@@ -304,6 +304,12 @@ public class RoundManager : MonoBehaviour
         SendClimaxOptionsToPlayer(protagonistPlayer, climax.protagonistOptions, "protagonist");
         SendClimaxOptionsToPlayer(antagonistPlayer, climax.antagonistOptions, "antagonist");
         
+        // build waiting message with scenario context
+        string waitingText = DialogueManager.Instance.GetDialogue("climax_waiting");
+        waitingText = waitingText.Replace("{protagonist}", protagonistPlayer.playerName);
+        waitingText = waitingText.Replace("{antagonist}", antagonistPlayer.playerName);
+        waitingText = waitingText.Replace("{climax_prompt}", climax.promptText);
+
         // send waiting message to everyone else
         foreach(Player p in PlayerManager.Instance.players)
         {
@@ -311,7 +317,7 @@ public class RoundManager : MonoBehaviour
             {
                 var message = new ShowAnswersMessage{
                     type = "show_answer",
-                    text = "The heroes and villains are choosing their fate...",
+                    text = waitingText,
                     myPrompt = true
                 };
                 ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
@@ -403,10 +409,19 @@ public class RoundManager : MonoBehaviour
         }
         
         player.SetLastPrompt(StoryManager.Instance.GetChosenClimax());
+
+        // fill in character names so options read like story actions
+        string[] filledOptions = new string[options.Length];
+        for(int i = 0; i < options.Length; i++)
+        {
+            filledOptions[i] = options[i]
+                .Replace("[Protagonist]", StoryManager.Instance.GetStoryVariable("protagonist_name"))
+                .Replace("[Antagonist]", StoryManager.Instance.GetStoryVariable("antagonist_name"));
+        }
         
         var message = new ShowAnswerChoicesMessage{
             type = "show_choices",
-            text = string.Join("|", options),
+            text = string.Join("|", filledOptions),
             myPrompt = false
         };
         
@@ -502,6 +517,7 @@ public class RoundManager : MonoBehaviour
             return null;
         }
 
+        // for now just pick randomly, but could be based on scores or something later
         protagonistPlayer = PlayerManager.Instance.GetHighestScoringPlayer();
         antagonistPlayer = PlayerManager.Instance.GetLowestScoringPlayer();
 
@@ -538,14 +554,9 @@ public class RoundManager : MonoBehaviour
         }
         
         int maxVotes = tally.Values.Max();
-
-        // collect all choices that tied for the most votes
-        List<string> winners = new List<string>();
-        foreach(var choice in tally)
-        {
-            if(choice.Value == maxVotes)
-                winners.Add(choice.Key);
-        }
+        List<string> winners = tally.Where(kv => kv.Value == maxVotes)
+                                    .Select(kv => kv.Key)
+                                    .ToList();
         
         if(winners.Count == 1)
             return winners[0];
@@ -589,12 +600,9 @@ public class RoundManager : MonoBehaviour
         }
         
         int maxCount = tally.Values.Max();
-        List<ReactionType> winners = new List<ReactionType>();
-        foreach(var reaction in tally)
-        {
-            if(reaction.Value == maxCount)
-                winners.Add(reaction.Key);
-        }
+        List<ReactionType> winners = tally.Where(kv => kv.Value == maxCount)
+                                          .Select(kv => kv.Key)
+                                          .ToList();
         
         if(winners.Count == 1)
             return winners[0];

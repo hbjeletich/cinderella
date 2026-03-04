@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_5
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_05
+  id: RES_RISE_1_TRIUMPHANT
   type: 3
-  promptText: With quiet dignity, [Protagonist] offered [Antagonist] forgiveness.
-    [Only Friend] wept. Even [Love Interest] was moved.
-  outcomeCategory: forgive
+  promptText: "[Antagonist] tried to hold them back \u2014 [prevention]. But nothing
+    could stop [Protagonist]. With determination: [dress_up]."
+  segmentType: 1
   tone: triumphant
+  climaxOutcome: 

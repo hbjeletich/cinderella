@@ -187,8 +187,9 @@ public static class CSVReader
         prompt.promptText = row[1];
         Debug.Log($"Final text: {prompt.promptText}");
 
-        prompt.outcomeCategory = row[row.Count() - 2];
-        prompt.tone = row[row.Count() - 1].Trim('\n', '\r');
+        prompt.segmentType = prompt.StringToSegmentType(row[2].Trim('\n', '\r'));
+        prompt.tone = row[3].Trim('\n', '\r');
+        prompt.climaxOutcome = row[4].Trim('\n', '\r');
 
         if (!Directory.Exists($"Assets/Resources/Scriptables/Prompts/RES/"))
         {

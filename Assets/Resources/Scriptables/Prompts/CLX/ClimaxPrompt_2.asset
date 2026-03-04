@@ -16,12 +16,12 @@ MonoBehaviour:
   type: 2
   promptText: The love interest has found them -- what happens?
   climaxType: The Recognition
-  outcomeCategory: recognition
   protagonistOptions:
-  - Reveal your true identity
-  - Pretend not to know them
-  - Run away again
+  - '[Protagonist] reveals their true identity'
+  - '[Protagonist] pretends not to know them'
+  - '[Protagonist] runs away again'
   antagonistOptions:
-  - Deny the match
-  - Demand proof
-  - Accept gracefully
+  - '[Antagonist] denies the match'
+  - '[Antagonist] demands proof'
+  - '[Antagonist] accepts gracefully'
+  outcomeCategory: 

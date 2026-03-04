@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
-  m_Name: ResolutionPrompt_12
+  m_Name: ResolutionPrompt_14
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_RISE_3_DARK
+  id: RES_CLX_01
   type: 3
-  promptText: "The clock was ticking \u2014 [time_limit]. There was no choice. [escape].
-    They left behind [item_left]. It would haunt them."
-  segmentType: 3
-  tone: dark
+  promptText: Then came the moment of truth. [climax_type]. [climax_choice].
+  segmentType: 4
+  tone: 
   climaxOutcome: 

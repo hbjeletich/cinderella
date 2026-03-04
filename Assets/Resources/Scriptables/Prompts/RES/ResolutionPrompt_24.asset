@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
-  m_Name: ResolutionPrompt_12
+  m_Name: ResolutionPrompt_24
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_RISE_3_DARK
+  id: RES_CLOSE_FORG_BITTERSWEET
   type: 3
-  promptText: "The clock was ticking \u2014 [time_limit]. There was no choice. [escape].
-    They left behind [item_left]. It would haunt them."
-  segmentType: 3
-  tone: dark
-  climaxOutcome: 
+  promptText: '[Protagonist] let go of the anger. [Antagonist] said nothing. Some
+    wounds don''t close, but they can stop bleeding. [Only Friend] held their hand
+    on the way home.'
+  segmentType: 5
+  tone: bittersweet
+  climaxOutcome: forgive

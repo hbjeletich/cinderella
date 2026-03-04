@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5de7534220f74f36a7d19074dfea0bf, type: 3}
   m_Name: ResolutionPrompt_13
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
-  id: RES_13
+  id: RES_RISE_3_CHAOS
   type: 3
-  promptText: "When [Antagonist] revealed the truth\u2014that they'd been protecting
-    [Protagonist] all along\u2014everything changed."
-  outcomeCategory: twist_redemption
-  tone: triumphant
+  promptText: "Everything went sideways \u2014 [time_limit]. [escape]. [item_left]
+    went flying. Nobody knows where it landed."
+  segmentType: 3
+  tone: chaos
+  climaxOutcome: 

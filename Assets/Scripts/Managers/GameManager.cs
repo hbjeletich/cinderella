@@ -34,10 +34,14 @@ public class GameManager : MonoBehaviour
     private HashSet<string> currentGroupPlayerAnswers;
     private string currentGroupWinningChoice;
 
+    // resolution title phase
+    private bool isResolutionTitlePhase = false;
+
     [Header("Scoring")]
     public int answerPickedPoints = 500;
     public int votedWithMajorityPoints = 200;
     public int reactionConsensusPoints = 100;
+    public int titlePickedPoints = 300;
 
     public GameState CurrentState => currentState;
 
@@ -156,10 +160,14 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"GameManager: Protagonist is {protagonist.playerName}, Antagonist is {antagonist.playerName}");
         
+        ClimaxPrompt climax = StoryManager.Instance.GetChosenClimax();
+
         string introText = DialogueManager.Instance.GetDialogue("climax_intro");
         // swap in player names
         introText = introText.Replace("{protagonist}", protagonist.playerName);
         introText = introText.Replace("{antagonist}", antagonist.playerName);
+        introText = introText.Replace("{climax_type}", climax.climaxType);
+        introText = introText.Replace("{climax_prompt}", climax.promptText);
 
         UIManager.Instance.ShowNarrative(introText, onComplete: () => {
             SetGameState(GameState.Prompting);
@@ -169,14 +177,114 @@ public class GameManager : MonoBehaviour
 
     private void StartResolutionRound()
     {
+        isResolutionTitlePhase = false;
+
         string introText = DialogueManager.Instance.GetDialogue("resolution_intro");
-        ResolutionPrompt resolution = StoryManager.Instance.GetResolutionPrompt();
-        string filledText = StoryManager.Instance.FillPlaceholders(resolution.promptText);
 
         UIManager.Instance.ShowNarrative(introText, onComplete: () => {
-            UIManager.Instance.ShowNarrative(filledText, onComplete: () => {
-                StoryManager.Instance.OnRoundComplete();
-            });
+            StartCoroutine(PlayResolutionSegments());
+        });
+    }
+
+    private IEnumerator PlayResolutionSegments()
+    {
+        List<string> segments = StoryManager.Instance.BuildResolutionSegments();
+
+        foreach(string segment in segments)
+        {
+            bool segmentDone = false;
+            UIManager.Instance.ShowNarrative(segment, () => segmentDone = true);
+            yield return new WaitUntil(() => segmentDone);
+        }
+
+        // small pause before title phase
+        yield return new WaitForSeconds(1.5f);
+
+        StartTitlePhase();
+    }
+
+    private void StartTitlePhase()
+    {
+        Debug.Log("GameManager: Starting title phase!");
+        isResolutionTitlePhase = true;
+        SetGameState(GameState.Prompting);
+
+        // ask every player to write a title
+        string titlePromptText = DialogueManager.Instance.GetDialogue("title_prompt");
+
+        foreach(Player p in PlayerManager.Instance.players)
+        {
+            var message = new ShowPromptMessage{
+                type = "show_prompt",
+                text = titlePromptText,
+                inputType = "text"
+            };
+            ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
+        }
+    }
+
+    private void HandleTitleSubmissions()
+    {
+        Debug.Log("GameManager: All titles submitted, starting title vote!");
+        currentSubmissions = RoundManager.Instance.GetSubmissions();
+
+        List<string> titles = new List<string>();
+        foreach(var sub in currentSubmissions)
+        {
+            titles.Add(sub.Value);
+        }
+
+        RoundManager.Instance.ClearPerPlayerState();
+        SetGameState(GameState.Voting);
+
+        // show titles on TV, then send vote to everyone
+        UIManager.Instance.ShowOptions(null, titles, onComplete: () => {
+            RoundManager.Instance.SendClimaxVoteToAllPlayers(titles);
+        });
+    }
+
+    private void HandleTitleVoteResult()
+    {
+        string winningTitle = RoundManager.Instance.GetWinningChoice();
+        Debug.Log($"GameManager: Winning title: {winningTitle}");
+
+        // find who wrote it and give them points
+        Player author = null;
+        foreach(var sub in currentSubmissions)
+        {
+            if(sub.Value == winningTitle)
+            {
+                author = sub.Key;
+                break;
+            }
+        }
+
+        if(author != null)
+        {
+            author.score += titlePickedPoints;
+            Debug.Log($"GameManager: {author.playerName} earned {titlePickedPoints} pts (title picked)");
+        }
+
+        // voted with majority
+        Dictionary<Player, string> votes = RoundManager.Instance.GetVotes();
+        foreach(var vote in votes)
+        {
+            if(vote.Value == winningTitle)
+            {
+                vote.Key.score += votedWithMajorityPoints;
+                Debug.Log($"GameManager: {vote.Key.playerName} earned {votedWithMajorityPoints} pts (voted with majority)");
+            }
+        }
+
+        // show the winning title on TV
+        string authorName = (author != null) ? author.playerName : "someone";
+        string revealText = $"\"{winningTitle}\" — titled by {authorName}!";
+
+        SetGameState(GameState.Talking);
+
+        UIManager.Instance.ShowNarrative(revealText, onComplete: () => {
+            isResolutionTitlePhase = false;
+            EndRound();
         });
     }
 
@@ -200,6 +308,13 @@ public class GameManager : MonoBehaviour
 
     private void HandleAllPromptsSubmitted()
     {
+        // title phase intercept
+        if(isResolutionTitlePhase)
+        {
+            HandleTitleSubmissions();
+            return;
+        }
+
         Debug.Log("GameManager: All prompts submitted, starting reaction phase");
         
         currentSubmissions = RoundManager.Instance.GetSubmissions();
@@ -265,6 +380,10 @@ public class GameManager : MonoBehaviour
             Player author = RoundManager.Instance.GetAuthorOfAnswer(groupIdx, currentGroupWinningChoice);
             StoryManager.Instance.RecordSubmissionTone(author, currentGroupWinningChoice, majority);
             
+            // record this group's tone for the rising round (game round 2,3,4 → rising 1,2,3)
+            int risingRound = currentRound - 1;
+            StoryManager.Instance.RecordRisingRoundTone(risingRound, majority);
+            
             // move to next group
             RoundManager.Instance.SetCurrentGroupIndex(groupIdx + 1);
             
@@ -296,6 +415,13 @@ public class GameManager : MonoBehaviour
 
     private void HandleAllVotesSubmitted()
     {
+        // title vote intercept
+        if(isResolutionTitlePhase)
+        {
+            HandleTitleVoteResult();
+            return;
+        }
+
         Debug.Log("GameManager: All votes submitted, revealing choice");
         
         string winningChoice = RoundManager.Instance.GetWinningChoice();
@@ -349,8 +475,11 @@ public class GameManager : MonoBehaviour
 
         if(currentRound == 5)
         {
-            // climax vote
+            // climax vote — record under both the specific type key and a standard key
             StoryManager.Instance.RecordStoryVariable(StoryManager.Instance.GetChosenClimax().climaxType, winningChoice);
+            StoryManager.Instance.RecordStoryVariable("climax_choice", winningChoice);
+            StoryManager.Instance.RecordStoryVariable("climax_type", StoryManager.Instance.GetChosenClimax().climaxType);
+            StoryManager.Instance.RecordStoryVariable("climax_outcome", StoryManager.Instance.GetChosenClimax().outcomeCategory);
 
             // score
             foreach(var submission in currentSubmissions)
@@ -394,9 +523,16 @@ public class GameManager : MonoBehaviour
         ShuffleList(options);
         
         SetGameState(GameState.Voting);
-        
-        UIManager.Instance.ShowOptions(null, options, onComplete: () => {
-            RoundManager.Instance.SendClimaxVoteToAllPlayers(options);
+
+        // show the scenario question on TV before revealing options
+        ClimaxPrompt climax = StoryManager.Instance.GetChosenClimax();
+        string voteIntro = DialogueManager.Instance.GetDialogue("climax_vote_intro");
+        voteIntro = voteIntro.Replace("{climax_prompt}", climax.promptText);
+
+        UIManager.Instance.ShowNarrative(voteIntro, onComplete: () => {
+            UIManager.Instance.ShowOptions(null, options, onComplete: () => {
+                RoundManager.Instance.SendClimaxVoteToAllPlayers(options);
+            });
         });
     }
 

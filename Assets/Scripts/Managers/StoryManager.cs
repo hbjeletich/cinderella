@@ -233,12 +233,19 @@ public class StoryManager : MonoBehaviour
 
     public void RecordSubmissionTone(Player player, string submission, ReactionType majorityReaction)
     {
+        if(player == null)
+        {
+            Debug.LogError("StoryManager: Player is null when recording submission tone. Narrator submissions are not tracked for tone.");
+            return;
+        }
+        
         submissionTones.Add(new SubmissionTone{
             player = player,
             submission = submission,
             majorityReaction = majorityReaction
         });
         
+        // ERROR IF THE NARRATOR IS THE PLAYER
         Debug.Log($"StoryManager: Recorded tone for {player.playerName}'s submission: {majorityReaction}");
     }
 

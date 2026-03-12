@@ -36,6 +36,22 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.OnSceneChanged += OnSceneChanged;
     }
 
+    public void ShowTimer(int seconds)
+    {
+        EnsureGameUI();
+        gameUI?.ShowTimer(seconds);
+    }
+
+    public void UpdateTimer(int seconds)
+    {
+        gameUI?.UpdateTimer(seconds);
+    }
+
+    public void HideTimer()
+    {
+        gameUI?.HideTimer();
+    }
+
     public void ShowNarrative(string text, Action onComplete)
     {
         if(gameUI != null)
@@ -130,6 +146,12 @@ public class UIManager : MonoBehaviour
             Debug.Log($"UIManager: Player Icon limit reached! Stopping at the last on the list.");
             currentPlayerIconIndex = playerIcons.Length;
         }
+    }
+
+    private void EnsureGameUI()
+    {
+        if(gameUI == null)
+            gameUI = FindObjectOfType<GameUI>();
     }
 
     private void OnSceneChanged(string sceneName)

@@ -8,8 +8,30 @@ using System;
 public class GameUI : MonoBehaviour
 {
     public TextMeshProUGUI canvasText;
+    public TextMeshProUGUI timerText;
     public float baseTextTime = 2f;
     public float timePerCharacter = 0.05f;
+
+    public void ShowTimer(int seconds)
+    {
+        if(timerText != null)
+        {
+            timerText.gameObject.SetActive(true);
+            timerText.text = seconds.ToString();
+        }
+    }
+
+    public void UpdateTimer(int seconds)
+    {
+        if(timerText != null)
+            timerText.text = Mathf.Max(0, seconds).ToString();
+    }
+
+    public void HideTimer()
+    {
+        if(timerText != null)
+            timerText.gameObject.SetActive(false);
+    }
 
     public void ShowNarrative(string text, Action onComplete)
     {

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 
@@ -14,6 +15,15 @@ public class RoundManager : MonoBehaviour
     public event Action OnAllVotesSubmitted;
     public event Action OnClimaxChoicesReady;
     public static RoundManager Instance { get; private set; }
+
+    // timer settings (exposed to Inspector)
+    [Header("Timer Settings")]
+    public float promptTimerDuration = 45f;
+    public float reactTimerDuration = 15f;
+    public float voteTimerDuration = 20f;
+
+    private Coroutine activeTimer;
+    private List<string> currentVotingOptions = new List<string>();
 
     // for climax round use
     private bool isClimaxPicking = false;
@@ -50,6 +60,7 @@ public class RoundManager : MonoBehaviour
     private void ResetAll()
     {
         Debug.Log("RoundManager: Resetting all round state.");
+        StopPhaseTimer();
         PlayerManager.Instance.ResetPlayerReady();
 
         submissions.Clear();
@@ -64,7 +75,112 @@ public class RoundManager : MonoBehaviour
         groups.Clear();
         groupPrompts.Clear();
         currentGroupIndex = 0;
+        currentVotingOptions.Clear();
     }
+
+    #region Timer
+
+    public void StartPhaseTimer(float duration, Action onExpired)
+    {
+        StopPhaseTimer();
+        activeTimer = StartCoroutine(PhaseTimerCoroutine(duration, onExpired));
+    }
+
+    public void StopPhaseTimer()
+    {
+        if(activeTimer != null)
+        {
+            StopCoroutine(activeTimer);
+            activeTimer = null;
+        }
+        UIManager.Instance?.HideTimer();
+    }
+
+    private IEnumerator PhaseTimerCoroutine(float duration, Action onExpired)
+    {
+        float remaining = duration;
+        UIManager.Instance?.ShowTimer(Mathf.CeilToInt(remaining));
+
+        while(remaining > 0)
+        {
+            yield return new WaitForSeconds(1f);
+            remaining -= 1f;
+            UIManager.Instance?.UpdateTimer(Mathf.CeilToInt(Mathf.Max(0, remaining)));
+        }
+
+        activeTimer = null;
+        UIManager.Instance?.HideTimer();
+        onExpired?.Invoke();
+    }
+
+    public void AutoSubmitMissingPrompts()
+    {
+        Debug.Log("RoundManager: Timer expired — auto-submitting for missing prompt responses.");
+        List<Player> missing = new List<Player>();
+        foreach(Player p in PlayerManager.Instance.players)
+        {
+            if(!p.hasSubmittedThisRound)
+                missing.Add(p);
+        }
+        foreach(Player p in missing)
+        {
+            HandlePromptSubmission(new SubmitMessage { type = "send_prompt", text = "" }, p);
+        }
+    }
+
+    public void AutoSubmitMissingReactions()
+    {
+        Debug.Log("RoundManager: Timer expired — auto-submitting for missing reactions.");
+        List<Player> missing = new List<Player>();
+        foreach(Player p in PlayerManager.Instance.players)
+        {
+            if(!p.hasSubmittedThisRound)
+                missing.Add(p);
+        }
+        foreach(Player p in missing)
+        {
+            HandleReactSubmission(new SubmitMessage { type = "send_react", text = "comedy" }, p);
+        }
+    }
+
+    public void AutoSubmitMissingVotes()
+    {
+        Debug.Log("RoundManager: Timer expired — auto-submitting for missing votes.");
+        List<Player> missing = new List<Player>();
+        foreach(Player p in PlayerManager.Instance.players)
+        {
+            if(!p.hasSubmittedThisRound)
+                missing.Add(p);
+        }
+        foreach(Player p in missing)
+        {
+            if(currentVotingOptions.Count > 0)
+            {
+                string randomChoice = currentVotingOptions[UnityEngine.Random.Range(0, currentVotingOptions.Count)];
+                HandleChoiceSubmission(new SubmitMessage { type = "send_choice", text = randomChoice }, p);
+            }
+        }
+    }
+
+    private void AutoSubmitClimaxPicks()
+    {
+        Debug.Log("RoundManager: Timer expired — auto-submitting for missing climax picks.");
+        ClimaxPrompt climax = StoryManager.Instance.GetChosenClimax();
+
+        if(protagonistChoice == null && protagonistPlayer != null)
+            protagonistChoice = climax.protagonistOptions[UnityEngine.Random.Range(0, climax.protagonistOptions.Length)];
+
+        if(antagonistChoice == null && antagonistPlayer != null)
+            antagonistChoice = climax.antagonistOptions[UnityEngine.Random.Range(0, climax.antagonistOptions.Length)];
+
+        if(protagonistChoice != null && antagonistChoice != null)
+        {
+            isClimaxPicking = false;
+            OnClimaxChoicesReady?.Invoke();
+        }
+    }
+
+    #endregion
 
     public void StartRound(int round)
     {
@@ -120,6 +236,8 @@ public class RoundManager : MonoBehaviour
             SendPromptToPlayer(p, expositionPrompts[newIndex]);
             expositionPrompts.RemoveAt(newIndex);
         }
+
+        StartPhaseTimer(promptTimerDuration, AutoSubmitMissingPrompts);
     }
 
     public void StartRisingActionRound(int round)
@@ -154,6 +272,8 @@ public class RoundManager : MonoBehaviour
         }
 
         currentGroupIndex = 0;
+
+        StartPhaseTimer(promptTimerDuration, AutoSubmitMissingPrompts);
     }
 
     private List<List<Player>> CreateGroups(List<Player> allPlayers)
@@ -279,6 +399,7 @@ public class RoundManager : MonoBehaviour
     public void SendGroupVoteToAllPlayers(int groupIndex, List<string> options)
     {
         PlayerManager.Instance.ResetPlayerReady();
+        currentVotingOptions = new List<string>(options);
 
         foreach(Player p in PlayerManager.Instance.players)
         {
@@ -290,6 +411,8 @@ public class RoundManager : MonoBehaviour
 
             ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
         }
+
+        StartPhaseTimer(voteTimerDuration, AutoSubmitMissingVotes);
     }
 
     public void StartClimaxRound()
@@ -323,6 +446,8 @@ public class RoundManager : MonoBehaviour
                 ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
             }
         }
+
+        StartPhaseTimer(promptTimerDuration, AutoSubmitClimaxPicks);
     }
 
     public void StartResolutionRound()
@@ -381,12 +506,15 @@ public class RoundManager : MonoBehaviour
             
             ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
         }
+
+        StartPhaseTimer(reactTimerDuration, AutoSubmitMissingReactions);
     }
 
     public void SendVotePromptsToAllPlayers(Player answeredPlayer, List<string> options)
     {
         PlayerManager.Instance.ResetPlayerReady();
         answeredPlayer.SetReady(true);
+        currentVotingOptions = new List<string>(options);
 
         foreach(Player p in PlayerManager.Instance.players)
         {
@@ -398,6 +526,8 @@ public class RoundManager : MonoBehaviour
 
             ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
         }
+
+        StartPhaseTimer(voteTimerDuration, AutoSubmitMissingVotes);
     }
 
     private void SendClimaxOptionsToPlayer(Player player, string[] options, string role)
@@ -431,6 +561,7 @@ public class RoundManager : MonoBehaviour
     public void SendClimaxVoteToAllPlayers(List<string> options)
     {
         PlayerManager.Instance.ResetPlayerReady();
+        currentVotingOptions = new List<string>(options);
         
         foreach(Player p in PlayerManager.Instance.players)
         {
@@ -441,24 +572,30 @@ public class RoundManager : MonoBehaviour
             };
             ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
         }
+
+        StartPhaseTimer(voteTimerDuration, AutoSubmitMissingVotes);
     }
 
     public void HandlePromptSubmission(SubmitMessage message, Player player)
     {
+        if(player.hasSubmittedThisRound) return;
+
         player.SetReady(true);
-        submissions.Add(player, message.text);
+        submissions[player] = message.text;
         Debug.Log($"RoundManager: Player {player.playerName} submitted {message.text}");
 
         if(PlayerManager.Instance.ArePlayersReady())
         {
+            StopPhaseTimer();
             Debug.Log("RoundManager: All players ready!");
-
             OnAllPromptsSubmitted?.Invoke();
         }
     }
 
     public void HandleReactSubmission(SubmitMessage message, Player player)
     {
+        if(player.hasSubmittedThisRound) return;
+
         player.SetReady(true);
 
         Reaction react = new Reaction{
@@ -472,6 +609,7 @@ public class RoundManager : MonoBehaviour
 
         if(PlayerManager.Instance.ArePlayersReady())
         {
+            StopPhaseTimer();
             Debug.Log("RoundManager: All reactions received!");
             OnAllReactionsSubmitted?.Invoke();        
         }
@@ -489,6 +627,7 @@ public class RoundManager : MonoBehaviour
             
             if(protagonistChoice != null && antagonistChoice != null)
             {
+                StopPhaseTimer();
                 Debug.Log("RoundManager: Both climax choices received!");
                 isClimaxPicking = false;
                 OnClimaxChoicesReady?.Invoke();
@@ -496,13 +635,16 @@ public class RoundManager : MonoBehaviour
             return;
         }
 
+        if(player.hasSubmittedThisRound) return;
+
         // for other choices
         player.SetReady(true);
-        votes.Add(player, message.text);
+        votes[player] = message.text;
         Debug.Log($"RoundManager: Player {player.playerName} submitted {message.text}");
 
         if(PlayerManager.Instance.ArePlayersReady())
         {
+            StopPhaseTimer();
             Debug.Log("RoundManager: All votes received!");
             OnAllVotesSubmitted?.Invoke();
         }

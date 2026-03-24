@@ -346,7 +346,6 @@ public class RoundManager : MonoBehaviour
     private List<List<Player>> CreateGroups(List<Player> allPlayers)
     {
         List<Player> shuffled = new List<Player>(allPlayers);
-        // shuffle
         for(int i = 0; i < shuffled.Count - 1; i++)
         {
             int r = UnityEngine.Random.Range(i, shuffled.Count);
@@ -358,30 +357,18 @@ public class RoundManager : MonoBehaviour
         List<List<Player>> result = new List<List<Player>>();
         int count = shuffled.Count;
 
-        // determine group sizes based on player count
+        // target groups of 4; allow 3 or 2 for remainders
         List<int> sizes = new List<int>();
         int remaining = count;
-        while(remaining > 0 && sizes.Count < 3)
+        while(remaining > 0)
         {
-            if(remaining >= 5)
-            {
-                // if over or equal 5, get rid of 3 of them
-                sizes.Add(3);
-                remaining -= 3;
-            }
-            else if(remaining == 4)
-            {
-                // if 4 left, make two groups of 2
-                sizes.Add(2);
-                sizes.Add(2);
-                remaining = 0;
-            }
-            else
-            {
-                // add the rest
-                sizes.Add(remaining);
-                remaining = 0;
-            }
+            if(remaining >= 8)        { sizes.Add(4); remaining -= 4; }
+            else if(remaining == 7)   { sizes.Add(4); sizes.Add(3); remaining = 0; }
+            else if(remaining == 6)   { sizes.Add(3); sizes.Add(3); remaining = 0; }
+            else if(remaining == 5)   { sizes.Add(3); sizes.Add(2); remaining = 0; }
+            else if(remaining == 4)   { sizes.Add(4); remaining = 0; }
+            else if(remaining == 3)   { sizes.Add(3); remaining = 0; }
+            else                      { sizes.Add(remaining); remaining = 0; }
         }
 
         int index = 0;

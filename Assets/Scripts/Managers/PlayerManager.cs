@@ -29,14 +29,16 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public Player CreatePlayer(string playerID, string deviceId)
+    public Player CreatePlayer(string playerID, string deviceId, string playerName)
     {
         GameObject playerObj = new GameObject($"Player_{playerID}");
         playerObj.transform.parent = this.transform;
         Player newPlayer = playerObj.AddComponent<Player>();
+        newPlayer.playerName = playerName;
         newPlayer.playerID = playerID;
         newPlayer.deviceId = deviceId;
         newPlayer.isConnected = true;
+        //UIManager.Instance.AssignPlayerIcon(newPlayer);
         
         // if first connected player, set as host
         if (GetConnectedPlayers().Count == 0)
@@ -45,7 +47,7 @@ public class PlayerManager : MonoBehaviour
         }
         
         players.Add(newPlayer);
-        Debug.Log($"PlayerManager: Created new player with ID: {playerID}, deviceId: {deviceId}");
+        Debug.Log($"PlayerManager: Created new player with ID: {playerID}, deviceId: {deviceId}, name: {playerName}. Total players: {GetPlayerCount()}");
 
         OnPlayerCreated?.Invoke(newPlayer);
 

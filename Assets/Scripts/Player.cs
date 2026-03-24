@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public bool hasSubmittedThisRound = false;
     public bool isConnected = true;
     public Prompt lastPrompt;
+    public PlayerIcon playerIcon;
     
     public void SetReady(bool ready)
     {

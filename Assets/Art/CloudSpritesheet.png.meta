@@ -1,295 +1,283 @@
 fileFormatVersion: 2
-guid: 09105cec644804631a347430ee9b3ea8
+guid: 4dd1b9e52c66d486e8a2ea75b81f9886
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8020143640844766479
-    second: spritesheet_0
+      213: -7153446334996336798
+    second: CloudSpritesheet_0
   - first:
-      213: -6251682230944352461
-    second: spritesheet_1
+      213: 6349244462996519828
+    second: CloudSpritesheet_1
   - first:
-      213: -1259408508766424310
-    second: spritesheet_2
+      213: -2553848167033097139
+    second: CloudSpritesheet_2
   - first:
-      213: -5962389079421231736
-    second: spritesheet_3
+      213: 6099917975473342838
+    second: CloudSpritesheet_3
   - first:
-      213: 2788568348960109317
-    second: spritesheet_4
+      213: 1483061265405172343
+    second: CloudSpritesheet_4
   - first:
-      213: 226702753830753226
-    second: spritesheet_5
+      213: 8297708288644172997
+    second: CloudSpritesheet_5
   - first:
-      213: -7921052967969465774
-    second: spritesheet_6
+      213: -8864177049775725490
+    second: CloudSpritesheet_6
   - first:
-      213: -1370661682523340017
-    second: spritesheet_7
+      213: -8781304730555038672
+    second: CloudSpritesheet_7
   - first:
-      213: -8276262488406422588
-    second: spritesheet_8
+      213: -2919201048434989424
+    second: CloudSpritesheet_8
   - first:
-      213: -5906973516983679737
-    second: spritesheet_9
+      213: 6687328209151959439
+    second: CloudSpritesheet_9
   - first:
-      213: 5777552420452043588
-    second: spritesheet_10
+      213: -4759243576628773738
+    second: CloudSpritesheet_10
   - first:
-      213: 1269540525142108225
-    second: spritesheet_11
+      213: -3994258790490488989
+    second: CloudSpritesheet_11
   - first:
-      213: -2630129836624287915
-    second: spritesheet_12
+      213: 5921588117941105382
+    second: CloudSpritesheet_12
   - first:
-      213: -7676219313036738927
-    second: spritesheet_13
+      213: -7717483831102181900
+    second: CloudSpritesheet_13
   - first:
-      213: 6985626698306143173
-    second: spritesheet_14
+      213: -985971171172163676
+    second: CloudSpritesheet_14
   - first:
-      213: 4773514653529381359
-    second: spritesheet_15
+      213: 5283968067613546869
+    second: CloudSpritesheet_15
   - first:
-      213: 6413020478584453356
-    second: spritesheet_16
+      213: 7964969559087109278
+    second: CloudSpritesheet_16
   - first:
-      213: -6420534950463556919
-    second: spritesheet_17
+      213: -2277541917927889638
+    second: CloudSpritesheet_17
   - first:
-      213: 8367830406354533065
-    second: spritesheet_18
+      213: -7240698192632476805
+    second: CloudSpritesheet_18
   - first:
-      213: -4721245407534591264
-    second: spritesheet_19
+      213: -1266702689732352602
+    second: CloudSpritesheet_19
   - first:
-      213: -2642393358525368334
-    second: spritesheet_20
+      213: -8834649721082168082
+    second: CloudSpritesheet_20
   - first:
-      213: 182515998739034355
-    second: spritesheet_21
+      213: -816362384368449833
+    second: CloudSpritesheet_21
   - first:
-      213: 5390129371266227295
-    second: spritesheet_22
+      213: -316565026362944991
+    second: CloudSpritesheet_22
   - first:
-      213: 1111231892956182058
-    second: spritesheet_23
+      213: -2304731538432088356
+    second: CloudSpritesheet_23
   - first:
-      213: 3042023047814558122
-    second: spritesheet_24
+      213: 3210262808558896185
+    second: CloudSpritesheet_24
   - first:
-      213: -1297572194080285004
-    second: spritesheet_25
+      213: -2155671830859205952
+    second: CloudSpritesheet_25
   - first:
-      213: -5351138903708955224
-    second: spritesheet_26
+      213: 5583715570072235181
+    second: CloudSpritesheet_26
   - first:
-      213: -5895191231709818157
-    second: spritesheet_27
+      213: -8018111396855158002
+    second: CloudSpritesheet_27
   - first:
-      213: 4116411608050698257
-    second: spritesheet_28
+      213: -6255916063235243432
+    second: CloudSpritesheet_28
   - first:
-      213: 2696214034221626940
-    second: spritesheet_29
+      213: -6598966601643034685
+    second: CloudSpritesheet_29
   - first:
-      213: 5339229742347854233
-    second: spritesheet_30
+      213: 8069894526731908270
+    second: CloudSpritesheet_30
   - first:
-      213: -5381851817413261878
-    second: spritesheet_31
+      213: -1200916648028615040
+    second: CloudSpritesheet_31
   - first:
-      213: 6123212246031883711
-    second: spritesheet_32
+      213: 2464851547290979129
+    second: CloudSpritesheet_32
   - first:
-      213: -8158273205997960823
-    second: spritesheet_33
+      213: 47301954967592770
+    second: CloudSpritesheet_33
   - first:
-      213: -7803645574393991823
-    second: spritesheet_34
+      213: 4710128170117735525
+    second: CloudSpritesheet_34
   - first:
-      213: -8540854674809487797
-    second: spritesheet_35
+      213: 8344386568234820954
+    second: CloudSpritesheet_35
   - first:
-      213: -2800876817223335725
-    second: spritesheet_36
+      213: 6866499532030483386
+    second: CloudSpritesheet_36
   - first:
-      213: 7686511047796825374
-    second: spritesheet_37
+      213: -2844632651405548598
+    second: CloudSpritesheet_37
   - first:
-      213: -3654083477062011090
-    second: spritesheet_38
+      213: 2487112874322670673
+    second: CloudSpritesheet_38
   - first:
-      213: -2213891765562235112
-    second: spritesheet_39
+      213: 8609778897521646870
+    second: CloudSpritesheet_39
   - first:
-      213: 7816579671404485219
-    second: spritesheet_40
+      213: -5400209775187056033
+    second: CloudSpritesheet_40
   - first:
-      213: 8434893452232278025
-    second: spritesheet_41
+      213: -969619815259899456
+    second: CloudSpritesheet_41
   - first:
-      213: 3062383759408700104
-    second: spritesheet_42
+      213: -3667796738160315636
+    second: CloudSpritesheet_42
   - first:
-      213: -3687489427716195
-    second: spritesheet_43
+      213: 3901794884106305795
+    second: CloudSpritesheet_43
   - first:
-      213: 1751618896811465624
-    second: spritesheet_44
+      213: 5832884321131862492
+    second: CloudSpritesheet_44
   - first:
-      213: 156824180473805077
-    second: spritesheet_45
+      213: 4482823163691888135
+    second: CloudSpritesheet_45
   - first:
-      213: 9109323392184880499
-    second: spritesheet_46
+      213: -3573509464705473552
+    second: CloudSpritesheet_46
   - first:
-      213: 2598833627876718223
-    second: spritesheet_47
+      213: -3587195715142905588
+    second: CloudSpritesheet_47
   - first:
-      213: -2033776217500058201
-    second: spritesheet_48
+      213: -3361672596729234548
+    second: CloudSpritesheet_48
   - first:
-      213: -9123048126347468465
-    second: spritesheet_49
+      213: -1021062693564409784
+    second: CloudSpritesheet_49
   - first:
-      213: -2731854774048942697
-    second: spritesheet_50
+      213: -3902214545018890659
+    second: CloudSpritesheet_50
   - first:
-      213: 6463828295129595045
-    second: spritesheet_51
+      213: 4362787472490408191
+    second: CloudSpritesheet_51
   - first:
-      213: 2920052613717862253
-    second: spritesheet_52
+      213: -8280113795999292509
+    second: CloudSpritesheet_52
   - first:
-      213: -8873626391699258573
-    second: spritesheet_53
+      213: 3399752439729209693
+    second: CloudSpritesheet_53
   - first:
-      213: 1752520659032480968
-    second: spritesheet_54
+      213: 7648197541300871092
+    second: CloudSpritesheet_54
   - first:
-      213: -8188909564941553941
-    second: spritesheet_55
+      213: -3360579722526994060
+    second: CloudSpritesheet_55
   - first:
-      213: 8203099556873942403
-    second: spritesheet_56
+      213: 4801763090074285359
+    second: CloudSpritesheet_56
   - first:
-      213: -4180715191943267252
-    second: spritesheet_57
+      213: 4828066898784271583
+    second: CloudSpritesheet_57
   - first:
-      213: -3423954715984931012
-    second: spritesheet_58
+      213: 348698754876302794
+    second: CloudSpritesheet_58
   - first:
-      213: -1173080275824419151
-    second: spritesheet_59
+      213: 1210606601942375238
+    second: CloudSpritesheet_59
   - first:
-      213: -3194430170665604626
-    second: spritesheet_60
+      213: -4305418564330197451
+    second: CloudSpritesheet_60
   - first:
-      213: -4180478380050184196
-    second: spritesheet_61
+      213: -738634436114165475
+    second: CloudSpritesheet_61
   - first:
-      213: 1528203702100030697
-    second: spritesheet_62
+      213: -6682245185798987497
+    second: CloudSpritesheet_62
   - first:
-      213: 4057492184055871464
-    second: spritesheet_63
+      213: 1805189548801802836
+    second: CloudSpritesheet_63
   - first:
-      213: -8151809739343590656
-    second: spritesheet_64
+      213: 4674098987304821964
+    second: CloudSpritesheet_64
   - first:
-      213: 1486011304807624349
-    second: spritesheet_65
+      213: -726109516051954553
+    second: CloudSpritesheet_65
   - first:
-      213: -7546874146221198523
-    second: spritesheet_66
+      213: 7943763000829894128
+    second: CloudSpritesheet_66
   - first:
-      213: 8203384205706593396
-    second: spritesheet_67
+      213: -7714639889647749287
+    second: CloudSpritesheet_67
   - first:
-      213: 5476210624315791439
-    second: spritesheet_68
+      213: 7728532176591760047
+    second: CloudSpritesheet_68
   - first:
-      213: 4881338712816961750
-    second: spritesheet_69
+      213: 6482397348029191369
+    second: CloudSpritesheet_69
   - first:
-      213: -3637585315767756026
-    second: spritesheet_70
+      213: -7796196570681132330
+    second: CloudSpritesheet_70
   - first:
-      213: 3339521214611036040
-    second: spritesheet_71
+      213: 7986101099302149425
+    second: CloudSpritesheet_71
   - first:
-      213: -8054094661458634563
-    second: spritesheet_72
+      213: 419134887815470867
+    second: CloudSpritesheet_72
   - first:
-      213: -4398394707965095008
-    second: spritesheet_73
+      213: -881353775874084996
+    second: CloudSpritesheet_73
   - first:
-      213: 4764081960791798808
-    second: spritesheet_74
+      213: -3728993741410692199
+    second: CloudSpritesheet_74
   - first:
-      213: 4358228687824631495
-    second: spritesheet_75
+      213: 2880829486611000216
+    second: CloudSpritesheet_75
   - first:
-      213: -1933497887715123699
-    second: spritesheet_76
+      213: -9024086031558441386
+    second: CloudSpritesheet_76
   - first:
-      213: -7088014404590163093
-    second: spritesheet_77
+      213: -6334927023502421997
+    second: CloudSpritesheet_77
   - first:
-      213: -4231952906909274518
-    second: spritesheet_78
+      213: -256424460928843958
+    second: CloudSpritesheet_78
   - first:
-      213: -3253330834931219228
-    second: spritesheet_79
+      213: -2603048255614128039
+    second: CloudSpritesheet_79
   - first:
-      213: -7217613064680546865
-    second: spritesheet_80
+      213: -7290888340299913706
+    second: CloudSpritesheet_80
   - first:
-      213: 7785628452164488187
-    second: spritesheet_81
+      213: -3040689121507217321
+    second: CloudSpritesheet_81
   - first:
-      213: 8746164212724197313
-    second: spritesheet_82
+      213: -1120659001394573398
+    second: CloudSpritesheet_82
   - first:
-      213: 2455660249822621566
-    second: spritesheet_83
+      213: 2189153781591103094
+    second: CloudSpritesheet_83
   - first:
-      213: 1425127498379637175
-    second: spritesheet_84
+      213: 2883819319128048652
+    second: CloudSpritesheet_84
   - first:
-      213: -100600239254619610
-    second: spritesheet_85
+      213: 4780727633375032484
+    second: CloudSpritesheet_85
   - first:
-      213: -2246593140615009828
-    second: spritesheet_86
+      213: -8485914210615969010
+    second: CloudSpritesheet_86
   - first:
-      213: 4690727812591204254
-    second: spritesheet_87
+      213: -1424835516550308411
+    second: CloudSpritesheet_87
   - first:
-      213: -1837837421625175352
-    second: spritesheet_88
+      213: 5594682565401290382
+    second: CloudSpritesheet_88
   - first:
-      213: -7033796726722632800
-    second: spritesheet_89
+      213: -5153657988579689884
+    second: CloudSpritesheet_89
   - first:
-      213: -5575019744733750458
-    second: spritesheet_90
+      213: -3972419412129813977
+    second: CloudSpritesheet_90
   - first:
-      213: -289723467203535953
-    second: spritesheet_91
-  - first:
-      213: 655305000280709651
-    second: spritesheet_92
-  - first:
-      213: -2254380589530487662
-    second: spritesheet_93
-  - first:
-      213: -7901777169779311463
-    second: spritesheet_94
-  - first:
-      213: 5203210261242217090
-    second: spritesheet_95
+      213: -2089272702130558208
+    second: CloudSpritesheet_91
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -357,8 +345,8 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
+    maxTextureSize: 4096
+    resizeAlgorithm: 1
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
@@ -398,7 +386,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: spritesheet_0
+      name: CloudSpritesheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -413,14 +401,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f0d092816264d4f60800000000000000
-      internalID: 8020143640844766479
+      spriteID: 26f29ba757ad9bc90800000000000000
+      internalID: -7153446334996336798
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_1
+      name: CloudSpritesheet_1
       rect:
         serializedVersion: 2
         x: 320
@@ -435,14 +423,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 337b0ff32209d39a0800000000000000
-      internalID: -6251682230944352461
+      spriteID: 49bf509033c0d1850800000000000000
+      internalID: 6349244462996519828
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_2
+      name: CloudSpritesheet_2
       rect:
         serializedVersion: 2
         x: 640
@@ -457,14 +445,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a037fd742aea58ee0800000000000000
-      internalID: -1259408508766424310
+      spriteID: d44b5b97f98ee8cd0800000000000000
+      internalID: -2553848167033097139
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_3
+      name: CloudSpritesheet_3
       rect:
         serializedVersion: 2
         x: 960
@@ -479,14 +467,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 88ddd6ce8b6514da0800000000000000
-      internalID: -5962389079421231736
+      spriteID: 679cb17741347a450800000000000000
+      internalID: 6099917975473342838
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_4
+      name: CloudSpritesheet_4
       rect:
         serializedVersion: 2
         x: 0
@@ -501,14 +489,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5033aaf832cf2b620800000000000000
-      internalID: 2788568348960109317
+      spriteID: 77add900d54e49410800000000000000
+      internalID: 1483061265405172343
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_5
+      name: CloudSpritesheet_5
       rect:
         serializedVersion: 2
         x: 320
@@ -523,14 +511,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ac35fa714f8652300800000000000000
-      internalID: 226702753830753226
+      spriteID: 5cc4372b9b1672370800000000000000
+      internalID: 8297708288644172997
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_6
+      name: CloudSpritesheet_6
       rect:
         serializedVersion: 2
         x: 640
@@ -545,14 +533,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 25a502d0b44c21290800000000000000
-      internalID: -7921052967969465774
+      spriteID: e44a2f900fd1cf480800000000000000
+      internalID: -8864177049775725490
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_7
+      name: CloudSpritesheet_7
       rect:
         serializedVersion: 2
         x: 960
@@ -567,14 +555,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f0305f9367e6afce0800000000000000
-      internalID: -1370661682523340017
+      spriteID: 0344fc67fd9822680800000000000000
+      internalID: -8781304730555038672
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_8
+      name: CloudSpritesheet_8
       rect:
         serializedVersion: 2
         x: 0
@@ -589,14 +577,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4cb05a6cd1fc42d80800000000000000
-      internalID: -8276262488406422588
+      spriteID: 096a510fc1aec77d0800000000000000
+      internalID: -2919201048434989424
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_9
+      name: CloudSpritesheet_9
       rect:
         serializedVersion: 2
         x: 320
@@ -611,14 +599,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7054c8ef1e6360ea0800000000000000
-      internalID: -5906973516983679737
+      spriteID: f81a3f243992ecc50800000000000000
+      internalID: 6687328209151959439
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_10
+      name: CloudSpritesheet_10
       rect:
         serializedVersion: 2
         x: 640
@@ -633,14 +621,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 44b0e3cc05dfd2050800000000000000
-      internalID: 5777552420452043588
+      spriteID: 69c7b7fbe25c3fdb0800000000000000
+      internalID: -4759243576628773738
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_11
+      name: CloudSpritesheet_11
       rect:
         serializedVersion: 2
         x: 960
@@ -655,14 +643,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 148ee0d91605e9110800000000000000
-      internalID: 1269540525142108225
+      spriteID: 36f35d3eaca8198c0800000000000000
+      internalID: -3994258790490488989
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_12
+      name: CloudSpritesheet_12
       rect:
         serializedVersion: 2
         x: 0
@@ -677,14 +665,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5576ade39d6ef7bd0800000000000000
-      internalID: -2630129836624287915
+      spriteID: 6e2bd04f405bd2250800000000000000
+      internalID: 5921588117941105382
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_13
+      name: CloudSpritesheet_13
       rect:
         serializedVersion: 2
         x: 320
@@ -699,14 +687,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 19eb3748437987590800000000000000
-      internalID: -7676219313036738927
+      spriteID: 4fd6557385df5e490800000000000000
+      internalID: -7717483831102181900
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_14
+      name: CloudSpritesheet_14
       rect:
         serializedVersion: 2
         x: 640
@@ -721,14 +709,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5c3c50e787ee1f060800000000000000
-      internalID: 6985626698306143173
+      spriteID: 4afd18791702152f0800000000000000
+      internalID: -985971171172163676
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_15
+      name: CloudSpritesheet_15
       rect:
         serializedVersion: 2
         x: 960
@@ -743,14 +731,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fe99db5494eee3240800000000000000
-      internalID: 4773514653529381359
+      spriteID: 579dc9a36fc645940800000000000000
+      internalID: 5283968067613546869
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_16
+      name: CloudSpritesheet_16
       rect:
         serializedVersion: 2
         x: 0
@@ -765,14 +753,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ce8f45bc520aff850800000000000000
-      internalID: 6413020478584453356
+      spriteID: e94df202d91498e60800000000000000
+      internalID: 7964969559087109278
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_17
+      name: CloudSpritesheet_17
       rect:
         serializedVersion: 2
         x: 320
@@ -787,14 +775,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9c2b3a1ea7da5e6a0800000000000000
-      internalID: -6420534950463556919
+      spriteID: a15a8dc41bb8460e0800000000000000
+      internalID: -2277541917927889638
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_18
+      name: CloudSpritesheet_18
       rect:
         serializedVersion: 2
         x: 640
@@ -809,14 +797,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9ca797f7b61802470800000000000000
-      internalID: 8367830406354533065
+      spriteID: b7b045e4b5fd38b90800000000000000
+      internalID: -7240698192632476805
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_19
+      name: CloudSpritesheet_19
       rect:
         serializedVersion: 2
         x: 960
@@ -831,14 +819,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e2d47ae054ca7eb0800000000000000
-      internalID: -4721245407534591264
+      spriteID: 6a5a87e6d94cb6ee0800000000000000
+      internalID: -1266702689732352602
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_20
+      name: CloudSpritesheet_20
       rect:
         serializedVersion: 2
         x: 0
@@ -853,14 +841,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2f77e3c8d35545bd0800000000000000
-      internalID: -2642393358525368334
+      spriteID: eecb4ebf2e4056580800000000000000
+      internalID: -8834649721082168082
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_21
+      name: CloudSpritesheet_21
       rect:
         serializedVersion: 2
         x: 320
@@ -875,14 +863,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3f07aa6755d688200800000000000000
-      internalID: 182515998739034355
+      spriteID: 7d64ab79cb2bba4f0800000000000000
+      internalID: -816362384368449833
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_22
+      name: CloudSpritesheet_22
       rect:
         serializedVersion: 2
         x: 640
@@ -897,14 +885,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f5c19b3ea169dca40800000000000000
-      internalID: 5390129371266227295
+      spriteID: 122135729c55b9bf0800000000000000
+      internalID: -316565026362944991
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_23
+      name: CloudSpritesheet_23
       rect:
         serializedVersion: 2
         x: 960
@@ -919,14 +907,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a26fcb2e483eb6f00800000000000000
-      internalID: 1111231892956182058
+      spriteID: cd6ad1570e2f300e0800000000000000
+      internalID: -2304731538432088356
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_24
+      name: CloudSpritesheet_24
       rect:
         serializedVersion: 2
         x: 0
@@ -941,14 +929,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aa1b98b38df673a20800000000000000
-      internalID: 3042023047814558122
+      spriteID: 9340dc304052d8c20800000000000000
+      internalID: 3210262808558896185
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_25
+      name: CloudSpritesheet_25
       rect:
         serializedVersion: 2
         x: 320
@@ -963,14 +951,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4be9b6dd6f81efde0800000000000000
-      internalID: -1297572194080285004
+      spriteID: 0c2325d14e38512e0800000000000000
+      internalID: -2155671830859205952
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_26
+      name: CloudSpritesheet_26
       rect:
         serializedVersion: 2
         x: 640
@@ -985,14 +973,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8ad87a4c48fecb5b0800000000000000
-      internalID: -5351138903708955224
+      spriteID: dac29f82ab75d7d40800000000000000
+      internalID: 5583715570072235181
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_27
+      name: CloudSpritesheet_27
       rect:
         serializedVersion: 2
         x: 960
@@ -1007,14 +995,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3d250fe0fc2103ea0800000000000000
-      internalID: -5895191231709818157
+      spriteID: e0befe49a22f9b090800000000000000
+      internalID: -8018111396855158002
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_28
+      name: CloudSpritesheet_28
       rect:
         serializedVersion: 2
         x: 0
@@ -1029,14 +1017,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 118082f3c8e602930800000000000000
-      internalID: 4116411608050698257
+      spriteID: 852043a5c758e29a0800000000000000
+      internalID: -6255916063235243432
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_29
+      name: CloudSpritesheet_29
       rect:
         serializedVersion: 2
         x: 320
@@ -1051,14 +1039,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c36f3340160ea6520800000000000000
-      internalID: 2696214034221626940
+      spriteID: 3c77660b6d2cb64a0800000000000000
+      internalID: -6598966601643034685
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_30
+      name: CloudSpritesheet_30
       rect:
         serializedVersion: 2
         x: 640
@@ -1073,14 +1061,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 99128d68921c81a40800000000000000
-      internalID: 5339229742347854233
+      spriteID: ea479b0e0560eff60800000000000000
+      internalID: 8069894526731908270
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_31
+      name: CloudSpritesheet_31
       rect:
         serializedVersion: 2
         x: 960
@@ -1095,14 +1083,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ac5ca4d4942df45b0800000000000000
-      internalID: -5381851817413261878
+      spriteID: 08ec66ddbac755fe0800000000000000
+      internalID: -1200916648028615040
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_32
+      name: CloudSpritesheet_32
       rect:
         serializedVersion: 2
         x: 0
@@ -1117,14 +1105,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fbd5d0978150af450800000000000000
-      internalID: 6123212246031883711
+      spriteID: 93bc9544c69e43220800000000000000
+      internalID: 2464851547290979129
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_33
+      name: CloudSpritesheet_33
       rect:
         serializedVersion: 2
         x: 320
@@ -1139,14 +1127,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 98187e75ebdf7ce80800000000000000
-      internalID: -8158273205997960823
+      spriteID: 24f560f90ec08a000800000000000000
+      internalID: 47301954967592770
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_34
+      name: CloudSpritesheet_34
       rect:
         serializedVersion: 2
         x: 640
@@ -1161,14 +1149,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 17d623112b1e3b390800000000000000
-      internalID: -7803645574393991823
+      spriteID: 564ad6a8d9cbd5140800000000000000
+      internalID: 4710128170117735525
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_35
+      name: CloudSpritesheet_35
       rect:
         serializedVersion: 2
         x: 960
@@ -1183,14 +1171,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b4efeb5bce9c87980800000000000000
-      internalID: -8540854674809487797
+      spriteID: a556d249f573dc370800000000000000
+      internalID: 8344386568234820954
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_36
+      name: CloudSpritesheet_36
       rect:
         serializedVersion: 2
         x: 0
@@ -1205,14 +1193,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3d0c6c9df594129d0800000000000000
-      internalID: -2800876817223335725
+      spriteID: abb1011b1f4ba4f50800000000000000
+      internalID: 6866499532030483386
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_37
+      name: CloudSpritesheet_37
       rect:
         serializedVersion: 2
         x: 320
@@ -1227,14 +1215,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e1d9b06b219fbaa60800000000000000
-      internalID: 7686511047796825374
+      spriteID: ac3ae70dca5d588d0800000000000000
+      internalID: -2844632651405548598
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_38
+      name: CloudSpritesheet_38
       rect:
         serializedVersion: 2
         x: 640
@@ -1249,14 +1237,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e27381210761a4dc0800000000000000
-      internalID: -3654083477062011090
+      spriteID: 154bd4e5bfff38220800000000000000
+      internalID: 2487112874322670673
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_39
+      name: CloudSpritesheet_39
       rect:
         serializedVersion: 2
         x: 960
@@ -1271,14 +1259,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 817208e3b2da641e0800000000000000
-      internalID: -2213891765562235112
+      spriteID: 61d9e6d6a441c7770800000000000000
+      internalID: 8609778897521646870
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_40
+      name: CloudSpritesheet_40
       rect:
         serializedVersion: 2
         x: 0
@@ -1293,14 +1281,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 36a9a901cc11a7c60800000000000000
-      internalID: 7816579671404485219
+      spriteID: f5a226d22d99e05b0800000000000000
+      internalID: -5400209775187056033
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_41
+      name: CloudSpritesheet_41
       rect:
         serializedVersion: 2
         x: 320
@@ -1315,14 +1303,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 900c292a7e2ce0570800000000000000
-      internalID: 8434893452232278025
+      spriteID: 0c9f0405ae73b82f0800000000000000
+      internalID: -969619815259899456
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: spritesheet_42
+      name: CloudSpritesheet_42
       rect:
         serializedVersion: 2
         x: 640
@@ -1337,8 +1325,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8ca1b71ddc5cf7a20800000000000000
-      internalID: 3062383759408700104
+      spriteID: c033e99ac4e591dc0800000000000000
+      internalID: -3667796738160315636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CloudSpritesheet_43
+      rect:
+        serializedVersion: 2
+        x: 960
+        y: 0
+        width: 320
+        height: 156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 301c79546c5f52630800000000000000
+      internalID: 3901794884106305795
       vertices: []
       indices: 
       edges: []
@@ -1347,7 +1357,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: eac512b0c1bb34134836899bf618ddd1
+    spriteID: ca5919096c369445d8cb3b94e9d91762
     internalID: 0
     vertices: []
     indices: 
@@ -1359,49 +1369,50 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":11.0},"gridSpriteSize":{"x":320.0,"y":156.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      spritesheet_0: 8020143640844766479
-      spritesheet_1: -6251682230944352461
-      spritesheet_10: 5777552420452043588
-      spritesheet_11: 1269540525142108225
-      spritesheet_12: -2630129836624287915
-      spritesheet_13: -7676219313036738927
-      spritesheet_14: 6985626698306143173
-      spritesheet_15: 4773514653529381359
-      spritesheet_16: 6413020478584453356
-      spritesheet_17: -6420534950463556919
-      spritesheet_18: 8367830406354533065
-      spritesheet_19: -4721245407534591264
-      spritesheet_2: -1259408508766424310
-      spritesheet_20: -2642393358525368334
-      spritesheet_21: 182515998739034355
-      spritesheet_22: 5390129371266227295
-      spritesheet_23: 1111231892956182058
-      spritesheet_24: 3042023047814558122
-      spritesheet_25: -1297572194080285004
-      spritesheet_26: -5351138903708955224
-      spritesheet_27: -5895191231709818157
-      spritesheet_28: 4116411608050698257
-      spritesheet_29: 2696214034221626940
-      spritesheet_3: -5962389079421231736
-      spritesheet_30: 5339229742347854233
-      spritesheet_31: -5381851817413261878
-      spritesheet_32: 6123212246031883711
-      spritesheet_33: -8158273205997960823
-      spritesheet_34: -7803645574393991823
-      spritesheet_35: -8540854674809487797
-      spritesheet_36: -2800876817223335725
-      spritesheet_37: 7686511047796825374
-      spritesheet_38: -3654083477062011090
-      spritesheet_39: -2213891765562235112
-      spritesheet_4: 2788568348960109317
-      spritesheet_40: 7816579671404485219
-      spritesheet_41: 8434893452232278025
-      spritesheet_42: 3062383759408700104
-      spritesheet_5: 226702753830753226
-      spritesheet_6: -7921052967969465774
-      spritesheet_7: -1370661682523340017
-      spritesheet_8: -8276262488406422588
-      spritesheet_9: -5906973516983679737
+      CloudSpritesheet_0: -7153446334996336798
+      CloudSpritesheet_1: 6349244462996519828
+      CloudSpritesheet_10: -4759243576628773738
+      CloudSpritesheet_11: -3994258790490488989
+      CloudSpritesheet_12: 5921588117941105382
+      CloudSpritesheet_13: -7717483831102181900
+      CloudSpritesheet_14: -985971171172163676
+      CloudSpritesheet_15: 5283968067613546869
+      CloudSpritesheet_16: 7964969559087109278
+      CloudSpritesheet_17: -2277541917927889638
+      CloudSpritesheet_18: -7240698192632476805
+      CloudSpritesheet_19: -1266702689732352602
+      CloudSpritesheet_2: -2553848167033097139
+      CloudSpritesheet_20: -8834649721082168082
+      CloudSpritesheet_21: -816362384368449833
+      CloudSpritesheet_22: -316565026362944991
+      CloudSpritesheet_23: -2304731538432088356
+      CloudSpritesheet_24: 3210262808558896185
+      CloudSpritesheet_25: -2155671830859205952
+      CloudSpritesheet_26: 5583715570072235181
+      CloudSpritesheet_27: -8018111396855158002
+      CloudSpritesheet_28: -6255916063235243432
+      CloudSpritesheet_29: -6598966601643034685
+      CloudSpritesheet_3: 6099917975473342838
+      CloudSpritesheet_30: 8069894526731908270
+      CloudSpritesheet_31: -1200916648028615040
+      CloudSpritesheet_32: 2464851547290979129
+      CloudSpritesheet_33: 47301954967592770
+      CloudSpritesheet_34: 4710128170117735525
+      CloudSpritesheet_35: 8344386568234820954
+      CloudSpritesheet_36: 6866499532030483386
+      CloudSpritesheet_37: -2844632651405548598
+      CloudSpritesheet_38: 2487112874322670673
+      CloudSpritesheet_39: 8609778897521646870
+      CloudSpritesheet_4: 1483061265405172343
+      CloudSpritesheet_40: -5400209775187056033
+      CloudSpritesheet_41: -969619815259899456
+      CloudSpritesheet_42: -3667796738160315636
+      CloudSpritesheet_43: 3901794884106305795
+      CloudSpritesheet_5: 8297708288644172997
+      CloudSpritesheet_6: -8864177049775725490
+      CloudSpritesheet_7: -8781304730555038672
+      CloudSpritesheet_8: -2919201048434989424
+      CloudSpritesheet_9: 6687328209151959439
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

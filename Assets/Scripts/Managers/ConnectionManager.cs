@@ -137,8 +137,8 @@ public class ConnectionManager : MonoBehaviour
         }
 
         // --- CREATE NEW PLAYER ---
-        Player newPlayer = PlayerManager.Instance.CreatePlayer(id, deviceId);
-        newPlayer.playerName = playerName;
+        Player newPlayer = PlayerManager.Instance.CreatePlayer(id, deviceId, playerName);
+        //newPlayer.playerName = playerName;
 
         // lobby ready-to-start logic
         bool nowReady = PlayerManager.Instance.ReadyToStart();

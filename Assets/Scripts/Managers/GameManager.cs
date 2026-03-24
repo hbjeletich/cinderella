@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Settings")]
     public bool enableProfanityFilter = false;
+    public float gameStartDelay = 2f;
 
     public GameState CurrentState => currentState;
 
@@ -91,6 +92,14 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        UIManager.Instance.ExitLobby(gameStartDelay);
+        // small delay before starting the game to allow clients to get ready
+        StartCoroutine(StartGameCoroutine());
+    }
+
+    private IEnumerator StartGameCoroutine()
+    {
+        yield return new WaitForSeconds(gameStartDelay);
         SetGameState(GameState.Talking);
         ChangeScene("Game");
     }

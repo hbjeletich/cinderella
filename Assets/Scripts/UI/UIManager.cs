@@ -8,9 +8,6 @@ public class UIManager : MonoBehaviour
 {
     // the goal of this guy is to read game events and assign them properly
     // should be complete middleman
-    [Header("Lobby Settings")]
-    public PlayerIcon[] playerIcons;
-    private int currentPlayerIconIndex = 0;
 
     private LobbyUI lobbyUI;
     private GameUI gameUI;
@@ -34,6 +31,32 @@ public class UIManager : MonoBehaviour
     {
         PlayerManager.Instance.OnPlayerCreated += OnPlayerCreated;
         GameManager.Instance.OnSceneChanged += OnSceneChanged;
+    }
+
+    // public void AssignPlayerIcon(Player player)
+    // {
+    //     lobbyUI?.AssignPlayerIcon(player);
+    // }
+
+    public void ExitLobby(float delay)
+    {
+        Debug.Log($"UIManager: Exiting lobby with delay of {delay} seconds.");
+        if(lobbyUI != null)
+        {
+            lobbyUI.ExitLobby(delay);
+        } 
+        else
+        {
+            lobbyUI = FindObjectOfType<LobbyUI>();
+            if(lobbyUI != null)
+            {
+                lobbyUI.ExitLobby(delay);
+            }
+            else
+            {
+                Debug.LogWarning("UIManager: LobbyUI not found for ExitLobby");
+            }
+        }
     }
 
     public void ShowTimer(int seconds)
@@ -136,21 +159,21 @@ public class UIManager : MonoBehaviour
 
     private void OnPlayerCreated(Player player)
     {
-        // todo: switch this to be lobby related!
-        PlayerIcon icon = playerIcons[currentPlayerIconIndex];
-        if(icon != null)
-        {
-            icon.AssignPlayer(player);
-            icon.ShowImage();
-        }
+        // // todo: switch this to be lobby related!
+        // PlayerIcon icon = playerIcons[currentPlayerIconIndex];
+        // if(icon != null)
+        // {
+        //     icon.AssignPlayer(player);
+        //     icon.ShowImage();
+        // }
 
-        currentPlayerIconIndex += 1;
+        // currentPlayerIconIndex += 1;
 
-        if(currentPlayerIconIndex >= playerIcons.Length)
-        {
-            Debug.Log($"UIManager: Player Icon limit reached! Stopping at the last on the list.");
-            currentPlayerIconIndex = playerIcons.Length;
-        }
+        // if(currentPlayerIconIndex >= playerIcons.Length)
+        // {
+        //     Debug.Log($"UIManager: Player Icon limit reached! Stopping at the last on the list.");
+        //     currentPlayerIconIndex = playerIcons.Length;
+        // }
     }
 
     private void EnsureGameUI()

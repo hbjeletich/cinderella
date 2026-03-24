@@ -571,9 +571,7 @@ public class GameManager : MonoBehaviour
         }, promptText: promptText);
     }
 
-    /// <summary>
-    /// Rising action group-by-group reveal: show the group's prompt on TV, then send vote options.
-    /// </summary>
+    // Rising action group-by-group reveal: show the group's prompt on TV, then send vote options
     private void ShowNextGroupVoting()
     {
         int groupIdx = RoundManager.Instance.GetCurrentGroupIndex();
@@ -631,5 +629,11 @@ public class GameManager : MonoBehaviour
             list[i] = list[r];
             list[r] = temp;
         }
+    }
+
+    public void ToggleProfanityFilter()
+    {
+        enableProfanityFilter = !enableProfanityFilter;
+        Debug.Log($"GameManager: Profanity filter {(enableProfanityFilter ? "enabled" : "disabled")}");
     }
 }

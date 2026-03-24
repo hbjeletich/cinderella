@@ -17,3 +17,4 @@ MonoBehaviour:
   promptText: Who makes our protagonist's life miserable?
   necessity: 1
   storyElement: Antagonist
+  defaultAnswer: Wicked Stepmother

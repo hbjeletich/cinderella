@@ -15,15 +15,6 @@ const choiceGrid = $('choiceGrid');
 ws.onopen = () => {
 	console.log("WS connected");
 	status.textContent = 'Connected';
-
-	// if we have a stored name, auto-rejoin
-	const savedName = localStorage.getItem('playerName');
-	if (savedName) {
-		sendJSON(ws, { type: "join", text: savedName, deviceId: deviceId });
-		status.textContent = 'Reconnecting...';
-	} else {
-		sendBtn.disabled = false;
-	}
 };
 
 var sendType = "join";
@@ -34,6 +25,22 @@ ws.onmessage = (e) => {
 	const message = JSON.parse(e.data);
 
 	switch (message.type) {
+		case "session":
+			const storedSession = localStorage.getItem('sessionId');
+			if (storedSession && storedSession === message.sessionId) {
+				// same server session — try to rejoin
+				const savedName = localStorage.getItem('playerName');
+				if (savedName) {
+					sendJSON(ws, { type: "join", text: savedName, deviceId: deviceId });
+					status.textContent = 'Reconnecting...';
+					break;
+				}
+			}
+			// new session — clear old data and let them enter a name
+			localStorage.setItem('sessionId', message.sessionId);
+			localStorage.removeItem('playerName');
+			sendBtn.disabled = false;
+			break;
 		case "joined":
 			hide(textInput);
 			hide(sendBtn);

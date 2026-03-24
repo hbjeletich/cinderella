@@ -17,3 +17,4 @@ MonoBehaviour:
   promptText: What chore or cruelty does our protagonist endure?
   necessity: 0
   storyElement: Abuse
+  defaultAnswer: Scrubbing floors

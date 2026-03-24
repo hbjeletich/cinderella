@@ -17,3 +17,4 @@ MonoBehaviour:
   promptText: Who falls in love at first sight with our protagonist?
   necessity: 0
   storyElement: Love Interest
+  defaultAnswer: Prince Charming

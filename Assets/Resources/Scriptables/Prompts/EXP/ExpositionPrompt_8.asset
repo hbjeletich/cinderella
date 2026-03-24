@@ -17,3 +17,4 @@ MonoBehaviour:
   promptText: What important position does our protagonist become at the end?
   necessity: 0
   storyElement: Final Role
+  defaultAnswer: A princess

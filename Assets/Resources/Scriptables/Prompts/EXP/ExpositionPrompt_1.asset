@@ -17,3 +17,4 @@ MonoBehaviour:
   promptText: What is our hero's name?
   necessity: 1
   storyElement: Protagonist
+  defaultAnswer: Cinderella

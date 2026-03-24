@@ -17,3 +17,4 @@ MonoBehaviour:
   promptText: What magical item does the protagonist leave behind?
   necessity: 0
   storyElement: Transformation Item
+  defaultAnswer: Glass Slipper

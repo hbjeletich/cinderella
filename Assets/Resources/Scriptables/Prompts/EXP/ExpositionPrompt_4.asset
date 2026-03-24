@@ -17,3 +17,4 @@ MonoBehaviour:
   promptText: Who is our protagonist's one true ally?
   necessity: 0
   storyElement: Only Friend
+  defaultAnswer: A kind mouse

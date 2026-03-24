@@ -11,11 +11,13 @@ public class Server : MonoBehaviour
     private WebSocketServer server;
     public static Server Instance;
     private string localIP;
+    private string sessionId;
 
     // store connections for ConnectionManager
     public static Dictionary<string, IWebSocketConnection> Connections = new Dictionary<string, IWebSocketConnection>();
 
     public string LocalIP => localIP;
+    public string SessionId => sessionId;
     public Action OnWSServerStarted;
 
     void Awake()
@@ -62,6 +64,7 @@ public class Server : MonoBehaviour
     {
         if (server == null)
         {
+            sessionId = System.Guid.NewGuid().ToString();
             server = new WebSocketServer($"ws://0.0.0.0:{port}");
 
             server.Start(socket =>
@@ -75,6 +78,8 @@ public class Server : MonoBehaviour
                 {
                     Debug.Log($"Server: Client connected: {id}");
                     Connections[id] = socket;
+                    // tell client which session this is so stale reconnects get cleared
+                    socket.Send($"{{\"type\":\"session\",\"sessionId\":\"{sessionId}\"}}");
                 };
 
                 socket.OnMessage = message =>

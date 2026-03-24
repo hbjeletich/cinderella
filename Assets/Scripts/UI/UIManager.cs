@@ -52,6 +52,12 @@ public class UIManager : MonoBehaviour
         gameUI?.HideTimer();
     }
 
+    public void ShowWritingPhase(int roundNumber, float duration)
+    {
+        EnsureGameUI();
+        gameUI?.ShowWritingPhase(roundNumber, duration);
+    }
+
     public void ShowNarrative(string text, Action onComplete)
     {
         if(gameUI != null)

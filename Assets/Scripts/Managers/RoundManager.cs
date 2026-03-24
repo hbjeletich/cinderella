@@ -238,6 +238,7 @@ public class RoundManager : MonoBehaviour
         }
 
         StartPhaseTimer(promptTimerDuration, AutoSubmitMissingPrompts);
+        UIManager.Instance?.ShowWritingPhase(1, promptTimerDuration);
     }
 
     public void StartRisingActionRound(int round)
@@ -274,6 +275,7 @@ public class RoundManager : MonoBehaviour
         currentGroupIndex = 0;
 
         StartPhaseTimer(promptTimerDuration, AutoSubmitMissingPrompts);
+        UIManager.Instance?.ShowWritingPhase(round + 1, promptTimerDuration);
     }
 
     private List<List<Player>> CreateGroups(List<Player> allPlayers)
@@ -448,6 +450,7 @@ public class RoundManager : MonoBehaviour
         }
 
         StartPhaseTimer(promptTimerDuration, AutoSubmitClimaxPicks);
+        UIManager.Instance?.ShowWritingPhase(5, promptTimerDuration);
     }
 
     public void StartResolutionRound()

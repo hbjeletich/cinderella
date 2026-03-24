@@ -16,6 +16,18 @@ public class GameUI : MonoBehaviour
 
     private BaseGameUI activeController;
 
+    private void Start()
+    {
+        // all sub-controllers should start active in the scene so their Awake() runs,
+        // then we deactivate them here — GameUI activates them as needed
+        talkingUI?.Deactivate();
+        writingUI?.Deactivate();
+        revealingUI?.Deactivate();
+        scoringUI?.Deactivate();
+        HideTimer();
+        activeController = null;
+    }
+
     private void SetActive(BaseGameUI controller)
     {
         if(activeController != null && activeController != controller)
@@ -56,6 +68,14 @@ public class GameUI : MonoBehaviour
     {
         SetActive(talkingUI);
         talkingUI.ShowNarrative(text, onComplete);
+    }
+
+    // --- Writing Phase (delegates to WritingUI) ---
+
+    public void ShowWritingPhase(int roundNumber, float duration)
+    {
+        SetActive(writingUI);
+        writingUI.StartFillAnimation(roundNumber, duration);
     }
 
     // --- Reveals & Voting (delegates to RevealingUI) ---

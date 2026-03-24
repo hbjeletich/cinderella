@@ -7,6 +7,11 @@ public abstract class BaseGameUI : MonoBehaviour
     public float baseTextTime = 2f;
     public float timePerCharacter = 0.05f;
 
+    protected virtual void Awake()
+    {
+        ClearText();
+    }
+
     protected float CalculateDisplayTime(string text)
     {
         return Mathf.Max(baseTextTime, text.Length * timePerCharacter);
@@ -14,13 +19,15 @@ public abstract class BaseGameUI : MonoBehaviour
 
     protected void ChangeText(string text)
     {
+        if(displayText == null) return;
         Debug.Log($"{GetType().Name}: Changing text to {text}");
         displayText.text = text;
     }
 
     protected void ClearText()
     {
-        displayText.text = "";
+        if(displayText != null)
+            displayText.text = "";
     }
 
     public virtual void Activate()

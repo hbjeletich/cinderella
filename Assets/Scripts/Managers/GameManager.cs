@@ -233,6 +233,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         });
+        UIManager.Instance.ShowWritingPhase(6, RoundManager.Instance.promptTimerDuration);
     }
 
     private void HandleTitleSubmissions()

@@ -124,8 +124,32 @@ public class RoundManager : MonoBehaviour
         }
         foreach(Player p in missing)
         {
-            HandlePromptSubmission(new SubmitMessage { type = "send_prompt", text = "" }, p);
+            string fallback = GetDefaultAnswer(p);
+            Debug.Log($"RoundManager: Auto-submitting \"{fallback}\" for {p.playerName}");
+            HandlePromptSubmission(new SubmitMessage { type = "send_prompt", text = fallback }, p);
         }
+    }
+
+    private string GetDefaultAnswer(Player player)
+    {
+        Prompt prompt = player.GetLastPrompt();
+        if(prompt == null) return "...";
+
+        if(prompt is ExpositionPrompt expo)
+        {
+            if(!string.IsNullOrEmpty(expo.defaultAnswer))
+                return expo.defaultAnswer;
+            return "...";
+        }
+
+        if(prompt is RisingActionPrompt rising)
+        {
+            if(rising.options != null && rising.options.Length > 0)
+                return rising.options[UnityEngine.Random.Range(0, rising.options.Length)];
+            return "...";
+        }
+
+        return "...";
     }
 
     public void AutoSubmitMissingReactions()

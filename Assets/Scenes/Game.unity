@@ -816,7 +816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffef2ce4eb5b247b19df42df30d310a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RevealingUI
-  displayText: {fileID: 1055830133}
+  displayText: {fileID: 1387202507}
   baseTextTime: 2
   timePerCharacter: 0.05
 --- !u!4 &556371628

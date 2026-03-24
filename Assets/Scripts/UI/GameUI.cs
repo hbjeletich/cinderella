@@ -18,8 +18,7 @@ public class GameUI : MonoBehaviour
 
     private void Start()
     {
-        // all sub-controllers should start active in the scene so their Awake() runs,
-        // then we deactivate them here — GameUI activates them as needed
+        // hide all sub-controller content at start
         talkingUI?.Deactivate();
         writingUI?.Deactivate();
         revealingUI?.Deactivate();

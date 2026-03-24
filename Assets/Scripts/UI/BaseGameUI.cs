@@ -9,7 +9,7 @@ public abstract class BaseGameUI : MonoBehaviour
 
     protected virtual void Awake()
     {
-        ClearText();
+        HideText();
     }
 
     protected float CalculateDisplayTime(string text)
@@ -20,6 +20,7 @@ public abstract class BaseGameUI : MonoBehaviour
     protected void ChangeText(string text)
     {
         if(displayText == null) return;
+        displayText.gameObject.SetActive(true);
         Debug.Log($"{GetType().Name}: Changing text to {text}");
         displayText.text = text;
     }
@@ -30,13 +31,24 @@ public abstract class BaseGameUI : MonoBehaviour
             displayText.text = "";
     }
 
+    protected void HideText()
+    {
+        if(displayText != null)
+        {
+            displayText.text = "";
+            displayText.gameObject.SetActive(false);
+        }
+    }
+
     public virtual void Activate()
     {
-        gameObject.SetActive(true);
+        if(displayText != null)
+            displayText.gameObject.SetActive(true);
     }
 
     public virtual void Deactivate()
     {
-        gameObject.SetActive(false);
+        StopAllCoroutines();
+        HideText();
     }
 }

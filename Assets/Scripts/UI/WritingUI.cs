@@ -14,8 +14,36 @@ public class WritingUI : BaseGameUI
     protected override void Awake()
     {
         base.Awake();
+        // plot diagram starts hidden and at 0
         if(plotDiagram != null)
+        {
+            plotDiagram.gameObject.SetActive(false);
             plotDiagram.SetFillAmount(0f);
+        }
+    }
+
+    public override void Activate()
+    {
+        base.Activate();
+        // show the plot diagram — once visible, it stays visible across phases
+        if(plotDiagram != null)
+            plotDiagram.gameObject.SetActive(true);
+    }
+
+    public override void Deactivate()
+    {
+        if(fillCoroutine != null)
+        {
+            StopCoroutine(fillCoroutine);
+            fillCoroutine = null;
+
+        // hide the plot diagram
+        if(plotDiagram != null)
+        {
+            plotDiagram.gameObject.SetActive(false);
+        }
+
+        HideText();
     }
 
     public void StartFillAnimation(int roundNumber, float duration)
@@ -48,15 +76,5 @@ public class WritingUI : BaseGameUI
 
         plotDiagram.SetFillAmount(targetFill);
         fillCoroutine = null;
-    }
-
-    public override void Deactivate()
-    {
-        if(fillCoroutine != null)
-        {
-            StopCoroutine(fillCoroutine);
-            fillCoroutine = null;
-        }
-        base.Deactivate();
     }
 }

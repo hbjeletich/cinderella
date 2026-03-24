@@ -98,6 +98,8 @@ public static class CSVReader
         prompt.necessity = necessity;
         prompt.storyElement = row[3].Trim('\n', '\r');
 
+        prompt.defaultAnswer = row[4].Trim('\n', '\r');
+
         if (!Directory.Exists($"Assets/Resources/Scriptables/Prompts/EXP/"))
         {
             Directory.CreateDirectory($"Assets/Resources/Scriptables/Prompts/EXP/");

@@ -28,13 +28,13 @@ public class RevealingUI : BaseGameUI
             yield return new WaitForSeconds(CalculateDisplayTime(promptText));
         }
         
-        string displayText = null;
+        string submissionText = null;
         if(player != null) 
-            displayText = $"{player.playerName}: {answer}";
+            submissionText = $"{player.playerName}: {answer}";
         else 
-            displayText = answer;
+            submissionText = answer;
             
-        ChangeText(displayText);
+        ChangeText(submissionText);
         yield return new WaitForSeconds(CalculateDisplayTime(answer));
         
         onComplete?.Invoke();

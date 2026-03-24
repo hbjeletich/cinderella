@@ -12,6 +12,7 @@ public class JoinMessage
     // Client to Server : I have joined!
     public string type = "join";
     public string text;
+    public string deviceId;
 }
 
 [System.Serializable]
@@ -22,6 +23,22 @@ public class JoinedMessage
     public string playerName;
     public bool isHost;
     public bool readyToStart;
+}
+
+[System.Serializable]
+public class RejoinedMessage
+{
+    // Server to Client : You have reconnected
+    public string type = "rejoined";
+    public string playerName;
+}
+
+[System.Serializable]
+public class ErrorMessage
+{
+    // Server to Client : Something went wrong
+    public string type = "error";
+    public string text;
 }
 
 [System.Serializable]
@@ -79,4 +96,3 @@ public class ShowAnswerChoicesMessage
     public string text;
     public bool myPrompt = false;
 }
-

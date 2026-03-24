@@ -206,6 +206,47 @@ public class RoundManager : MonoBehaviour
 
     #endregion
 
+    #region Disconnect Handling
+
+    public void HandlePlayerDisconnect(Player player)
+    {
+        if(player.hasSubmittedThisRound)
+        {
+            Debug.Log($"RoundManager: {player.playerName} disconnected but already submitted this phase.");
+            return;
+        }
+
+        GameState state = GameManager.Instance.CurrentState;
+        Debug.Log($"RoundManager: {player.playerName} disconnected during {state}, auto-submitting.");
+
+        switch(state)
+        {
+            case GameState.Prompting:
+                string fallback = GetDefaultAnswer(player);
+                HandlePromptSubmission(new SubmitMessage { type = "send_prompt", text = fallback }, player);
+                break;
+
+            case GameState.Reacting:
+                HandleReactSubmission(new SubmitMessage { type = "send_react", text = "comedy" }, player);
+                break;
+
+            case GameState.Voting:
+                if(isClimaxPicking)
+                {
+                    // if they were protagonist or antagonist, auto-pick
+                    AutoSubmitClimaxPicks();
+                }
+                else if(currentVotingOptions.Count > 0)
+                {
+                    string randomChoice = currentVotingOptions[UnityEngine.Random.Range(0, currentVotingOptions.Count)];
+                    HandleChoiceSubmission(new SubmitMessage { type = "send_choice", text = randomChoice }, player);
+                }
+                break;
+        }
+    }
+
+    #endregion
+
     public void StartRound(int round)
     {
         // i removed a reset here.... hopefully it does not mess everything up!

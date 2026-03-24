@@ -36,7 +36,7 @@ public class WritingUI : BaseGameUI
         {
             StopCoroutine(fillCoroutine);
             fillCoroutine = null;
-
+        }
         // hide the plot diagram
         if(plotDiagram != null)
         {

@@ -29,3 +29,12 @@ export function hideAllInputTypes(){
     hide($("sendBtn"));
     hide($("choiceContainer"));
 }
+
+export function getOrCreateDeviceId() {
+    let id = localStorage.getItem('deviceId');
+    if (!id) {
+        id = crypto.randomUUID();
+        localStorage.setItem('deviceId', id);
+    }
+    return id;
+}

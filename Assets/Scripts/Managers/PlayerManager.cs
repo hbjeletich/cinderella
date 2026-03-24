@@ -11,6 +11,8 @@ public class PlayerManager : MonoBehaviour
 
     public Action<Player> OnPlayerCreated;
     public Action<Player> OnPlayerReady;
+    public Action<Player> OnPlayerDisconnected;
+    public Action<Player> OnPlayerReconnected;
     
     public static PlayerManager Instance;
     
@@ -27,58 +29,104 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public Player CreatePlayer(string playerID)
+    public Player CreatePlayer(string playerID, string deviceId)
     {
         GameObject playerObj = new GameObject($"Player_{playerID}");
         playerObj.transform.parent = this.transform;
         Player newPlayer = playerObj.AddComponent<Player>();
         newPlayer.playerID = playerID;
+        newPlayer.deviceId = deviceId;
+        newPlayer.isConnected = true;
         
-        // if first player, set as host
-        if (players.Count == 0)
+        // if first connected player, set as host
+        if (GetConnectedPlayers().Count == 0)
         {
             newPlayer.isHost = true;
         }
         
         players.Add(newPlayer);
-        Debug.Log($"PlayerManager: Created new player with ID: {playerID}");
+        Debug.Log($"PlayerManager: Created new player with ID: {playerID}, deviceId: {deviceId}");
 
         OnPlayerCreated?.Invoke(newPlayer);
 
         return newPlayer;
     }
 
-    public void RemovePlayer(string playerID)
+    public void DisconnectPlayer(string playerID)
     {
-        Player playerToRemove = null;
-        foreach (var player in players)
-        {
-            if (player.playerID == playerID)
-            {
-                playerToRemove = player;
-                break;
-            }
-        }
-        
-        if (playerToRemove != null)
-        {
-            if (playerToRemove.isHost)
-            {
-                SetNewHost(playerToRemove);
-            }
-            
-            players.Remove(playerToRemove);
-            Destroy(playerToRemove.gameObject);
+        Player player = GetPlayer(playerID);
+        if(player == null) return;
 
-            Debug.Log($"PlayerManager: Removed player with ID: {playerID}");
+        player.isConnected = false;
+        Debug.Log($"PlayerManager: Player {player.playerName} ({playerID}) disconnected.");
+
+        // transfer host if needed
+        if(player.isHost)
+        {
+            player.isHost = false;
+            SetNewHost();
         }
+
+        OnPlayerDisconnected?.Invoke(player);
+    }
+
+    public Player ReconnectPlayer(Player player, string newConnectionID)
+    {
+        player.playerID = newConnectionID;
+        player.isConnected = true;
+        Debug.Log($"PlayerManager: Player {player.playerName} reconnected with new ID: {newConnectionID}");
+
+        // if no current host, this player becomes host
+        if(!players.Any(p => p.isHost && p.isConnected))
+        {
+            player.isHost = true;
+            Debug.Log($"PlayerManager: {player.playerName} reassigned as host on reconnect.");
+        }
+
+        OnPlayerReconnected?.Invoke(player);
+        return player;
+    }
+
+    public Player FindByDeviceId(string deviceId)
+    {
+        if(string.IsNullOrEmpty(deviceId)) return null;
+        foreach(Player p in players)
+        {
+            if(p.deviceId == deviceId)
+                return p;
+        }
+        return null;
+    }
+
+    public bool IsNameTaken(string name, Player excludePlayer = null)
+    {
+        foreach(Player p in players)
+        {
+            if(p == excludePlayer) continue;
+            if(p.playerName != null && p.playerName.Equals(name, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+        return false;
+    }
+
+    public bool IsGameInProgress()
+    {
+        return GameManager.Instance != null && 
+               GameManager.Instance.CurrentState != GameState.Lobby &&
+               GameManager.Instance.CurrentState != GameState.Ended;
+    }
+
+    public List<Player> GetConnectedPlayers()
+    {
+        return players.Where(p => p.isConnected).ToList();
     }
 
     public void ResetPlayerReady()
     {
         foreach(Player p in players)
         {
-            p.hasSubmittedThisRound = false;
+            // disconnected players are auto-ready — they can't submit
+            p.hasSubmittedThisRound = !p.isConnected;
         }
     }
 
@@ -98,29 +146,15 @@ public class PlayerManager : MonoBehaviour
         return true;
     }
 
-    private void SetNewHost(Player removedPlayer)
+    private void SetNewHost()
     {
-        if (players.Count <= 1)
-        {
-            return;
-        }
-        
-        // pick a random player that isn't the one being removed
-        List<Player> eligiblePlayers = new List<Player>();
-        foreach (var player in players)
-        {
-            if (player.playerID != removedPlayer.playerID)
-            {
-                eligiblePlayers.Add(player);
-            }
-        }
-        
-        if (eligiblePlayers.Count > 0)
-        {
-            int randomIndex = UnityEngine.Random.Range(0, eligiblePlayers.Count);
-            eligiblePlayers[randomIndex].isHost = true;
-            Debug.Log($"PlayerManager: New host assigned with ID: {eligiblePlayers[randomIndex].playerID}");
-        }
+        List<Player> connected = GetConnectedPlayers();
+        if(connected.Count == 0) return;
+
+        // pick a random connected player
+        int randomIndex = UnityEngine.Random.Range(0, connected.Count);
+        connected[randomIndex].isHost = true;
+        Debug.Log($"PlayerManager: New host assigned: {connected[randomIndex].playerName}");
     }
     
     public Player GetPlayer(string playerID)
@@ -137,12 +171,12 @@ public class PlayerManager : MonoBehaviour
 
     public int GetPlayerCount()
     {
-        return players.Count;
+        return GetConnectedPlayers().Count;
     }
 
     public bool ReadyToStart()
     {
-        return minPlayers <= players.Count;
+        return minPlayers <= GetConnectedPlayers().Count;
     }
 
     public Player GetHighestScoringPlayer()

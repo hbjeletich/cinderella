@@ -16,6 +16,7 @@ MonoBehaviour:
   type: 3
   promptText: The story ended. But stories like these never really end. [Protagonist]
     still dreams of [Event Location]. [Antagonist] still dreams of [Protagonist].
+    And [Nickname] is just a name now.
   segmentType: 5
   tone: dark
   climaxOutcome: 

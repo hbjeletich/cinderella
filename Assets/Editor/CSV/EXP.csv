@@ -1,9 +1,13 @@
-id,prompt_text,necessity,element_type,example_classic
-EXP_01,What is our hero's name?,TRUE,Protagonist,Cinderella
-EXP_02,Who makes our protagonist's life miserable?,TRUE,Antagonist,Wicked Stepmother
-EXP_03,What chore or cruelty does our protagonist endure?,FALSE,Abuse,Scrubbing floors
-EXP_04,Who is our protagonist's one true ally?,FALSE,Only Friend,A kind mouse
-EXP_05,Where is the big event held?,FALSE,Event Location,The Royal Palace
-EXP_06,What magical item does the protagonist leave behind?,FALSE,Transformation Item,Glass Slipper
-EXP_07,Who falls in love at first sight with our protagonist?,FALSE,Love Interest,Prince Charming
-EXP_08,What important position does our protagonist become at the end?,FALSE,Final Role,A princess
+id,prompt_text,question_text,necessity,element_type,example_classic
+EXP_01,What is our hero's name?,Who's the best underdog?|Who would make a good Disney princess?,TRUE,Protagonist,Cinderella
+EXP_02,Who makes our protagonist's life miserable?,Who is someone you would NEVER leave your pet with?|Who bullied you to make you this way?,TRUE,Antagonist,Wicked Stepmother
+EXP_03,What chore or cruelty does our protagonist endure?,What's the most embarrassing thing you can hire someone to do?|What menial task would you spend a fortune to never have to do again?|What's the most boring household chore?,FALSE,Abuse,Scrubbing floors
+EXP_04,Who is our protagonist's one true ally?,Who would you hire as a dream personal assistant?|Who would never leave you side whether you like it or not?,FALSE,Only Friend,A kind mouse
+EXP_05,Where is the big event held?,What's the craziest place to throw a party?|If you were a fantasy character where would you come from?,FALSE,Event Location,The Royal Palace
+EXP_06,What magical item does the protagonist leave behind?,Name an item you secretly believe to be out of this world.|What item would you first save if your house was on fire?,FALSE,Transformation Item,Glass Slipper
+EXP_07,Who falls in love at first sight with our protagonist?,Who only gets hotter with age?|Who is the most positive person you've ever perceived?,FALSE,Love Interest,Prince Charming
+EXP_08,What important position does our protagonist become at the end?,Name the worst possible dream job.|What job have you never seen in a fairy tale?,FALSE,Final Role,A princess
+EXP_09,What happened to our protagonist's parents?,Where's your dad right now?|Name the dumbest way to die,FALSE,Parents,Mysterious illness
+EXP_10,How many stepsiblings does our protagonist have?,How many step-siblings is just too many?|What's the maximum amount of family birthdays you can remember?,FALSE,Stepsiblings,Two ugly stepsisters
+EXP_11,What was our protagonist named after?,What's the most embarassing thing you've ever found on your face?|What's the worst thing to fall asleep next to?,FALSE,Nickname,Cinders
+EXP_12,What's the theme of the big event?,What's the worst theme of a party you've attended?|Pick a party theme!,FALSE,Party Theme,The King's Ball

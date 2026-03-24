@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
   id: RES_CLOSE_FORG_COMEDY
   type: 3
-  promptText: '[Protagonist] forgave [Antagonist], which was honestly pretty weird
-    given the whole [Abuse] thing. [Only Friend] started a slow clap. [Love Interest]
-    was very confused.'
+  promptText: '[Nickname] forgave [Antagonist], which was honestly pretty weird given
+    the whole [Abuse] thing. [Stepsiblings] were shook. [Only Friend] started a slow
+    clap. [Love Interest] was very confused.'
   segmentType: 5
   tone: comedy
   climaxOutcome: forgive

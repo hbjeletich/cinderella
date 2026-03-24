@@ -22,3 +22,6 @@ MonoBehaviour:
   - Vanishing into the crowd
   - Leaping from a window
   resonanceTag: escape_method
+  questions:
+  - What's the best way to leave an event early?
+  - What's the fastest way to get out of something?

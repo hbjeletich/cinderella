@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
   id: RES_CLOSE_ESC_COMEDY
   type: 3
-  promptText: And so [Protagonist] finally escaped [Antagonist] and never had to
-    [Abuse] again. [Only Friend] got a medal. [Love Interest] got confused. Everyone
-    went home.
+  promptText: And so [Nickname] finally escaped [Antagonist] and never had to [Abuse]
+    again. [Only Friend] got a medal. [Love Interest] got confused. [Stepsiblings]
+    were last seen arguing about who caused it.
   segmentType: 5
   tone: comedy
   climaxOutcome: escape

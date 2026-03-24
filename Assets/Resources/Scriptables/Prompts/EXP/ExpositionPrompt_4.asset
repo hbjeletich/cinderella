@@ -18,3 +18,6 @@ MonoBehaviour:
   necessity: 0
   storyElement: Only Friend
   defaultAnswer: A kind mouse
+  questions:
+  - Who would you hire as a dream personal assistant?
+  - Who would never leave you side whether you like it or not?

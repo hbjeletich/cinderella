@@ -1,10 +1,10 @@
-id,prompt_text,round,story_beat,option_a,option_b,option_c,resonance_tag
-RA_01,What stops them from going to the event?,1,prevention,Their dress is destroyed,They're locked in,They're simply left behind,classic_prevention
-RA_02,How does the antagonist sabotage them?,1,prevention,Piles on extra chores,Steals their invitation,Spreads rumors they're not welcome,sabotage_type
-RA_03,How do they get ready for the event?,1,dress_up,They fix up their mother's dress,They shotgun one million beers,Birds do their makeup,dress_up_type
-RA_04,Who or what comes to save the day?,2,deus_ex,A fairy godmother appears,Magic fish bones grant a wish,Friends band together,helper_type
-RA_05,What gets magically transformed?,2,transformation,A pumpkin -> carriage,Rags -> beautiful gown,Mice -> footmen,transform_classic
-RA_06,What's the signature item they receive?,2,transformation,Glass slippers,Golden shoes,A enchanted mask,signature_item
-RA_07,What warning signals time is running out?,3,time_limit,The clock strikes midnight,The moon begins to set,The music suddenly stops,time_warning
-RA_08,How do they flee the event?,3,escape,Running down the stairs,Vanishing into the crowd,Leaping from a window,escape_method
-RA_09,What do they accidentally leave behind?,3,item_left,A single glass slipper,A golden hairpin,A mysterious note,lost_item
+id,prompt_text,question_text,round,story_beat,option_a,option_b,option_c,resonance_tag
+RA_01,What stops them from going to the event?,What's the only thing that could keep you from your own birthday party?|What's the worst party foul?,1,prevention,Their dress is destroyed,They're locked in,They're simply left behind,classic_prevention
+RA_02,How does the antagonist sabotage them?,What's a subtle way to ruin someone's day?|What's the most evil thing one could do?,1,prevention,Piles on extra chores,Steals their invitation,Spreads rumors they're not welcome,sabotage_type
+RA_03,How do they get ready for the event?,What's your ideal pregame activity?|How do you get your head in the game for a big day?,1,dress_up,They fix up their mother's dress,They shotgun one million beers,Birds do their makeup,dress_up_type
+RA_04,Who or what comes to save the day?,Name something totally magical.|What always lifts your spirits?,2,deus_ex,A fairy godmother appears,Magic fish bones grant a wish,Friends band together,helper_type
+RA_05,What gets magically transformed?,Name two opposite items.|Name two items that feel connected even though they aren't.,2,transformation,A pumpkin -> carriage,Rags -> beautiful gown,Mice -> footmen,transform_classic
+RA_06,What's the signature item they receive?,What's the greatest gift you could ever receive?|What everyday item contains magic?,2,transformation,Glass slippers,Golden shoes,A enchanted mask,signature_item
+RA_07,What warning signals time is running out?,How do you know it's time to leave a party?|When do you know it's time to leave an event?,3,time_limit,The clock strikes midnight,The moon begins to set,The music suddenly stops,time_warning
+RA_08,How do they flee the event?,What's the best way to leave an event early?|What's the fastest way to get out of something?,3,escape,Running down the stairs,Vanishing into the crowd,Leaping from a window,escape_method
+RA_09,What do they accidentally leave behind?,What item could you never live without?|What's an item so unique you're positive only one person in the world has it?,3,item_left,A single glass slipper,A golden hairpin,A mysterious note,lost_item

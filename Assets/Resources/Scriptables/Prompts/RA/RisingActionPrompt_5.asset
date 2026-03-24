@@ -22,3 +22,6 @@ MonoBehaviour:
   - Rags -> beautiful gown
   - Mice -> footmen
   resonanceTag: transform_classic
+  questions:
+  - Name two opposite items.
+  - Name two items that feel connected even though they aren't.

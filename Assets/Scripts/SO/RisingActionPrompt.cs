@@ -6,4 +6,6 @@ public class RisingActionPrompt : Prompt
     public string storyBeat;
     public string[] options;
     public string resonanceTag;
+    // random question options sent to the player's phone
+    public string[] questions;
 }

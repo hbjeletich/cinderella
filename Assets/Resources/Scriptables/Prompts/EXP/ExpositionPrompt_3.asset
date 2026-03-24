@@ -18,3 +18,7 @@ MonoBehaviour:
   necessity: 0
   storyElement: Abuse
   defaultAnswer: Scrubbing floors
+  questions:
+  - What's the most embarrassing thing you can hire someone to do?
+  - What menial task would you spend a fortune to never have to do again?
+  - What's the most boring household chore?

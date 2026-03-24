@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
   id: RES_CLOSE_FORG_BITTERSWEET
   type: 3
-  promptText: '[Protagonist] let go of the anger. [Antagonist] said nothing. Some
-    wounds don''t close, but they can stop bleeding. [Only Friend] held their hand
-    on the way home.'
+  promptText: '[Nickname] let go of the anger. [Antagonist] said nothing. [Stepsiblings]
+    looked away. Some wounds don''t close, but they can stop bleeding. [Only Friend]
+    held their hand on the way home.'
   segmentType: 5
   tone: bittersweet
   climaxOutcome: forgive

@@ -90,15 +90,20 @@ public static class CSVReader
         }
 
         prompt.promptText = row[1];
+
+        // pipe-separated questions for the player's phone
+        prompt.questions = row[2].Split('|');
+        for(int q = 0; q < prompt.questions.Length; q++)
+            prompt.questions[q] = prompt.questions[q].Trim();
+
         bool necessity = false;
-        if(row[2].Contains("TRUE"))
+        if(row[3].Contains("TRUE"))
         {
             necessity = true;
         }
         prompt.necessity = necessity;
-        prompt.storyElement = row[3].Trim('\n', '\r');
-
-        prompt.defaultAnswer = row[4].Trim('\n', '\r');
+        prompt.storyElement = row[4].Trim('\n', '\r');
+        prompt.defaultAnswer = row[5].Trim('\n', '\r');
 
         if (!Directory.Exists($"Assets/Resources/Scriptables/Prompts/EXP/"))
         {
@@ -123,16 +128,22 @@ public static class CSVReader
         }
 
         prompt.promptText = row[1];
-        prompt.round = int.Parse(row[2]);
-        prompt.storyBeat = row[3];
+
+        // pipe-separated questions for the player's phone
+        prompt.questions = row[2].Split('|');
+        for(int q = 0; q < prompt.questions.Length; q++)
+            prompt.questions[q] = prompt.questions[q].Trim();
+
+        prompt.round = int.Parse(row[3]);
+        prompt.storyBeat = row[4];
 
         List<string> options = new List<string>();
-        options.Add(row[4].Trim('\n', '\r'));
         options.Add(row[5].Trim('\n', '\r'));
         options.Add(row[6].Trim('\n', '\r'));
+        options.Add(row[7].Trim('\n', '\r'));
         prompt.options = options.ToArray();
 
-        prompt.resonanceTag = row[7].Trim('\n', '\r');
+        prompt.resonanceTag = row[8].Trim('\n', '\r');
 
         if (!Directory.Exists($"Assets/Resources/Scriptables/Prompts/RA/"))
         {

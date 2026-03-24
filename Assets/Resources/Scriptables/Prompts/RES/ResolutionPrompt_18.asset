@@ -15,7 +15,8 @@ MonoBehaviour:
   id: RES_CLOSE_REC_COMEDY
   type: 3
   promptText: '[Love Interest] finally recognized [Protagonist] and immediately tripped
-    over [Transformation Item]. [Antagonist] fainted. [Only Friend] took a selfie.'
+    over [Transformation Item]. [Antagonist] fainted. [Stepsiblings] started a group
+    chat about it. [Only Friend] took a selfie.'
   segmentType: 5
   tone: comedy
   climaxOutcome: recognition

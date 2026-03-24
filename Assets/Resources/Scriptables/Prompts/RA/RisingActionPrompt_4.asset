@@ -22,3 +22,6 @@ MonoBehaviour:
   - Magic fish bones grant a wish
   - Friends band together
   resonanceTag: helper_type
+  questions:
+  - Name something totally magical.
+  - What always lifts your spirits?

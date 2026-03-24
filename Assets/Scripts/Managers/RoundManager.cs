@@ -528,9 +528,20 @@ public class RoundManager : MonoBehaviour
     {
         player.SetLastPrompt(prompt);
 
+        // send a random question to the player's phone instead of the TV text
+        string textForPlayer = prompt.promptText;
+        if(prompt is ExpositionPrompt expo && expo.questions != null && expo.questions.Length > 0)
+        {
+            textForPlayer = expo.questions[UnityEngine.Random.Range(0, expo.questions.Length)];
+        }
+        else if(prompt is RisingActionPrompt rising && rising.questions != null && rising.questions.Length > 0)
+        {
+            textForPlayer = rising.questions[UnityEngine.Random.Range(0, rising.questions.Length)];
+        }
+
         var message = new ShowPromptMessage{
             type = "show_prompt",
-            text = prompt.promptText,
+            text = textForPlayer,
             inputType = GetInputType(prompt.type)
         };
 

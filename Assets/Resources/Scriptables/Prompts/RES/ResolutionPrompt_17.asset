@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
   id: RES_CLOSE_ESC_TRIUMPHANT
   type: 3
-  promptText: '[Protagonist] walked free. [Antagonist] could only watch. At last,
-    no more [Abuse]. [Love Interest] was waiting with open arms.'
+  promptText: '[Nickname] walked free. [Antagonist] could only watch. At last, no
+    more [Abuse]. [Love Interest] was waiting with open arms at [Event Location].'
   segmentType: 5
   tone: triumphant
   climaxOutcome: escape

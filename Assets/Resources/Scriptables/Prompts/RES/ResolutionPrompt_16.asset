@@ -16,7 +16,7 @@ MonoBehaviour:
   type: 3
   promptText: '[Protagonist] got out. But freedom has a price. [Only Friend] was
     left behind. [Love Interest] waited at [Event Location] for someone who never
-    came back.'
+    came back. [Stepsiblings] pretended nothing happened.'
   segmentType: 5
   tone: dark
   climaxOutcome: escape

@@ -22,3 +22,6 @@ MonoBehaviour:
   - Steals their invitation
   - Spreads rumors they're not welcome
   resonanceTag: sabotage_type
+  questions:
+  - What's a subtle way to ruin someone's day?
+  - What's the most evil thing one could do?

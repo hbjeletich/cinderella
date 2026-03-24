@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
   id: RES_EXP_01
   type: 3
-  promptText: "Once upon a time, there was a hero named [Protagonist]. Life wasn't
-    easy \u2014 every day, [Antagonist] forced them to endure [Abuse]. Their only
-    comfort was their one true ally: [Only Friend]. They dreamed of escaping to [Event
-    Location]. They had their eye on [Love Interest]."
+  promptText: "Once upon a time, there was a hero named [Protagonist] \u2014 though
+    some called them [Nickname]. Their parents? [Parents]. Now they lived under the
+    rule of [Antagonist] and [Stepsiblings], forced to endure [Abuse] every single
+    day. Their only comfort was [Only Friend]. They dreamed of escaping to [Event
+    Location] for [Party Theme]."
   segmentType: 0
   tone: 
   climaxOutcome: 

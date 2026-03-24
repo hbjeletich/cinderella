@@ -15,11 +15,11 @@ public class ResolutionPrompt : Prompt
 {
     public ResolutionSegmentType segmentType;
     public string tone;
-    public string climaxOutcome; // only used for closing segments — matches ClimaxPrompt.outcomeCategory
+    public string climaxOutcome;
 
     public ResolutionSegmentType StringToSegmentType(string input)
     {
-        switch(input)
+        switch(input.ToLower())
         {
             case "exposition": return ResolutionSegmentType.Exposition;
             case "rising_1": return ResolutionSegmentType.Rising1;

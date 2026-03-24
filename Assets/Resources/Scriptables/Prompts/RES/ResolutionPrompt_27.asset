@@ -15,8 +15,8 @@ MonoBehaviour:
   id: RES_CLOSE_FALLBACK_CHAOS
   type: 3
   promptText: Nobody knows what happened next. [Antagonist] bit someone. [Protagonist]
-    stole a horse. [Event Location] is now a crater. [Only Friend] started a podcast
-    about it.
+    stole a horse. [Event Location] is now a crater. [Stepsiblings] blamed each other.
+    [Only Friend] started a podcast about it.
   segmentType: 5
   tone: chaos
   climaxOutcome: 

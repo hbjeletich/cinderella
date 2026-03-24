@@ -15,8 +15,8 @@ MonoBehaviour:
   id: RES_CLOSE_FORG_TRIUMPHANT
   type: 3
   promptText: With quiet dignity, [Protagonist] offered [Antagonist] forgiveness.
-    [Only Friend] wept. Even [Love Interest] was moved. [Event Location] had never
-    seen such grace.
+    [Stepsiblings] wept. Even [Love Interest] was moved. [Event Location] had never
+    seen such grace during [Party Theme].
   segmentType: 5
   tone: triumphant
   climaxOutcome: forgive

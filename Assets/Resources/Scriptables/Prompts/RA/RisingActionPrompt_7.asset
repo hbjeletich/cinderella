@@ -22,3 +22,6 @@ MonoBehaviour:
   - The moon begins to set
   - The music suddenly stops
   resonanceTag: time_warning
+  questions:
+  - How do you know it's time to leave a party?
+  - When do you know it's time to leave an event?

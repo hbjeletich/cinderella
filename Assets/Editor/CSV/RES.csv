@@ -1,5 +1,5 @@
 id,prompt_text,segment_type,tone,climax_outcome
-RES_EXP_01,"Once upon a time, there was a hero named [Protagonist]. Life wasn't easy — every day, [Antagonist] forced them to endure [Abuse]. Their only comfort was their one true ally: [Only Friend]. They dreamed of escaping to [Event Location]. They had their eye on [Love Interest].",exposition,,
+RES_EXP_01,"Once upon a time, there was a hero named [Protagonist] — though some called them [Nickname]. Their parents? [Parents]. Now they lived under the rule of [Antagonist] and [Stepsiblings], forced to endure [Abuse] every single day. Their only comfort was [Only Friend]. They dreamed of escaping to [Event Location] for [Party Theme].",exposition,,
 RES_RISE_1_DEFAULT,"[Antagonist] had other plans though — [prevention]. But [Protagonist] wasn't giving up that easily — [dress_up].",rising_1,,
 RES_RISE_1_COMEDY,"In a move that surprised no one, [Antagonist] tried to stop them — [prevention]. [Protagonist] responded by doing the only logical thing: [dress_up].",rising_1,comedy,
 RES_RISE_1_DARK,"[Antagonist] struck first — [prevention]. But [Protagonist] was not so easily broken. In the darkness, they prepared: [dress_up].",rising_1,dark,
@@ -13,16 +13,16 @@ RES_RISE_3_COMEDY,"Things got weird fast — [time_limit]. [Protagonist] panicke
 RES_RISE_3_DARK,"The clock was ticking — [time_limit]. There was no choice. [escape]. They left behind [item_left]. It would haunt them.",rising_3,dark,
 RES_RISE_3_CHAOS,"Everything went sideways — [time_limit]. [escape]. [item_left] went flying. Nobody knows where it landed.",rising_3,chaos,
 RES_CLX_01,"Then came the moment of truth. [climax_type]. [climax_choice].",climax,,
-RES_CLOSE_ESC_COMEDY,"And so [Protagonist] finally escaped [Antagonist] and never had to [Abuse] again. [Only Friend] got a medal. [Love Interest] got confused. Everyone went home.",closing,comedy,escape
-RES_CLOSE_ESC_DARK,"[Protagonist] got out. But freedom has a price. [Only Friend] was left behind. [Love Interest] waited at [Event Location] for someone who never came back.",closing,dark,escape
-RES_CLOSE_ESC_TRIUMPHANT,"[Protagonist] walked free. [Antagonist] could only watch. At last, no more [Abuse]. [Love Interest] was waiting with open arms.",closing,triumphant,escape
-RES_CLOSE_REC_COMEDY,"[Love Interest] finally recognized [Protagonist] and immediately tripped over [Transformation Item]. [Antagonist] fainted. [Only Friend] took a selfie.",closing,comedy,recognition
-RES_CLOSE_REC_TRIUMPHANT,"[Love Interest] looked into [Protagonist]'s eyes and saw the truth. No more hiding. [Antagonist] had lost. [Only Friend] wept with joy at [Event Location].",closing,triumphant,recognition
+RES_CLOSE_ESC_COMEDY,"And so [Nickname] finally escaped [Antagonist] and never had to [Abuse] again. [Only Friend] got a medal. [Love Interest] got confused. [Stepsiblings] were last seen arguing about who caused it.",closing,comedy,escape
+RES_CLOSE_ESC_DARK,"[Protagonist] got out. But freedom has a price. [Only Friend] was left behind. [Love Interest] waited at [Event Location] for someone who never came back. [Stepsiblings] pretended nothing happened.",closing,dark,escape
+RES_CLOSE_ESC_TRIUMPHANT,"[Nickname] walked free. [Antagonist] could only watch. At last, no more [Abuse]. [Love Interest] was waiting with open arms at [Event Location].",closing,triumphant,escape
+RES_CLOSE_REC_COMEDY,"[Love Interest] finally recognized [Protagonist] and immediately tripped over [Transformation Item]. [Antagonist] fainted. [Stepsiblings] started a group chat about it. [Only Friend] took a selfie.",closing,comedy,recognition
+RES_CLOSE_REC_TRIUMPHANT,"[Love Interest] looked into [Nickname]'s eyes and saw the truth. No more hiding. [Antagonist] had lost. [Only Friend] wept with joy at [Event Location] during [Party Theme].",closing,triumphant,recognition
 RES_CLOSE_REC_DARK,"[Love Interest] found them. But recognition cuts both ways. [Protagonist] could never go back to who they were before. [Antagonist] smiled, knowing the damage was done.",closing,dark,recognition
-RES_CLOSE_FORG_COMEDY,"[Protagonist] forgave [Antagonist], which was honestly pretty weird given the whole [Abuse] thing. [Only Friend] started a slow clap. [Love Interest] was very confused.",closing,comedy,forgive
-RES_CLOSE_FORG_TRIUMPHANT,"With quiet dignity, [Protagonist] offered [Antagonist] forgiveness. [Only Friend] wept. Even [Love Interest] was moved. [Event Location] had never seen such grace.",closing,triumphant,forgive
+RES_CLOSE_FORG_COMEDY,"[Nickname] forgave [Antagonist], which was honestly pretty weird given the whole [Abuse] thing. [Stepsiblings] were shook. [Only Friend] started a slow clap. [Love Interest] was very confused.",closing,comedy,forgive
+RES_CLOSE_FORG_TRIUMPHANT,"With quiet dignity, [Protagonist] offered [Antagonist] forgiveness. [Stepsiblings] wept. Even [Love Interest] was moved. [Event Location] had never seen such grace during [Party Theme].",closing,triumphant,forgive
 RES_CLOSE_FORG_TRAGEDY,"[Protagonist] forgave them. It didn't fix anything. But it was the right thing to do. [Only Friend] understood. [Love Interest] didn't.",closing,tragedy,forgive
-RES_CLOSE_FORG_BITTERSWEET,"[Protagonist] let go of the anger. [Antagonist] said nothing. Some wounds don't close, but they can stop bleeding. [Only Friend] held their hand on the way home.",closing,bittersweet,forgive
-RES_CLOSE_FALLBACK_COMEDY,"And that was that. [Protagonist] survived. [Antagonist] probably didn't learn anything. [Only Friend] wrote a book about it. It flopped.",closing,comedy,
-RES_CLOSE_FALLBACK_DARK,"The story ended. But stories like these never really end. [Protagonist] still dreams of [Event Location]. [Antagonist] still dreams of [Protagonist].",closing,dark,
-RES_CLOSE_FALLBACK_CHAOS,"Nobody knows what happened next. [Antagonist] bit someone. [Protagonist] stole a horse. [Event Location] is now a crater. [Only Friend] started a podcast about it.",closing,chaos,
+RES_CLOSE_FORG_BITTERSWEET,"[Nickname] let go of the anger. [Antagonist] said nothing. [Stepsiblings] looked away. Some wounds don't close, but they can stop bleeding. [Only Friend] held their hand on the way home.",closing,bittersweet,forgive
+RES_CLOSE_FALLBACK_COMEDY,"And that was that. [Nickname] survived. [Antagonist] probably didn't learn anything. [Stepsiblings] started a reality show. [Only Friend] wrote a book about it. It flopped.",closing,comedy,
+RES_CLOSE_FALLBACK_DARK,"The story ended. But stories like these never really end. [Protagonist] still dreams of [Event Location]. [Antagonist] still dreams of [Protagonist]. And [Nickname] is just a name now.",closing,dark,
+RES_CLOSE_FALLBACK_CHAOS,"Nobody knows what happened next. [Antagonist] bit someone. [Protagonist] stole a horse. [Event Location] is now a crater. [Stepsiblings] blamed each other. [Only Friend] started a podcast about it.",closing,chaos,

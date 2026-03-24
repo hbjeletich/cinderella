@@ -22,3 +22,6 @@ MonoBehaviour:
   - Golden shoes
   - A enchanted mask
   resonanceTag: signature_item
+  questions:
+  - What's the greatest gift you could ever receive?
+  - What everyday item contains magic?

@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
   id: RES_CLOSE_FALLBACK_COMEDY
   type: 3
-  promptText: And that was that. [Protagonist] survived. [Antagonist] probably didn't
-    learn anything. [Only Friend] wrote a book about it. It flopped.
+  promptText: And that was that. [Nickname] survived. [Antagonist] probably didn't
+    learn anything. [Stepsiblings] started a reality show. [Only Friend] wrote a
+    book about it. It flopped.
   segmentType: 5
   tone: comedy
   climaxOutcome: 

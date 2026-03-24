@@ -22,3 +22,6 @@ MonoBehaviour:
   - A golden hairpin
   - A mysterious note
   resonanceTag: lost_item
+  questions:
+  - What item could you never live without?
+  - What's an item so unique you're positive only one person in the world has it?

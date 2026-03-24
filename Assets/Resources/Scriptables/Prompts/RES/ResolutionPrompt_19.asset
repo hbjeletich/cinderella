@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ResolutionPrompt
   id: RES_CLOSE_REC_TRIUMPHANT
   type: 3
-  promptText: '[Love Interest] looked into [Protagonist]''s eyes and saw the truth.
+  promptText: '[Love Interest] looked into [Nickname]''s eyes and saw the truth.
     No more hiding. [Antagonist] had lost. [Only Friend] wept with joy at [Event
-    Location].'
+    Location] during [Party Theme].'
   segmentType: 5
   tone: triumphant
   climaxOutcome: recognition

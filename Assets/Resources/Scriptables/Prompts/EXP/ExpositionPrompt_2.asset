@@ -18,3 +18,6 @@ MonoBehaviour:
   necessity: 1
   storyElement: Antagonist
   defaultAnswer: Wicked Stepmother
+  questions:
+  - Who is someone you would NEVER leave your pet with?
+  - Who bullied you to make you this way?

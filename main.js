@@ -105,6 +105,10 @@ ws.onmessage = (e) => {
 				status.textContent = "This is your answer... don't second guess it...";
 				break;
 			}
+			if(message.promptText) {
+				show(textLabel);
+				textLabel.textContent = message.promptText;
+			}
 			status.textContent = message.text;
 			show(reactContainer);
 			break;
@@ -119,6 +123,10 @@ ws.onmessage = (e) => {
 				break;
 			}
 			
+			if(message.promptText) {
+				show(textLabel);
+				textLabel.textContent = message.promptText;
+			}
 			status.textContent = "Choose an answer carefully!";
 			// parse choices and create buttons
 			const choices = message.text.split('|');

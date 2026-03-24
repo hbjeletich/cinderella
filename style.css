@@ -8,8 +8,15 @@ body {
 	padding: 20px;
 	background: #042A2B;
 	color: #FCFCFC;
-	min-height: 100vh;
-	font-size:18px;
+	min-height: 100dvh;
+	font-size: 18px;
+	display: flex;
+	justify-content: center;
+}
+
+#gameCard {
+	width: 100%;
+	max-width: 420px;
 }
 
 h1 {
@@ -25,9 +32,8 @@ label {
 
 input[type=text] {
 	width: 100%;
-	max-width: 400px;
 	padding: 16px;
-	margin: 10px 0px;
+	margin: 10px 0;
 	font-size: 1.125rem;
 	font-family: inherit;
 	background-color: #FCFCFC;
@@ -37,19 +43,18 @@ input[type=text] {
 }
 
 input[type=text]:hover {
-	border: 3px solid #54F2F2;
+	border-color: #54F2F2;
 }
 
 input[type=text]:focus {
 	border-color: #F4E04D;
-	box-shadow: 0px 0px 6px rgba(244, 224, 77, 0.6);
+	box-shadow: 0 0 6px rgba(244, 224, 77, 0.6);
 	outline: none;
 }
 
 button {
 	display: block;
 	width: 100%;
-	max-width: 400px;
 	padding: 16px 24px;
 	margin: 15px 0;
 	font-size: 1.25rem;
@@ -92,10 +97,9 @@ button:disabled {
 }
 
 #reactGrid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    max-width: 400px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 12px;
 }
 
 .react-btn {
@@ -107,15 +111,15 @@ button:disabled {
 	aspect-ratio: 1;
 	padding: 0;
 	margin: 0;
-    font-size: 2.5rem;
-    background: #5EB1BF;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
+	font-size: 2.5rem;
+	background: #5EB1BF;
+	border: none;
+	border-radius: 12px;
+	cursor: pointer;
 }
 
 .react-btn:hover {
-    background: #54F2F2;
+	background: #54F2F2;
 }
 
 .react-btn:active {
@@ -131,7 +135,6 @@ button:disabled {
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 12px;
-	max-width: 400px;
 }
 
 .choice-btn {

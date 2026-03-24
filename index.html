@@ -10,30 +10,32 @@
 </head>
 
 <body>
-	<h1 id="title">Welcome!</h1>
+	<div id="gameCard">
+		<h1 id="title">Welcome!</h1>
 
-	<label id="label" for="textInput">Enter Your Name</label>
-	<input id="textInput" type="text" placeholder="Enter text..." />
-	<button id="sendBtn" disabled>Send</button>
+		<label id="label" for="textInput">Enter Your Name</label>
+		<input id="textInput" type="text" placeholder="Enter text..." />
+		<button id="sendBtn" disabled>Send</button>
 
-	<p id="status">Connecting...</p>
-	<button id="startBtn" class="hidden">Start Game</button>
+		<p id="status">Connecting...</p>
+		<button id="startBtn" class="hidden">Start Game</button>
 
-	<script type="module" src="main.js"></script>
+		<div id="choiceContainer" class="hidden">
+			<div id="choiceGrid"></div>
+		</div>
 
-	<div id="choiceContainer" class="hidden">
-	<div id="choiceGrid"></div>
-	</div>
-
-	<div id="reactContainer" class="hidden">
-		<div id="reactGrid">
-			<button class="react-btn" data-react="comedy">😂</button>
-			<button class="react-btn" data-react="triumphant">👑</button>
-			<button class="react-btn" data-react="dark">💀</button>
-			<button class="react-btn" data-react="tragedy">💔</button>
-			<button class="react-btn" data-react="chaos">💥</button>
-			<button class="react-btn" data-react="bittersweet">🥲</button>
+		<div id="reactContainer" class="hidden">
+			<div id="reactGrid">
+				<button class="react-btn" data-react="comedy">😂</button>
+				<button class="react-btn" data-react="triumphant">👑</button>
+				<button class="react-btn" data-react="dark">💀</button>
+				<button class="react-btn" data-react="tragedy">💔</button>
+				<button class="react-btn" data-react="chaos">💥</button>
+				<button class="react-btn" data-react="bittersweet">🥲</button>
+			</div>
 		</div>
 	</div>
+
+	<script type="module" src="main.js"></script>
 </body>
 </html>

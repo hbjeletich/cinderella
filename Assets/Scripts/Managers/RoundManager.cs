@@ -163,7 +163,7 @@ public class RoundManager : MonoBehaviour
         }
         foreach(Player p in missing)
         {
-            HandleReactSubmission(new SubmitMessage { type = "send_react", text = "comedy" }, p);
+            HandleReactSubmission(new SubmitMessage { type = "send_react", text = "none" }, p);
         }
     }
 
@@ -227,7 +227,7 @@ public class RoundManager : MonoBehaviour
                 break;
 
             case GameState.Reacting:
-                HandleReactSubmission(new SubmitMessage { type = "send_react", text = "comedy" }, player);
+                HandleReactSubmission(new SubmitMessage { type = "send_react", text = "none" }, player);
                 break;
 
             case GameState.Voting:
@@ -463,7 +463,7 @@ public class RoundManager : MonoBehaviour
         return null; // decoy
     }
 
-    public void SendGroupVoteToAllPlayers(int groupIndex, List<string> options)
+    public void SendGroupVoteToAllPlayers(int groupIndex, List<string> options, string promptText = null)
     {
         PlayerManager.Instance.ResetPlayerReady();
         currentVotingOptions = new List<string>(options);
@@ -473,7 +473,8 @@ public class RoundManager : MonoBehaviour
             var message = new ShowAnswerChoicesMessage{
                 type = "show_choices",
                 text = string.Join("|", options),
-                myPrompt = false // everyone votes, no exclusions
+                promptText = promptText,
+                myPrompt = false
             };
 
             ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
@@ -555,7 +556,7 @@ public class RoundManager : MonoBehaviour
         }
     }
 
-    public void SendReactPromptsToAllPlayers(Player answeredPlayer, string revealText)
+    public void SendReactPromptsToAllPlayers(Player answeredPlayer, string revealText, string promptText = null)
     {
         PlayerManager.Instance.ResetPlayerReady();
         
@@ -569,6 +570,7 @@ public class RoundManager : MonoBehaviour
             var message = new ShowAnswersMessage{
                 type = "show_answer",
                 text = revealText,
+                promptText = promptText,
                 myPrompt = isMyPrompt
             };
             
@@ -578,7 +580,7 @@ public class RoundManager : MonoBehaviour
         StartPhaseTimer(reactTimerDuration, AutoSubmitMissingReactions);
     }
 
-    public void SendVotePromptsToAllPlayers(Player answeredPlayer, List<string> options)
+    public void SendVotePromptsToAllPlayers(Player answeredPlayer, List<string> options, string promptText = null)
     {
         PlayerManager.Instance.ResetPlayerReady();
         answeredPlayer.SetReady(true);
@@ -589,6 +591,7 @@ public class RoundManager : MonoBehaviour
             var message = new ShowAnswerChoicesMessage{
                 type = "show_choices",
                 text = string.Join("|", options),
+                promptText = promptText,
                 myPrompt = (p == answeredPlayer)
             };
 
@@ -617,16 +620,18 @@ public class RoundManager : MonoBehaviour
                 .Replace("[Antagonist]", StoryManager.Instance.GetStoryVariable("antagonist_name"));
         }
         
+        ClimaxPrompt climax = StoryManager.Instance.GetChosenClimax();
         var message = new ShowAnswerChoicesMessage{
             type = "show_choices",
             text = string.Join("|", filledOptions),
+            promptText = climax?.promptText,
             myPrompt = false
         };
         
         ConnectionManager.Instance.SendToPlayer(player, JsonUtility.ToJson(message));
     }
 
-    public void SendClimaxVoteToAllPlayers(List<string> options)
+    public void SendClimaxVoteToAllPlayers(List<string> options, string promptText = null)
     {
         PlayerManager.Instance.ResetPlayerReady();
         currentVotingOptions = new List<string>(options);
@@ -636,6 +641,7 @@ public class RoundManager : MonoBehaviour
             var message = new ShowAnswerChoicesMessage{
                 type = "show_choices",
                 text = string.Join("|", options),
+                promptText = promptText,
                 myPrompt = false
             };
             ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
@@ -803,11 +809,17 @@ public class RoundManager : MonoBehaviour
         
         foreach(var react in reactions.Values)
         {
+            if(react.reactionType == ReactionType.None) continue;
+
             if(tally.ContainsKey(react.reactionType))
                 tally[react.reactionType]++;
             else
                 tally[react.reactionType] = 1;
         }
+
+        // everyone timed out
+        if(tally.Count == 0)
+            return ReactionType.None;
         
         int maxCount = tally.Values.Max();
         List<ReactionType> winners = tally.Where(kv => kv.Value == maxCount)

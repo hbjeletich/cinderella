@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour
     public int reactionConsensusPoints = 100;
     public int titlePickedPoints = 300;
 
+    [Header("Settings")]
+    public bool enableProfanityFilter = false;
+
     [Header("Content Filter")]
     public bool enableProfanityFilter = false;
 
@@ -255,7 +258,7 @@ public class GameManager : MonoBehaviour
 
         // show titles on TV, then send vote to everyone
         UIManager.Instance.ShowOptions(null, titles, onComplete: () => {
-            RoundManager.Instance.SendClimaxVoteToAllPlayers(titles);
+            RoundManager.Instance.SendClimaxVoteToAllPlayers(titles, "Vote for the best title!");
         });
     }
 
@@ -366,16 +369,19 @@ public class GameManager : MonoBehaviour
     {
         int currentRound = StoryManager.Instance.RoundNumber;
         
-        // reaction scoring
+        // reaction scoring — no points if everyone timed out
         ReactionType majority = RoundManager.Instance.GetMajorityReactionType();
         Dictionary<Player, Reaction> reactions = RoundManager.Instance.GetReactions();
         
-        foreach(var reaction in reactions)
+        if(majority != ReactionType.None)
         {
-            if(reaction.Value.reactionType == majority)
+            foreach(var reaction in reactions)
             {
-                reaction.Key.score += reactionConsensusPoints;
-                Debug.Log($"Scoring: {reaction.Key.playerName} earned {reactionConsensusPoints} pts (reaction consensus)");
+                if(reaction.Value.reactionType == majority)
+                {
+                    reaction.Key.score += reactionConsensusPoints;
+                    Debug.Log($"Scoring: {reaction.Key.playerName} earned {reactionConsensusPoints} pts (reaction consensus)");
+                }
             }
         }
         
@@ -482,7 +488,7 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.ShowSubmission(author, winningChoice, onComplete: () => {
                 // now show author reveal as narrative, then send react prompts
                 UIManager.Instance.ShowNarrative($"This was {authorName}'s answer!", onComplete: () => {
-                    RoundManager.Instance.SendReactPromptsToAllPlayers(null, winningChoice);
+                    RoundManager.Instance.SendReactPromptsToAllPlayers(null, winningChoice, prompt?.promptText);
                 });
             }, promptText: prompt?.promptText);
             
@@ -523,7 +529,7 @@ public class GameManager : MonoBehaviour
             SetGameState(GameState.Reacting);
             
             UIManager.Instance.ShowSubmission(null, winningChoice, onComplete: () => {
-                RoundManager.Instance.SendReactPromptsToAllPlayers(null, winningChoice);
+                RoundManager.Instance.SendReactPromptsToAllPlayers(null, winningChoice, climaxText);
             }, promptText: climaxText);
         }
     }
@@ -547,7 +553,7 @@ public class GameManager : MonoBehaviour
 
         UIManager.Instance.ShowNarrative(voteIntro, onComplete: () => {
             UIManager.Instance.ShowOptions(null, options, onComplete: () => {
-                RoundManager.Instance.SendClimaxVoteToAllPlayers(options);
+                RoundManager.Instance.SendClimaxVoteToAllPlayers(options, climax.promptText);
             });
         });
     }
@@ -567,11 +573,13 @@ public class GameManager : MonoBehaviour
         Debug.Log($"GameManager: Showing submission from {currentPlayer.playerName}");
 
         UIManager.Instance.ShowSubmission(currentPlayer, submission, onComplete: () => {
-            RoundManager.Instance.SendReactPromptsToAllPlayers(currentPlayer, submission);
+            RoundManager.Instance.SendReactPromptsToAllPlayers(currentPlayer, submission, promptText);
         }, promptText: promptText);
     }
 
-    // Rising action group-by-group reveal: show the group's prompt on TV, then send vote options
+    /// <summary>
+    /// Rising action group-by-group reveal: show the group's prompt on TV, then send vote options.
+    /// </summary>
     private void ShowNextGroupVoting()
     {
         int groupIdx = RoundManager.Instance.GetCurrentGroupIndex();
@@ -595,7 +603,7 @@ public class GameManager : MonoBehaviour
         // show the prompt on TV first, then send vote choices to all players
         UIManager.Instance.ShowNarrative(prompt.promptText, onComplete: () => {
             UIManager.Instance.ShowOptions(null, options, onComplete: () => {
-                RoundManager.Instance.SendGroupVoteToAllPlayers(groupIdx, options);
+                RoundManager.Instance.SendGroupVoteToAllPlayers(groupIdx, options, prompt.promptText);
             });
         });
     }
@@ -629,11 +637,5 @@ public class GameManager : MonoBehaviour
             list[i] = list[r];
             list[r] = temp;
         }
-    }
-
-    public void ToggleProfanityFilter()
-    {
-        enableProfanityFilter = !enableProfanityFilter;
-        Debug.Log($"GameManager: Profanity filter {(enableProfanityFilter ? "enabled" : "disabled")}");
     }
 }

@@ -42,6 +42,14 @@ public class ErrorMessage
 }
 
 [System.Serializable]
+public class RejectedMessage
+{
+    // Server to Client : Your submission was rejected, try again
+    public string type = "rejected";
+    public string text;
+}
+
+[System.Serializable]
 public class StartMessage 
 {
     // Client to Server : Start the game!
@@ -85,6 +93,7 @@ public class ShowAnswersMessage
     // Server to Client : React to Prompt!
     public string type = "show_answer";
     public string text;
+    public string promptText;
     public bool myPrompt = false;
 }
 
@@ -94,5 +103,6 @@ public class ShowAnswerChoicesMessage
     // Server to Client : See the answers!
     public string type = "show_choices";
     public string text;
+    public string promptText;
     public bool myPrompt = false;
 }

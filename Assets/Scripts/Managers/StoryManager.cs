@@ -218,10 +218,12 @@ public class StoryManager : MonoBehaviour
 
     public void RecordReactions(Dictionary<Player, Reaction> reactions)
     {
-        // tally tone
         foreach(var reaction in reactions)
         {
             ReactionType reactionType = reaction.Value.reactionType;
+            // skip None — these are auto-submitted timeouts, not real player reactions
+            if(reactionType == ReactionType.None) continue;
+
             if(toneTally.ContainsKey(reactionType))
                 toneTally[reactionType]++;
             else

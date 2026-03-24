@@ -481,21 +481,17 @@ public class RoundManager : MonoBehaviour
         // send options to the two players
         SendClimaxOptionsToPlayer(protagonistPlayer, climax.protagonistOptions, "protagonist");
         SendClimaxOptionsToPlayer(antagonistPlayer, climax.antagonistOptions, "antagonist");
-        
-        // build waiting message with scenario context
-        string waitingText = DialogueManager.Instance.GetDialogue("climax_waiting");
-        waitingText = waitingText.Replace("{protagonist}", protagonistPlayer.playerName);
-        waitingText = waitingText.Replace("{antagonist}", antagonistPlayer.playerName);
-        waitingText = waitingText.Replace("{climax_prompt}", climax.promptText);
 
-        // send waiting message to everyone else
+        // tell spectators what's happening
         foreach(Player p in PlayerManager.Instance.players)
         {
             if(p != protagonistPlayer && p != antagonistPlayer)
             {
+                string spectatorText = $"{protagonistPlayer.playerName} (Hero) and {antagonistPlayer.playerName} (Villain) are deciding the fate of the story... get ready to vote!";
                 var message = new ShowAnswersMessage{
                     type = "show_answer",
-                    text = waitingText,
+                    text = spectatorText,
+                    promptText = climax.promptText,
                     myPrompt = true
                 };
                 ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
@@ -619,10 +615,16 @@ public class RoundManager : MonoBehaviour
         }
         
         ClimaxPrompt climax = StoryManager.Instance.GetChosenClimax();
+
+        // tell them their role and what to do
+        string roleText = (role == "protagonist")
+            ? $"You're the HERO! What does {player.playerName} do?"
+            : $"You're the VILLAIN! What does {player.playerName} do?";
+
         var message = new ShowAnswerChoicesMessage{
             type = "show_choices",
             text = string.Join("|", filledOptions),
-            promptText = climax?.promptText,
+            promptText = roleText,
             myPrompt = false
         };
         

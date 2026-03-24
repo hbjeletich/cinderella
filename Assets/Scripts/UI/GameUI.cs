@@ -85,10 +85,10 @@ public class GameUI : MonoBehaviour
         revealingUI.ShowSubmission(player, answer, onComplete, promptText);
     }
 
-    public void ShowOptions(Player player, List<string> answers, Action onComplete)
+    public void ShowOptions(Player player, List<string> answers, Action onComplete, string promptText = null)
     {
         SetActive(revealingUI);
-        revealingUI.ShowOptions(player, answers, onComplete);
+        revealingUI.ShowOptions(player, answers, onComplete, promptText);
     }
 
     // --- Scoreboard (delegates to ScoringUI) ---

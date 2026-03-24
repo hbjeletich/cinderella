@@ -10,9 +10,11 @@ public class RevealingUI : BaseGameUI
         StartCoroutine(ShowSubmissionCoroutine(player, answer, onComplete, promptText));
     }
 
-    public void ShowOptions(Player player, List<string> answers, Action onComplete)
+    public void ShowOptions(Player player, List<string> answers, Action onComplete, string promptText = null)
     {
-        if(player != null)
+        if(!string.IsNullOrEmpty(promptText))
+            ChangeText(promptText);
+        else if(player != null)
             ChangeText($"{player.playerName}'s Rising Action:");
         else
             ChangeText("The fate of the story is in your hands...");

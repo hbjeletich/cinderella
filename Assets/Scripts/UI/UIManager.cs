@@ -92,24 +92,23 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ShowOptions(Player player, List<string> answers, Action onComplete)
+    public void ShowOptions(Player player, List<string> answers, Action onComplete, string promptText = null)
     {
         if(gameUI != null)
         {
-            // removed a foor loop here if anything weird happens its not my fault
-            gameUI.ShowOptions(player, answers, onComplete);
+            gameUI.ShowOptions(player, answers, onComplete, promptText);
         }
         else
         {
             gameUI = FindObjectOfType<GameUI>();
             if(gameUI == null)
             {
-                Debug.LogWarning("UIManager: GameUI not found for ShowSubmission");
-                onComplete?.Invoke(); // in case we cant find it game moves forward!
+                Debug.LogWarning("UIManager: GameUI not found for ShowOptions");
+                onComplete?.Invoke();
             } 
             else
             {
-                gameUI.ShowOptions(player, answers, onComplete);
+                gameUI.ShowOptions(player, answers, onComplete, promptText);
             }
         }
     }

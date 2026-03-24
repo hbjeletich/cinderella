@@ -256,7 +256,7 @@ public class GameManager : MonoBehaviour
         // show titles on TV, then send vote to everyone
         UIManager.Instance.ShowOptions(null, titles, onComplete: () => {
             RoundManager.Instance.SendClimaxVoteToAllPlayers(titles, "Vote for the best title!");
-        });
+        }, promptText: "Vote for the best title!");
     }
 
     private void HandleTitleVoteResult()
@@ -494,23 +494,42 @@ public class GameManager : MonoBehaviour
 
         if(currentRound == 5)
         {
-            // climax vote — record under both the specific type key and a standard key
-            StoryManager.Instance.RecordStoryVariable(StoryManager.Instance.GetChosenClimax().climaxType, winningChoice);
-            StoryManager.Instance.RecordStoryVariable("climax_choice", winningChoice);
+            // strip the "Hero: " / "Villain: " label to get the raw choice
+            string cleanChoice = winningChoice;
+            if(cleanChoice.StartsWith("Hero: "))
+                cleanChoice = cleanChoice.Substring(6);
+            else if(cleanChoice.StartsWith("Villain: "))
+                cleanChoice = cleanChoice.Substring(9);
+
+            StoryManager.Instance.RecordStoryVariable(StoryManager.Instance.GetChosenClimax().climaxType, cleanChoice);
+            StoryManager.Instance.RecordStoryVariable("climax_choice", cleanChoice);
             StoryManager.Instance.RecordStoryVariable("climax_type", StoryManager.Instance.GetChosenClimax().climaxType);
             StoryManager.Instance.RecordStoryVariable("climax_outcome", StoryManager.Instance.GetChosenClimax().outcomeCategory);
 
-            // score
-            foreach(var submission in currentSubmissions)
+            // score the author — check if protagonist or antagonist's choice won
+            string protagonistChoice = RoundManager.Instance.GetProtagonistChoice();
+            string antagonistChoice = RoundManager.Instance.GetAntagonistChoice();
+            
+            if(cleanChoice == protagonistChoice)
             {
-                if(submission.Value == winningChoice)
+                Player hero = PlayerManager.Instance.GetHighestScoringPlayer();
+                if(hero != null)
                 {
-                    submission.Key.score += answerPickedPoints;
-                    Debug.Log($"GameManager: {submission.Key.playerName} earned {answerPickedPoints} pts (answer picked)");
-                    break;
+                    hero.score += answerPickedPoints;
+                    Debug.Log($"GameManager: {hero.playerName} (hero) earned {answerPickedPoints} pts (answer picked)");
+                }
+            }
+            else if(cleanChoice == antagonistChoice)
+            {
+                Player villain = PlayerManager.Instance.GetLowestScoringPlayer();
+                if(villain != null)
+                {
+                    villain.score += answerPickedPoints;
+                    Debug.Log($"GameManager: {villain.playerName} (villain) earned {answerPickedPoints} pts (answer picked)");
                 }
             }
             
+            // voted with majority
             Dictionary<Player, string> votes = RoundManager.Instance.GetVotes();
             foreach(var vote in votes)
             {
@@ -525,8 +544,8 @@ public class GameManager : MonoBehaviour
             
             SetGameState(GameState.Reacting);
             
-            UIManager.Instance.ShowSubmission(null, winningChoice, onComplete: () => {
-                RoundManager.Instance.SendReactPromptsToAllPlayers(null, winningChoice, climaxText);
+            UIManager.Instance.ShowSubmission(null, cleanChoice, onComplete: () => {
+                RoundManager.Instance.SendReactPromptsToAllPlayers(null, cleanChoice, climaxText);
             }, promptText: climaxText);
         }
     }
@@ -538,21 +557,20 @@ public class GameManager : MonoBehaviour
         string protagonistChoice = RoundManager.Instance.GetProtagonistChoice();
         string antagonistChoice = RoundManager.Instance.GetAntagonistChoice();
         
-        List<string> options = new List<string>{ protagonistChoice, antagonistChoice };
+        // label so players know which is which
+        List<string> options = new List<string>{
+            $"Hero: {protagonistChoice}",
+            $"Villain: {antagonistChoice}"
+        };
         ShuffleList(options);
         
         SetGameState(GameState.Voting);
 
-        // show the scenario question on TV before revealing options
         ClimaxPrompt climax = StoryManager.Instance.GetChosenClimax();
-        string voteIntro = DialogueManager.Instance.GetDialogue("climax_vote_intro");
-        voteIntro = voteIntro.Replace("{climax_prompt}", climax.promptText);
 
-        UIManager.Instance.ShowNarrative(voteIntro, onComplete: () => {
-            UIManager.Instance.ShowOptions(null, options, onComplete: () => {
-                RoundManager.Instance.SendClimaxVoteToAllPlayers(options, climax.promptText);
-            });
-        });
+        UIManager.Instance.ShowOptions(null, options, onComplete: () => {
+            RoundManager.Instance.SendClimaxVoteToAllPlayers(options, climax.promptText);
+        }, promptText: climax.promptText);
     }
 
     private void ShowNextSubmission()
@@ -601,7 +619,7 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.ShowNarrative(prompt.promptText, onComplete: () => {
             UIManager.Instance.ShowOptions(null, options, onComplete: () => {
                 RoundManager.Instance.SendGroupVoteToAllPlayers(groupIdx, options, prompt.promptText);
-            });
+            }, promptText: prompt.promptText);
         });
     }
 
@@ -639,6 +657,6 @@ public class GameManager : MonoBehaviour
     public void ToggleProfanityFilter()
     {
         enableProfanityFilter = !enableProfanityFilter;
-        Debug.Log($"GameManager: Profanity filter {(enabled ? "enabled" : "disabled")}");
+        Debug.Log($"GameManager: Profanity filter {(enableProfanityFilter ? "enabled" : "disabled")}");
     }
 }

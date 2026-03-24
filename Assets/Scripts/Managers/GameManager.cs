@@ -635,4 +635,10 @@ public class GameManager : MonoBehaviour
             list[r] = temp;
         }
     }
+
+    public void ToggleProfanityFilter()
+    {
+        enableProfanityFilter = !enableProfanityFilter;
+        Debug.Log($"GameManager: Profanity filter {(enabled ? "enabled" : "disabled")}");
+    }
 }

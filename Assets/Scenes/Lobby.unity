@@ -704,6 +704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 681099162}
   - component: {fileID: 681099161}
+  - component: {fileID: 681099163}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -727,6 +728,7 @@ MonoBehaviour:
   votedWithMajorityPoints: 200
   reactionConsensusPoints: 100
   titlePickedPoints: 300
+  enableProfanityFilter: 0
 --- !u!4 &681099162
 Transform:
   m_ObjectHideFlags: 0
@@ -742,6 +744,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &681099163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681099160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a1cda47f86644788a630e2f365d1987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProfanityFilter
+  wordListFile: {fileID: 4900000, guid: 042146851ce3249deac1d5b5a65d83a1, type: 3}
+  censorCharacter: 42
 --- !u!1 &718770133
 GameObject:
   m_ObjectHideFlags: 0
@@ -2123,6 +2139,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f565bf2b12444d7b2c7cf42129d1cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoundManager
+  promptTimerDuration: 45
+  reactTimerDuration: 15
+  voteTimerDuration: 20
 --- !u!4 &1729702387
 Transform:
   m_ObjectHideFlags: 0

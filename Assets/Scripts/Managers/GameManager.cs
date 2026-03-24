@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour
     public int reactionConsensusPoints = 100;
     public int titlePickedPoints = 300;
 
+    [Header("Content Filter")]
+    public bool enableProfanityFilter = false;
+
     public GameState CurrentState => currentState;
 
     private void Awake()

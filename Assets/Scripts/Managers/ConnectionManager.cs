@@ -72,7 +72,6 @@ public class ConnectionManager : MonoBehaviour
     public void HandleWebSocketMessage(string message, string clientID)
     {
         Debug.Log($"ConnectionManager: Received message from {clientID}: {message}");
-        // process the message as needed
         var baseMessage = JsonUtility.FromJson<Message>(message);
 
         switch(baseMessage.type)
@@ -100,7 +99,7 @@ public class ConnectionManager : MonoBehaviour
     private void HandleJoinMessage(string rawMessage, string id)
     {
         var message = JsonUtility.FromJson<JoinMessage>(rawMessage);
-        string playerName = message.text;
+        string playerName = FilterText(message.text);
         string deviceId = message.deviceId;
 
         // --- RECONNECT CHECK ---
@@ -201,6 +200,13 @@ public class ConnectionManager : MonoBehaviour
 
     // OTHER HANDLERS
 
+    private string FilterText(string text)
+    {
+        if(GameManager.Instance.enableProfanityFilter && ProfanityFilter.Instance != null)
+            return ProfanityFilter.Instance.Censor(text);
+        return text;
+    }
+
     private void HandleStartMessage()
     {
         var message = new Message{
@@ -213,6 +219,7 @@ public class ConnectionManager : MonoBehaviour
     private void HandleSubmitPromptMessage(string rawMessage, string id)
     {
         var message = JsonUtility.FromJson<SubmitMessage>(rawMessage);
+        message.text = FilterText(message.text);
         GameManager.Instance.HandlePromptSubmission(message,id);
     }
 

@@ -94,8 +94,7 @@ public class Server : MonoBehaviour
 
                     MainThreadDispatcher.Instance.Enqueue(() =>
                     {
-                        // remove player
-                        PlayerManager.Instance.RemovePlayer(id);
+                        ConnectionManager.Instance.HandlePlayerDisconnect(id);
                     });
                 };
 

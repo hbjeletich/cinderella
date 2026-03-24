@@ -221,6 +221,19 @@ public class GameManager : MonoBehaviour
             };
             ConnectionManager.Instance.SendToPlayer(p, JsonUtility.ToJson(message));
         }
+
+        RoundManager.Instance.StartPhaseTimer(RoundManager.Instance.promptTimerDuration, () => {
+            // auto-submit "Untitled" for players who didn't write a title
+            foreach(Player p in PlayerManager.Instance.players)
+            {
+                if(!p.hasSubmittedThisRound)
+                {
+                    RoundManager.Instance.HandlePromptSubmission(
+                        new SubmitMessage { type = "send_prompt", text = "Untitled" }, p);
+                }
+            }
+        });
+        UIManager.Instance.ShowWritingPhase(6, RoundManager.Instance.promptTimerDuration);
     }
 
     private void HandleTitleSubmissions()

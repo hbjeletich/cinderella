@@ -6,7 +6,6 @@ public class ConnectionManager : MonoBehaviour
 {
     public Dictionary<string, IWebSocketConnection> Connections => Server.Connections;
     
-
     private bool readyToStart = false;
 
     // instance
@@ -38,6 +37,11 @@ public class ConnectionManager : MonoBehaviour
 
     public void SendToPlayer(Player player, string message)
     {
+        if(!player.isConnected)
+        {
+            Debug.Log($"ConnectionManager: Skipping send to disconnected player {player.playerName}");
+            return;
+        }
         SendMessageToPlayerID(player.playerID, message);
     }
 
@@ -52,6 +56,12 @@ public class ConnectionManager : MonoBehaviour
         {
             Debug.LogWarning($"ConnectionManager: No connection found for player ID: {playerID}");
         }
+    }
+
+    private void SendError(string connectionID, string errorText)
+    {
+        var msg = new ErrorMessage { text = errorText };
+        SendMessageToPlayerID(connectionID, JsonUtility.ToJson(msg));
     }
 
     #endregion
@@ -89,56 +99,107 @@ public class ConnectionManager : MonoBehaviour
 
     private void HandleJoinMessage(string rawMessage, string id)
     {
-        Player newPlayer = PlayerManager.Instance.CreatePlayer(id);
-        // parse for player name, create player
         var message = JsonUtility.FromJson<JoinMessage>(rawMessage);
         string playerName = message.text;
+        string deviceId = message.deviceId;
+
+        // --- RECONNECT CHECK ---
+        Player existing = PlayerManager.Instance.FindByDeviceId(deviceId);
+        if(existing != null)
+        {
+            HandleReconnect(existing, id);
+            return;
+        }
+
+        // --- NEW PLAYER CHECKS ---
+
+        // reject if game already in progress
+        if(PlayerManager.Instance.IsGameInProgress())
+        {
+            Debug.Log($"ConnectionManager: Rejecting join from {playerName} — game in progress.");
+            SendError(id, "Game is already in progress!");
+            return;
+        }
+
+        // reject if name is taken
+        if(PlayerManager.Instance.IsNameTaken(playerName))
+        {
+            Debug.Log($"ConnectionManager: Rejecting join — name '{playerName}' already taken.");
+            SendError(id, $"The name \"{playerName}\" is already taken!");
+            return;
+        }
+
+        // reject if at max players
+        if(PlayerManager.Instance.GetPlayerCount() >= PlayerManager.Instance.maxPlayers)
+        {
+            Debug.Log($"ConnectionManager: Rejecting join — lobby full.");
+            SendError(id, "Lobby is full!");
+            return;
+        }
+
+        // --- CREATE NEW PLAYER ---
+        Player newPlayer = PlayerManager.Instance.CreatePlayer(id, deviceId);
         newPlayer.playerName = playerName;
 
-        // if we are ready to start and we weren't before, send to all. else, send to just one
+        // lobby ready-to-start logic
         bool nowReady = PlayerManager.Instance.ReadyToStart();
-        if(nowReady == true && readyToStart == false)
+        if(nowReady && !readyToStart)
         {
             readyToStart = true;
             // update everyone
             foreach(Player p in PlayerManager.Instance.players)
             {
-                if(p == newPlayer)
-                {
-                    var newMsg = new JoinedMessage {
-                        type = "joined",
-                        playerName = playerName,
-                        isHost = newPlayer.isHost,
-                        readyToStart = nowReady
-                    };
-
-                    SendMessageToPlayerID(id, JsonUtility.ToJson(newMsg));
-                }
-                else
-                {
-                    var newMsg = new JoinedMessage {
-                        type = "joined",
-                        playerName = p.playerName,
-                        isHost = p.isHost,
-                        readyToStart = nowReady
-                    };
-
-                    SendMessageToPlayerID(p.playerID, JsonUtility.ToJson(newMsg));
-                }
+                var newMsg = new JoinedMessage {
+                    type = "joined",
+                    playerName = p.playerName,
+                    isHost = p.isHost,
+                    readyToStart = true
+                };
+                SendToPlayer(p, JsonUtility.ToJson(newMsg));
             }
-        } else
+        }
+        else
         {
-            // send JoinedMessage back just to the one player
+            // send JoinedMessage back just to the new player
             var newMsg = new JoinedMessage {
                 type = "joined",
                 playerName = playerName,
                 isHost = newPlayer.isHost,
                 readyToStart = PlayerManager.Instance.ReadyToStart()
             };
-
             SendMessageToPlayerID(id, JsonUtility.ToJson(newMsg));
         }
     }
+
+    private void HandleReconnect(Player player, string newConnectionID)
+    {
+        Debug.Log($"ConnectionManager: Reconnecting player {player.playerName} (old: {player.playerID}, new: {newConnectionID})");
+
+        PlayerManager.Instance.ReconnectPlayer(player, newConnectionID);
+
+        var msg = new RejoinedMessage {
+            playerName = player.playerName
+        };
+        SendMessageToPlayerID(newConnectionID, JsonUtility.ToJson(msg));
+    }
+
+    // DISCONNECT
+
+    public void HandlePlayerDisconnect(string connectionID)
+    {
+        Player player = PlayerManager.Instance.GetPlayer(connectionID);
+        if(player == null) return;
+
+        PlayerManager.Instance.DisconnectPlayer(connectionID);
+
+        // if game is in progress, auto-submit for them so the game doesn't stall
+        if(PlayerManager.Instance.IsGameInProgress())
+        {
+            RoundManager.Instance.HandlePlayerDisconnect(player);
+        }
+    }
+
+    // OTHER HANDLERS
 
     private void HandleStartMessage()
     {

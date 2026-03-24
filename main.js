@@ -1,6 +1,7 @@
-import { $, show, hide, sendJSON, getInputType, hideAllInputTypes } from './utils.js';
+import { $, show, hide, sendJSON, getInputType, hideAllInputTypes, getOrCreateDeviceId } from './utils.js';
 const ws = new WebSocket("wss://hadlee-giggliest-unpopulously.ngrok-free.dev/");
 
+const deviceId = getOrCreateDeviceId();
 const textInput = $('textInput');
 const sendBtn = $('sendBtn');
 const status = $('status');
@@ -14,7 +15,15 @@ const choiceGrid = $('choiceGrid');
 ws.onopen = () => {
 	console.log("WS connected");
 	status.textContent = 'Connected';
-	sendBtn.disabled = false;
+
+	// if we have a stored name, auto-rejoin
+	const savedName = localStorage.getItem('playerName');
+	if (savedName) {
+		sendJSON(ws, { type: "join", text: savedName, deviceId: deviceId });
+		status.textContent = 'Reconnecting...';
+	} else {
+		sendBtn.disabled = false;
+	}
 };
 
 var sendType = "join";
@@ -30,6 +39,8 @@ ws.onmessage = (e) => {
 			hide(sendBtn);
 			hide(textLabel);
 
+			// save name so we can auto-rejoin later
+			localStorage.setItem('playerName', message.playerName);
 			title.textContent = `Hi, ${message.playerName}!`;
 
 			if (!message.readyToStart) {
@@ -45,6 +56,28 @@ ws.onmessage = (e) => {
 			} else {
 				status.textContent = 'Waiting for host...';
 			}
+			break;
+
+		case "rejoined":
+			hide(textInput);
+			hide(sendBtn);
+			hide(textLabel);
+
+			title.textContent = `Welcome back, ${message.playerName}!`;
+			show(status);
+			status.textContent = 'Reconnected!';
+			break;
+
+		case "error":
+			show(status);
+			status.textContent = message.text;
+			// if name was rejected, clear stored name so they can try again
+			localStorage.removeItem('playerName');
+			show(textLabel);
+			show(textInput);
+			show(sendBtn);
+			sendBtn.disabled = false;
+			sendType = "join";
 			break;
 
 		case "start_game":
@@ -110,10 +143,14 @@ ws.onmessage = (e) => {
 };
 
 sendBtn.addEventListener('click', () => {
-	const name = textInput.value.trim();
-	if (!name) return;
+	const text = textInput.value.trim();
+	if (!text) return;
 
-	sendJSON(ws, { type: sendType, text: name });
+	if (sendType === "join") {
+		sendJSON(ws, { type: "join", text: text, deviceId: deviceId });
+	} else {
+		sendJSON(ws, { type: sendType, text: text });
+	}
     show(status);
 	
 	status.textContent = 'Thanks!';

@@ -46,9 +46,6 @@ public class GameManager : MonoBehaviour
     [Header("Settings")]
     public bool enableProfanityFilter = false;
 
-    [Header("Content Filter")]
-    public bool enableProfanityFilter = false;
-
     public GameState CurrentState => currentState;
 
     private void Awake()

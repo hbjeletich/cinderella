@@ -3650,7 +3650,7 @@ GameObject:
   - component: {fileID: 2085947675}
   - component: {fileID: 2085947674}
   m_Layer: 5
-  m_Name: Cloud
+  m_Name: Top Cloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3710,7 +3710,7 @@ Animator:
   m_GameObject: {fileID: 2085947672}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1f104901b7fc04308929041edcc4c970, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0d4f06926e0c646368800cb993e80be1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

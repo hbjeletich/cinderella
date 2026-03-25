@@ -28,17 +28,8 @@ public class LobbyMovingProp : MonoBehaviour
     private float enterDuration;
     private float exitDuration;
 
-    void Start()
+    void Awake()
     {
-        // subscribe to OnLobbyEntered event to trigger entrance animation
-        LobbyUI lobbyUI = FindObjectOfType<LobbyUI>();
-
-        if (lobbyUI != null)
-        {
-            lobbyUI.OnLobbyEntered += EnterScreen;
-            lobbyUI.OnLobbyExited += ExitScreen;
-        }
-
         if (rectTransform == null)
             rectTransform = GetComponent<RectTransform>();
 
@@ -57,12 +48,17 @@ public class LobbyMovingProp : MonoBehaviour
                     exitDuration = clip.length;
             }
         }
+
+        LobbyUI lobbyUI = FindObjectOfType<LobbyUI>();
+        lobbyUI.OnLobbyEntered += EnterScreen;
+        lobbyUI.OnLobbyExited += ExitScreen;
     }
 
     public void EnterScreen()
     {
         isIdle = false;
         targetPosition = onscreenPosition;
+        Debug.Log($"LobbyMovingProp: EnterScreen called. Starting entrance animation. Moving to {targetPosition} over {enterDuration} seconds.");
 
         StartCoroutine(EnterRoutine());
     }
@@ -114,6 +110,7 @@ public class LobbyMovingProp : MonoBehaviour
         }
 
         rectTransform.anchoredPosition = targetPosition;
+        Debug.Log("LobbyMovingProp: Enter animation complete. Now idle.");
 
         isIdle = true;
     }

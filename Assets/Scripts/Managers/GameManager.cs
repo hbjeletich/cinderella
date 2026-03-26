@@ -7,6 +7,7 @@ using System.Linq;
 
 public enum GameState
 {
+    MainMenu,
     Lobby, // in lobby
     Talking, // players should just be listening
     Prompting, // players submitting prompts
@@ -64,7 +65,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        currentState = GameState.Lobby;
+        currentState = GameState.MainMenu;
 
         RoundManager.Instance.OnAllPromptsSubmitted += HandleAllPromptsSubmitted;
         RoundManager.Instance.OnAllReactionsSubmitted += HandleAllReactionsSubmitted;

@@ -13,7 +13,6 @@ public enum GameState
     Prompting, // players submitting prompts
     Reacting, // players should be reacting
     Voting,
-    
     Ended
 }
 
@@ -88,11 +87,28 @@ public class GameManager : MonoBehaviour
     {
         lastState = currentState;
         currentState = newState;
+        Debug.Log($"GameManager: Game state changed from {lastState} to {currentState}");
         OnGameStateChanged?.Invoke(newState, lastState);
+    }
+
+    public void GoToMainMenu()
+    {
+        SetGameState(GameState.MainMenu);
+        ChangeScene("MainMenu");
+    }
+
+    public void GoToLobby()
+    {
+        Server.Instance.StartServer();
+        SetGameState(GameState.Lobby);
+        ChangeScene("Lobby");
     }
 
     public void StartGame()
     {
+        // could potentially stop server here.... test?
+        // Server.Instance.StopServer();
+        
         UIManager.Instance.ExitLobby(gameStartDelay);
         // small delay before starting the game to allow clients to get ready
         StartCoroutine(StartGameCoroutine());

@@ -36,7 +36,7 @@ public class Server : MonoBehaviour
 
     void Start()
     {
-        StartServer();
+        // StartServer();
     }
 
     private void OnDestroy()

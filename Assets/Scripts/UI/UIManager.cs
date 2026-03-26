@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -203,8 +204,20 @@ public class UIManager : MonoBehaviour
 
     private void InitLobbyScene()
     {
-        lobbyUI = FindObjectOfType<LobbyUI>();
         gameUI = null;
+        SceneManager.sceneLoaded += OnLobbySceneLoaded;
+    }
+
+    private void OnLobbySceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if(scene.name != "Lobby") return;
+        SceneManager.sceneLoaded -= OnLobbySceneLoaded;
+
+        lobbyUI = FindObjectOfType<LobbyUI>();
+        if(lobbyUI != null)
+            lobbyUI.StartLobby();
+        else
+            Debug.LogError("UIManager: LobbyUI not found after Lobby scene loaded!");
     }
 
     private IEnumerator InitGameSceneCoroutine()

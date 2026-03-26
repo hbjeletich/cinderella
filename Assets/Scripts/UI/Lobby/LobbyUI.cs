@@ -18,14 +18,18 @@ public class LobbyUI : MonoBehaviour
     public Action OnLobbyEntered;
     public Action<float> OnLobbyExited;
 
-    void Start()
+    void Awake()
     {
         PlayerManager.Instance.OnPlayerCreated += OnPlayerCreated;
         availableIcons = new List<PlayerIcon>(playerIcons);
 
         maxPlayers = PlayerManager.Instance.maxPlayers;
         UpdatePlayerCount();
+    }
 
+    public void StartLobby()
+    {
+        Debug.Log("LobbyUI: Entered Lobby state.");
         OnLobbyEntered?.Invoke();
     }
 

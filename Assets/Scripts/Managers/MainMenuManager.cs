@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -13,9 +12,6 @@ public class MainMenuManager : MonoBehaviour
     public GameObject settingsMenu;
 
     public Button settingsCloseButton;
-
-    [Header("Scene Names")]
-    public string lobbySceneName = "Lobby";
 
     private void Start()
     {
@@ -36,8 +32,7 @@ public class MainMenuManager : MonoBehaviour
     {
         // Load the game scene or start the game
         Debug.Log("Play button clicked");
-        GameManager.Instance.SetGameState(GameState.Lobby);
-        SceneManager.LoadScene(lobbySceneName);
+        GameManager.Instance.GoToLobby();
     }
 
     private void OnSettingsButtonClicked()

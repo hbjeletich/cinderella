@@ -1604,17 +1604,19 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: GAME TITLE
+  m_text: 'PLOT
+
+    TWIST!'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 03bf7b1c8fa1a423aa50f5de058421da, type: 2}
-  m_sharedMaterial: {fileID: 8102307531526448981, guid: 03bf7b1c8fa1a423aa50f5de058421da, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c3c8f5419ca804bfeb4bb59d6e906de8, type: 2}
+  m_sharedMaterial: {fileID: 8102307531526448981, guid: c3c8f5419ca804bfeb4bb59d6e906de8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4282998783
+  m_fontColor: {r: 1, g: 0.3723172, b: 0.28773582, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

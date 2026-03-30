@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8375886392195214851
+--- !u!114 &-8108538290219898125
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,9 +20,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GridMove
+  m_Name: BG
   m_Shader: {fileID: -6465566751694194690, guid: 4b8f7824345154f9982b8aed9c733bc4, type: 3}
-  m_Parent: {fileID: 2100000, guid: 74243aeafaeb7428c94df9bd8ced9d44, type: 2}
+  m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -37,19 +37,34 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c92c0524cceac4679adf3c9d6db5679a, type: 3}
+        m_Texture: {fileID: 2800000, guid: b15f1dc0a07444a68b11996269f86b6d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _XSpeed: 0.015
-    - _YSpeed: 0.01
+    - _XSpeed: 0.2
+    - _YSpeed: 0.1
     - _isSwiping: 0
     m_Colors:
-    - _Swipe1_Color: {r: 0.13679248, g: 0.54645044, b: 1, a: 1}
+    - White: {r: 1, g: 1, b: 1, a: 1}
+    - _Color1: {r: 1, g: 0, b: 0, a: 1}
+    - _NOTCOLOR: {r: 1, g: 1, b: 1, a: 1}
+    - _Swipe1_Color: {r: 0.8666667, g: 0.28627452, b: 0.19607843, a: 1}
     - _Swipe1_Threshold: {r: 0.31, g: 0.45, b: 0, a: 0}
-    - _Swipe2_Color: {r: 0, g: 1, b: 0.21875882, a: 1}
+    - _Swipe2_Color: {r: 0.72652465, g: 0.19517621, b: 0.38431373, a: 1}
     - _Swipe2_Threshold: {r: 0.26, g: 0.2, b: 0, a: 0}
-    - _Swipe3_Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Swipe3_Color: {r: 0.8666667, g: 0.28627452, b: 0.19607843, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

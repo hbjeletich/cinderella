@@ -118,7 +118,7 @@ MonoBehaviour:
     gridDuration: 2
     transitionColor: {r: 0.9622642, g: 0.54826796, b: 0, a: 1}
     wipeAnimationIndex: 0
-    wipeDuration: 0.5
+    wipeDuration: 2
     nextGridBackColor: {r: 0.4509804, g: 0.7019608, b: 0.98039216, a: 1}
     nextGridOverlayColor: {r: 0.13725491, g: 0.54509807, b: 1, a: 1}
   - phaseName: Writing
@@ -128,7 +128,7 @@ MonoBehaviour:
     gridDuration: 2
     transitionColor: {r: 0.5283019, g: 0, b: 0.3800737, a: 1}
     wipeAnimationIndex: 0
-    wipeDuration: 0.5
+    wipeDuration: 2
     nextGridBackColor: {r: 0.7254902, g: 0.45882353, b: 0.41568628, a: 1}
     nextGridOverlayColor: {r: 0.8784314, g: 0.28627452, b: 0.2, a: 1}
   - phaseName: Revealing
@@ -138,6 +138,6 @@ MonoBehaviour:
     gridDuration: 2
     transitionColor: {r: 1, g: 0.4768409, b: 0, a: 1}
     wipeAnimationIndex: 0
-    wipeDuration: 0.5
+    wipeDuration: 2
     nextGridBackColor: {r: 0.5019608, g: 0.65882355, b: 0.5294118, a: 1}
     nextGridOverlayColor: {r: 0.13333334, g: 0.49019608, b: 0.19607843, a: 1}

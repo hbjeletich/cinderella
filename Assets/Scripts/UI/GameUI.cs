@@ -11,38 +11,55 @@ public class GameUI : MonoBehaviour
     public RevealingUI revealingUI;
     public ScoringUI scoringUI;
 
+    [Header("Background")]
+    public BackgroundController backgroundController;
+
     [Header("Timer (overlay — visible across all phases)")]
     public TextMeshProUGUI timerText;
 
     private BaseGameUI activeController;
+    private string activePhase;
 
     private void Start()
     {
-        // hide all sub-controller content at start
         talkingUI?.Deactivate();
         writingUI?.Deactivate();
         revealingUI?.Deactivate();
         scoringUI?.Deactivate();
         HideTimer();
         activeController = null;
+        activePhase = "Talking";
     }
 
-    private void SetActive(BaseGameUI controller)
+    private void TransitionTo(string phaseName, BaseGameUI controller, Action onReady)
     {
-        if(activeController != null && activeController != controller)
+        if (activeController != null && activeController != controller)
             activeController.Deactivate();
 
-        activeController = controller;
-
-        if(activeController != null)
-            activeController.Activate();
+        if (activePhase != phaseName && backgroundController != null)
+        {
+            activePhase = phaseName;
+            backgroundController.RunTransitionByName(phaseName, () =>
+            {
+                activeController = controller;
+                activeController?.Activate();
+                onReady?.Invoke();
+            });
+        }
+        else
+        {
+            activePhase = phaseName;
+            activeController = controller;
+            activeController?.Activate();
+            onReady?.Invoke();
+        }
     }
 
-    // --- Timer (overlay, not tied to any sub-controller) ---
+    // --- Timer ---
 
     public void ShowTimer(int seconds)
     {
-        if(timerText != null)
+        if (timerText != null)
         {
             timerText.gameObject.SetActive(true);
             timerText.text = seconds.ToString();
@@ -51,51 +68,61 @@ public class GameUI : MonoBehaviour
 
     public void UpdateTimer(int seconds)
     {
-        if(timerText != null)
+        if (timerText != null)
             timerText.text = Mathf.Max(0, seconds).ToString();
     }
 
     public void HideTimer()
     {
-        if(timerText != null)
+        if (timerText != null)
             timerText.gameObject.SetActive(false);
     }
 
-    // --- Narrative (delegates to TalkingUI) ---
+    // --- Narrative ---
 
     public void ShowNarrative(string text, Action onComplete)
     {
-        SetActive(talkingUI);
-        talkingUI.ShowNarrative(text, onComplete);
+        TransitionTo("Talking", talkingUI, () =>
+        {
+            talkingUI.ShowNarrative(text, onComplete);
+        });
     }
 
-    // --- Writing Phase (delegates to WritingUI) ---
+    // --- Writing Phase ---
 
     public void ShowWritingPhase(int roundNumber, float duration)
     {
-        SetActive(writingUI);
-        writingUI.StartFillAnimation(roundNumber, duration);
+        TransitionTo("Writing", writingUI, () =>
+        {
+            writingUI.StartFillAnimation(roundNumber, duration);
+        });
     }
 
-    // --- Reveals & Voting (delegates to RevealingUI) ---
+    // --- Reveals & Voting ---
 
     public void ShowSubmission(Player player, string answer, Action onComplete, string promptText = null)
     {
-        SetActive(revealingUI);
-        revealingUI.ShowSubmission(player, answer, onComplete, promptText);
+        TransitionTo("Revealing", revealingUI, () =>
+        {
+            revealingUI.ShowSubmission(player, answer, onComplete, promptText);
+        });
     }
 
     public void ShowOptions(Player player, List<string> answers, Action onComplete, string promptText = null)
     {
-        SetActive(revealingUI);
-        revealingUI.ShowOptions(player, answers, onComplete, promptText);
+        TransitionTo("Revealing", revealingUI, () =>
+        {
+            revealingUI.ShowOptions(player, answers, onComplete, promptText);
+        });
     }
 
-    // --- Scoreboard (delegates to ScoringUI) ---
+    // --- Scoreboard ---
 
     public void ShowScoreboard(int roundNumber, List<Player> sortedPlayers, Action onComplete)
     {
-        SetActive(scoringUI);
-        scoringUI.ShowScoreboard(roundNumber, sortedPlayers, onComplete);
+        TransitionTo("Scoring", scoringUI, () =>
+        {
+            scoringUI.ShowScoreboard(roundNumber, sortedPlayers, onComplete);
+        });
     }
 }

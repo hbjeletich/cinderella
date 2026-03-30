@@ -53,18 +53,22 @@ public class BackgroundController : MonoBehaviour
             sr.sprite = gridFrames[gridFrames.Length - 1];
     }
 
-    public void TransitionToPhase(string phaseName)
+    public void RunTransitionByName(string phaseName, System.Action onComplete = null)
     {
         var entry = colorConfig.GetPhase(phaseName);
-        if (entry == null) return;
+        if (entry == null)
+        {
+            onComplete?.Invoke();
+            return;
+        }
 
         if (activePlayback != null)
             StopCoroutine(activePlayback);
 
-        activePlayback = StartCoroutine(RunFullTransition(entry));
+        activePlayback = StartCoroutine(RunFullTransition(entry, onComplete));
     }
 
-    private IEnumerator RunFullTransition(PhaseColorConfig.PhaseEntry entry)
+    private IEnumerator RunFullTransition(PhaseColorConfig.PhaseEntry entry, System.Action onComplete)
     {
         IsTransitioning = true;
         StopSpeed();
@@ -101,6 +105,7 @@ public class BackgroundController : MonoBehaviour
 
         IsTransitioning = false;
         activePlayback = null;
+        onComplete?.Invoke();
     }
 
     private IEnumerator PlayFrames(Sprite[] frames, float duration, bool reverse)

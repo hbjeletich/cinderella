@@ -30,7 +30,18 @@ public class TitleAnimator : MonoBehaviour
     private int currentIndex = 0;
     private bool isSpinning = false;
     private Coroutine cycleCoroutine;
+    private bool canIdle = true;
 
+    void Awake()
+    {
+        // subscribe to lobby events to start/stop animation
+        LobbyUI lobbyUI = FindObjectOfType<LobbyUI>();
+        if (lobbyUI != null)        
+        {
+            lobbyUI.OnLobbyEntered += StartAnimation;
+            lobbyUI.OnLobbyExited += StopAnimation;
+        }
+    }
     void Start()
     {
         rect = GetComponent<RectTransform>();
@@ -52,12 +63,30 @@ public class TitleAnimator : MonoBehaviour
         }
     }
 
+    public void StopAnimation(float maxDelay)
+    {
+        if (cycleCoroutine != null)
+            StopCoroutine(cycleCoroutine);
+
+        isSpinning = false;
+        canIdle = false;
+    }
+
+    public void StartAnimation()
+    {
+        if (cycleCoroutine == null)
+            cycleCoroutine = StartCoroutine(CycleRoutine());
+
+        isSpinning = false;
+        canIdle = true;
+    }
+
     void Update()
     {
         if (isSpinning || titleSprites == null || titleSprites.Length == 0)
             return;
 
-        ApplyIdleAnimation();
+        if(canIdle) ApplyIdleAnimation();
     }
 
     private void ApplyIdleAnimation()

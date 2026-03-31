@@ -35,7 +35,7 @@ public class VortexProp : MonoBehaviour
 
     // state
     private Vector3 baseScale;
-    private Vector2 basePos;
+    private Vector2 baseAnchoredPos;
     private bool isSpiralActive = false;
 
     void Awake()
@@ -44,7 +44,8 @@ public class VortexProp : MonoBehaviour
             rectTransform = GetComponent<RectTransform>();
 
         baseScale = rectTransform.localScale;
-        basePos = rectTransform.anchoredPosition;
+        baseAnchoredPos = rectTransform.anchoredPosition;
+
         LobbyUI lobbyUI = FindObjectOfType<LobbyUI>();
         if (lobbyUI != null)
         {
@@ -55,7 +56,7 @@ public class VortexProp : MonoBehaviour
 
     private void OnLobbyEnter()
     {
-        ResetProp(basePos);
+        ResetProp();
     }
 
     private void OnLobbyExit(float maxDelay)
@@ -76,14 +77,17 @@ public class VortexProp : MonoBehaviour
 
         Debug.Log($"VortexProp: {gameObject.name} beginning spiral.");
 
-        // snapshot starting state
-        Vector2 startPos = rectTransform.anchoredPosition;
-        Vector2 centerPos = vortexCenter != null
-            ? vortexCenter.anchoredPosition
-            : Vector2.zero;
+        // use world position so anchors don't matter
+        Vector3 startWorldPos = rectTransform.position;
+        Vector3 centerWorldPos = vortexCenter != null
+            ? vortexCenter.position
+            : rectTransform.root.GetComponent<RectTransform>().position;
 
-        // initial offset from center
-        Vector2 offset = startPos - centerPos;
+        // initial offset from center in world space
+        Vector2 offset = new Vector2(
+            startWorldPos.x - centerWorldPos.x,
+            startWorldPos.y - centerWorldPos.y
+        );
         float startRadius = offset.magnitude;
         float startAngle = Mathf.Atan2(offset.y, offset.x);
 
@@ -103,21 +107,19 @@ public class VortexProp : MonoBehaviour
             float angularSpeed = Mathf.Lerp(startAngularSpeed, endAngularSpeed, t);
             currentAngle += angularSpeed * Mathf.Deg2Rad * Time.deltaTime;
 
-            // --- POSITION ---
-            float x = centerPos.x + Mathf.Cos(currentAngle) * currentRadius;
-            float y = centerPos.y + Mathf.Sin(currentAngle) * currentRadius;
-            rectTransform.anchoredPosition = new Vector2(x, y);
+            // --- POSITION (world space) ---
+            float x = centerWorldPos.x + Mathf.Cos(currentAngle) * currentRadius;
+            float y = centerWorldPos.y + Mathf.Sin(currentAngle) * currentRadius;
+            rectTransform.position = new Vector3(x, y, rectTransform.position.z);
 
             // --- SCALE: shrink down ---
             float scaleT = scaleCurve.Evaluate(t);
             float uniformScale = Mathf.Lerp(1f, 0f, scaleT);
 
             // --- WARP: stretch along the tangent direction ---
-            // warp increases as radius decreases and speed increases
             float warpAmount = Mathf.Lerp(1f, maxWarpStretch, t * t);
-            // apply warp on X (tangential stretch), compress Y
             float warpX = uniformScale * warpAmount;
-            float warpY = uniformScale / Mathf.Sqrt(warpAmount); // conserve area-ish
+            float warpY = uniformScale / Mathf.Sqrt(warpAmount);
 
             rectTransform.localScale = new Vector3(
                 baseScale.x * warpX,
@@ -143,7 +145,7 @@ public class VortexProp : MonoBehaviour
         }
 
         // snap to center and deactivate
-        rectTransform.anchoredPosition = centerPos;
+        rectTransform.position = centerWorldPos;
         rectTransform.localScale = Vector3.zero;
         gameObject.SetActive(false);
 
@@ -151,13 +153,13 @@ public class VortexProp : MonoBehaviour
         isSpiralActive = false;
     }
 
-    public void ResetProp(Vector2 position)
+    public void ResetProp()
     {
         StopAllCoroutines();
         isSpiralActive = false;
 
         gameObject.SetActive(true);
-        rectTransform.anchoredPosition = position;
+        rectTransform.anchoredPosition = baseAnchoredPos;
         rectTransform.localScale = baseScale;
         rectTransform.localRotation = Quaternion.identity;
     }

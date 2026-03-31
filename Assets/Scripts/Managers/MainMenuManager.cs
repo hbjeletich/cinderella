@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using System;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -10,8 +12,18 @@ public class MainMenuManager : MonoBehaviour
     
     [Header("Settings Menu")]
     public GameObject settingsMenu;
-
     public Button settingsCloseButton;
+
+    [Header("Scene Fade Time")]
+    public float fadeOutDelay = 1f;
+
+    public Action OnMainMenuEntered;
+    public Action<float> OnMainMenuExited;
+
+    private void Awake()
+    {
+        OnMainMenuEntered?.Invoke();
+    }
 
     private void Start()
     {
@@ -30,8 +42,14 @@ public class MainMenuManager : MonoBehaviour
 
     private void OnPlayButtonClicked()
     {
-        // Load the game scene or start the game
         Debug.Log("Play button clicked");
+        OnMainMenuExited?.Invoke(fadeOutDelay);
+        Invoke(nameof(GoToLobby), fadeOutDelay);
+    }
+
+    private void GoToLobby()
+    {
+        Debug.Log("Transitioning to Lobby...");
         GameManager.Instance.GoToLobby();
     }
 

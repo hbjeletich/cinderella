@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     public event Action<GameState, GameState> OnGameStateChanged;
     public event Action<string> OnSceneChanged;
 
+    public Action OnGameBegin;
+    public Action<float> OnGameEnd; // not implemented yet!
+
     private GameState currentState;
     private GameState lastState;
 
@@ -120,6 +123,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(gameStartDelay);
         SetGameState(GameState.Talking);
         ChangeScene("Game");
+        OnGameBegin?.Invoke();
     }
 
     public void ChangeScene(string sceneName)

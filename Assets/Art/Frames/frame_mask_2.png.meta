@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bfbc11191cd7a480bb5f5154d9f6a9a3
+guid: 17bcd7609196b4f9bb058c53822a6317
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1128068818046306911
-    second: instructionswaiting_page_0
+      213: 1000705559808704719
+    second: frame_mask_2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -51,13 +51,13 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
-  spriteBorder: {x: 300, y: 300, z: 300, w: 300}
+  spritePixelsToUnits: 200
+  spriteBorder: {x: 353, y: 341, z: 298, w: 350}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 1
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
-  textureType: 8
+  textureType: 0
   textureShape: 1
   singleChannelComponent: 0
   flipbookRows: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: instructionswaiting_page_0
+      name: frame_mask_2_0
       rect:
         serializedVersion: 2
         x: 0
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f5a48ddfc94b7af00800000000000000
-      internalID: 1128068818046306911
+      spriteID: fc00829976833ed00800000000000000
+      internalID: 1000705559808704719
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      instructionswaiting_page_0: 1128068818046306911
+      frame_mask_2_0: 1000705559808704719
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

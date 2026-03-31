@@ -119,6 +119,81 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &45777762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 45777763}
+  - component: {fileID: 45777765}
+  - component: {fileID: 45777764}
+  m_Layer: 5
+  m_Name: Vortex Center
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &45777763
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45777762}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 950326307}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 5.61, y: -18.49}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &45777764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45777762}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &45777765
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45777762}
+  m_CullTransparentMesh: 1
 --- !u!1 &70510644
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,6 +367,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -7.12
       objectReference: {fileID: 0}
+    - target: {fileID: 7625635437543369378, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
+      propertyPath: vortexCenter
+      value: 
+      objectReference: {fileID: 45777763}
     - target: {fileID: 7780003635653394407, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -493,6 +572,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 6.04
       objectReference: {fileID: 0}
+    - target: {fileID: 7625635437543369378, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
+      propertyPath: vortexCenter
+      value: 
+      objectReference: {fileID: 45777763}
     - target: {fileID: 7780003635653394407, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -618,6 +701,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 7.19
       objectReference: {fileID: 0}
+    - target: {fileID: 7625635437543369378, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
+      propertyPath: vortexCenter
+      value: 
+      objectReference: {fileID: 45777763}
     - target: {fileID: 7780003635653394407, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -751,6 +838,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 17
       objectReference: {fileID: 0}
+    - target: {fileID: 7625635437543369378, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
+      propertyPath: vortexCenter
+      value: 
+      objectReference: {fileID: 45777763}
     - target: {fileID: 7780003635653394407, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -2018,6 +2109,7 @@ RectTransform:
   - {fileID: 1584274729}
   - {fileID: 1473020607}
   - {fileID: 665234666}
+  - {fileID: 45777763}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2374,6 +2466,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -2.65
       objectReference: {fileID: 0}
+    - target: {fileID: 7625635437543369378, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
+      propertyPath: vortexCenter
+      value: 
+      objectReference: {fileID: 45777763}
     - target: {fileID: 7780003635653394407, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
       propertyPath: m_Type
       value: 1
@@ -2616,6 +2712,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1350698928}
   m_CullTransparentMesh: 1
+--- !u!1 &1444209109
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1444209111}
+  - component: {fileID: 1444209110}
+  m_Layer: 0
+  m_Name: Lobby Tester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1444209110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444209109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23d56f66208c84a058f232778f837015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LobbyTester
+  exitDelay: 3
+--- !u!4 &1444209111
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444209109}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1126.8809, y: 1464.3837, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1457771493
 GameObject:
   m_ObjectHideFlags: 0
@@ -2765,7 +2906,7 @@ GameObject:
   - component: {fileID: 1473020609}
   - component: {fileID: 1473020608}
   m_Layer: 5
-  m_Name: Border
+  m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2802,7 +2943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: d9bb20e4bfcda4db2901c3399736a7f6, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -2810,7 +2951,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f7b930adbeeb54f37bc50a0700772abd, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3130,6 +3271,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -5.29
       objectReference: {fileID: 0}
+    - target: {fileID: 7625635437543369378, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
+      propertyPath: vortexCenter
+      value: 
+      objectReference: {fileID: 45777763}
     - target: {fileID: 7780003635653394407, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -3286,6 +3431,7 @@ GameObject:
   - component: {fileID: 1859380986}
   - component: {fileID: 1859380985}
   - component: {fileID: 1859380984}
+  - component: {fileID: 1859380987}
   m_Layer: 5
   m_Name: Titles
   m_TagString: Untagged
@@ -3403,6 +3549,77 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859380982}
   m_CullTransparentMesh: 1
+--- !u!114 &1859380987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859380982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28d9dc7822ea24f619f664c26cec3f97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VortexProp
+  vortexCenter: {fileID: 45777763}
+  minStartDelay: 0
+  maxStartDelay: 1.5
+  spiralDuration: 2.5
+  startAngularSpeed: 90
+  endAngularSpeed: 720
+  radiusCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxWarpStretch: 2.5
+  disappearScale: 0.05
+  scaleCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spinSelf: 1
+  selfSpinMultiplier: 1.5
+  rectTransform: {fileID: 0}
 --- !u!1001 &1866467417
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3439,6 +3656,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 10.65
       objectReference: {fileID: 0}
+    - target: {fileID: 7625635437543369378, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
+      propertyPath: vortexCenter
+      value: 
+      objectReference: {fileID: 45777763}
     - target: {fileID: 7780003635653394407, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -3931,6 +4152,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -4.778
       objectReference: {fileID: 0}
+    - target: {fileID: 7625635437543369378, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
+      propertyPath: vortexCenter
+      value: 
+      objectReference: {fileID: 45777763}
     - target: {fileID: 8372420882846296543, guid: c32020ebc9a814402a528e0dc063bf66, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4039,3 +4264,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 1065545563}
   - {fileID: 950326307}
+  - {fileID: 1444209111}

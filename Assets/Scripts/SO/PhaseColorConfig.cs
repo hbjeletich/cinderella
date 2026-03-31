@@ -14,6 +14,11 @@ public class PhaseColorConfig : ScriptableObject
     public class PhaseEntry
     {
         public string phaseName;
+        [Header("Frame Colors")]
+        public Color mainColor = Color.white;
+        public Color accentColor = Color.white;
+        public Color detailColor = Color.white;
+        public Color fineDetailColor = Color.white;
 
         [Header("Grid (idle before transition)")]
         public Color gridOverlayColor = Color.white;

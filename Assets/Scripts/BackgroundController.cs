@@ -4,6 +4,7 @@ using System.Collections;
 public class BackgroundController : MonoBehaviour
 {
     public PhaseColorConfig colorConfig;
+    public FrameController frameController;
 
     private Material mat;
     private SpriteRenderer sr;
@@ -65,10 +66,10 @@ public class BackgroundController : MonoBehaviour
         if (activePlayback != null)
             StopCoroutine(activePlayback);
 
-        activePlayback = StartCoroutine(RunFullTransition(entry, onComplete));
+        activePlayback = StartCoroutine(RunFullTransition(phaseName, entry, onComplete));
     }
 
-    private IEnumerator RunFullTransition(PhaseColorConfig.PhaseEntry entry, System.Action onComplete)
+    private IEnumerator RunFullTransition(string phaseName, PhaseColorConfig.PhaseEntry entry, System.Action onComplete)
     {
         IsTransitioning = true;
         StopSpeed();
@@ -89,6 +90,10 @@ public class BackgroundController : MonoBehaviour
         mat.SetColor(_swipe2ColorId, entry.transitionColor);
         mat.SetColor(_swipe3ColorId, entry.nextGridBackColor);
         mat.SetFloat(_isSwipingId, 1f);
+
+        // start frame color lerp
+        if (frameController != null)
+            frameController.UpdateFrameColors(phaseName, entry.wipeDuration + entry.gridDuration);
 
         if (wipeFrames != null && wipeFrames.Length > 0)
             yield return PlayFrames(wipeFrames, entry.wipeDuration, false);

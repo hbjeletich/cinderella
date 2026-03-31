@@ -11,14 +11,23 @@ public class GameUI : MonoBehaviour
     public RevealingUI revealingUI;
     public ScoringUI scoringUI;
 
+    [Header("Containers")]
+    public GameObject talkingContainer;
+    public GameObject writingContainer;
+    public GameObject revealingContainer;
+    public GameObject scoringContainer;
+
     [Header("Background")]
     public BackgroundController backgroundController;
 
     [Header("Timer (overlay — visible across all phases)")]
     public TextMeshProUGUI timerText;
+    public GameObject timerContainer;
 
     private BaseGameUI activeController;
     private string activePhase;
+    private bool isTransitioning;
+    private int pendingTimerSeconds = -1;
 
     private void Start()
     {
@@ -29,31 +38,62 @@ public class GameUI : MonoBehaviour
         HideTimer();
         activeController = null;
         activePhase = "Talking";
+
+        ShowContainer(talkingContainer);
     }
 
     private void TransitionTo(string phaseName, BaseGameUI controller, Action onReady)
     {
         HideTimer();
+        pendingTimerSeconds = -1;
 
-        if (activeController != null && activeController != controller)
-            activeController.Deactivate();
-
-        if (activePhase != phaseName && backgroundController != null)
+        if (activePhase == phaseName)
         {
-            activePhase = phaseName;
-            backgroundController.RunTransitionByName(phaseName, () =>
-            {
-                activeController = controller;
-                activeController?.Activate();
-                onReady?.Invoke();
-            });
-        }
-        else
-        {
-            activePhase = phaseName;
             activeController = controller;
             activeController?.Activate();
             onReady?.Invoke();
+            return;
+        }
+
+        bool leavingWriting = activeController is WritingUI;
+
+        Action startBackgroundTransition = () =>
+        {
+            if (activeController != null && activeController != controller)
+                activeController.Deactivate();
+
+            if (backgroundController != null)
+            {
+                isTransitioning = true;
+                activePhase = phaseName;
+                backgroundController.RunTransitionByName(phaseName, () =>
+                {
+                    isTransitioning = false;
+                    activeController = controller;
+                    activeController?.Activate();
+
+                    if (pendingTimerSeconds > 0)
+                        ShowTimerImmediate(pendingTimerSeconds);
+
+                    onReady?.Invoke();
+                });
+            }
+            else
+            {
+                activePhase = phaseName;
+                activeController = controller;
+                activeController?.Activate();
+                onReady?.Invoke();
+            }
+        };
+
+        if (leavingWriting)
+        {
+            ((WritingUI)activeController).SlideOut(() => startBackgroundTransition());
+        }
+        else
+        {
+            startBackgroundTransition();
         }
     }
 
@@ -61,23 +101,49 @@ public class GameUI : MonoBehaviour
 
     public void ShowTimer(int seconds)
     {
-        if (timerText != null)
+        if (isTransitioning)
         {
-            timerText.gameObject.SetActive(true);
+            pendingTimerSeconds = seconds;
+            return;
+        }
+        ShowTimerImmediate(seconds);
+    }
+
+    private void ShowTimerImmediate(int seconds)
+    {
+        if (timerContainer != null && timerText != null)
+        {
+            timerContainer.SetActive(true);
             timerText.text = seconds.ToString();
         }
     }
 
     public void UpdateTimer(int seconds)
     {
+        if (isTransitioning)
+        {
+            pendingTimerSeconds = Mathf.Max(0, seconds);
+            return;
+        }
         if (timerText != null)
             timerText.text = Mathf.Max(0, seconds).ToString();
     }
 
     public void HideTimer()
     {
-        if (timerText != null)
-            timerText.gameObject.SetActive(false);
+        if (timerContainer != null)
+            timerContainer.SetActive(false);
+    }
+
+    public void ShowContainer(GameObject container)
+    {
+        if (container != null)
+        {
+            talkingContainer.SetActive(container == talkingContainer);
+            writingContainer.SetActive(container == writingContainer);
+            revealingContainer.SetActive(container == revealingContainer);
+            scoringContainer.SetActive(container == scoringContainer);
+        }
     }
 
     // --- Narrative ---
@@ -86,18 +152,18 @@ public class GameUI : MonoBehaviour
     {
         TransitionTo("Talking", talkingUI, () =>
         {
+            ShowContainer(talkingContainer);
             talkingUI.ShowNarrative(text, onComplete);
         });
     }
 
     // --- Writing Phase ---
 
-    public void ShowWritingPhase(int roundNumber, float duration, int timerSeconds = -1)
+    public void ShowWritingPhase(int roundNumber, float duration)
     {
         TransitionTo("Writing", writingUI, () =>
         {
-            if (timerSeconds > 0)
-                ShowTimer(timerSeconds);
+            ShowContainer(writingContainer);
             writingUI.StartFillAnimation(roundNumber, duration);
         });
     }
@@ -108,6 +174,7 @@ public class GameUI : MonoBehaviour
     {
         TransitionTo("Revealing", revealingUI, () =>
         {
+            ShowContainer(revealingContainer);
             revealingUI.ShowSubmission(player, answer, onComplete, promptText);
         });
     }
@@ -116,6 +183,7 @@ public class GameUI : MonoBehaviour
     {
         TransitionTo("Revealing", revealingUI, () =>
         {
+            ShowContainer(revealingContainer);
             revealingUI.ShowOptions(player, answers, onComplete, promptText);
         });
     }
@@ -126,6 +194,7 @@ public class GameUI : MonoBehaviour
     {
         TransitionTo("Scoring", scoringUI, () =>
         {
+            ShowContainer(scoringContainer);
             scoringUI.ShowScoreboard(roundNumber, sortedPlayers, onComplete);
         });
     }

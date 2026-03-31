@@ -93,51 +93,34 @@ MonoBehaviour:
     - {fileID: 3486365374980857469, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
     - {fileID: -353662247, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
     - {fileID: 2015536909, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: -1367050321, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: 1881400562, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: -643159065, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: 197973761, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: -1526605853, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: -266431027, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: 28683687, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: -290578312, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: -1402701264, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: 981493802, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: -2018734367, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: -1780995049, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: 1114760662, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: 269201958, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: 1128989014, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: 506403468, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
-    - {fileID: -934080272, guid: a8f5bf52fc23d4a82902c11281302dec, type: 3}
   phases:
-  - phaseName: Talking
+  - phaseName: Writing
     gridOverlayColor: {r: 0.13652545, g: 0.49056602, b: 0.19524685, a: 1}
     gridBackColor: {r: 0.501513, g: 0.6603774, b: 0.52944523, a: 1}
     gridAnimationIndex: 1
-    gridDuration: 2
+    gridDuration: 1
     transitionColor: {r: 0.9622642, g: 0.54826796, b: 0, a: 1}
     wipeAnimationIndex: 0
-    wipeDuration: 2
+    wipeDuration: 1
     nextGridBackColor: {r: 0.4509804, g: 0.7019608, b: 0.98039216, a: 1}
     nextGridOverlayColor: {r: 0.13725491, g: 0.54509807, b: 1, a: 1}
-  - phaseName: Writing
+  - phaseName: Revealing
     gridOverlayColor: {r: 0.13725491, g: 0.54509807, b: 1, a: 1}
     gridBackColor: {r: 0.4509804, g: 0.7019608, b: 0.98039216, a: 1}
     gridAnimationIndex: 1
-    gridDuration: 2
+    gridDuration: 1
     transitionColor: {r: 0.5283019, g: 0, b: 0.3800737, a: 1}
     wipeAnimationIndex: 0
-    wipeDuration: 2
+    wipeDuration: 1
     nextGridBackColor: {r: 0.7254902, g: 0.45882353, b: 0.41568628, a: 1}
     nextGridOverlayColor: {r: 0.8784314, g: 0.28627452, b: 0.2, a: 1}
-  - phaseName: Revealing
+  - phaseName: Talking
     gridOverlayColor: {r: 0.87058824, g: 0.2901961, b: 0.19215687, a: 1}
     gridBackColor: {r: 0.7294118, g: 0.4627451, b: 0.41960785, a: 1}
     gridAnimationIndex: 1
-    gridDuration: 2
+    gridDuration: 1
     transitionColor: {r: 1, g: 0.4768409, b: 0, a: 1}
     wipeAnimationIndex: 0
-    wipeDuration: 2
+    wipeDuration: 1
     nextGridBackColor: {r: 0.5019608, g: 0.65882355, b: 0.5294118, a: 1}
     nextGridOverlayColor: {r: 0.13333334, g: 0.49019608, b: 0.19607843, a: 1}

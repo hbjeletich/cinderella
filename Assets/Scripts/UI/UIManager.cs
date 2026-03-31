@@ -76,10 +76,10 @@ public class UIManager : MonoBehaviour
         gameUI?.HideTimer();
     }
 
-    public void ShowWritingPhase(int roundNumber, float duration)
+    public void ShowWritingPhase(int roundNumber, float duration, int timerSeconds = -1)
     {
         EnsureGameUI();
-        gameUI?.ShowWritingPhase(roundNumber, duration);
+        gameUI?.ShowWritingPhase(roundNumber, duration, timerSeconds);
     }
 
     public void ShowNarrative(string text, Action onComplete)

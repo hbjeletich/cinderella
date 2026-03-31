@@ -33,6 +33,8 @@ public class GameUI : MonoBehaviour
 
     private void TransitionTo(string phaseName, BaseGameUI controller, Action onReady)
     {
+        HideTimer();
+
         if (activeController != null && activeController != controller)
             activeController.Deactivate();
 
@@ -90,10 +92,12 @@ public class GameUI : MonoBehaviour
 
     // --- Writing Phase ---
 
-    public void ShowWritingPhase(int roundNumber, float duration)
+    public void ShowWritingPhase(int roundNumber, float duration, int timerSeconds = -1)
     {
         TransitionTo("Writing", writingUI, () =>
         {
+            if (timerSeconds > 0)
+                ShowTimer(timerSeconds);
             writingUI.StartFillAnimation(roundNumber, duration);
         });
     }

@@ -11,7 +11,7 @@ public class GameUI : MonoBehaviour
     public RevealingUI revealingUI;
     public ScoringUI scoringUI;
 
-    [Header("Containers")]
+    [Header("Controller Containers")]
     public GameObject talkingContainer;
     public GameObject writingContainer;
     public GameObject revealingContainer;
@@ -40,6 +40,14 @@ public class GameUI : MonoBehaviour
         activePhase = "Talking";
 
         ShowContainer(talkingContainer);
+    }
+
+    public void ShowContainer(GameObject container)
+    {
+        talkingContainer.SetActive(container == talkingContainer);
+        writingContainer.SetActive(container == writingContainer);
+        revealingContainer.SetActive(container == revealingContainer);
+        scoringContainer.SetActive(container == scoringContainer);
     }
 
     private void TransitionTo(string phaseName, BaseGameUI controller, Action onReady)
@@ -135,17 +143,6 @@ public class GameUI : MonoBehaviour
             timerContainer.SetActive(false);
     }
 
-    public void ShowContainer(GameObject container)
-    {
-        if (container != null)
-        {
-            talkingContainer.SetActive(container == talkingContainer);
-            writingContainer.SetActive(container == writingContainer);
-            revealingContainer.SetActive(container == revealingContainer);
-            scoringContainer.SetActive(container == scoringContainer);
-        }
-    }
-
     // --- Narrative ---
 
     public void ShowNarrative(string text, Action onComplete)
@@ -186,6 +183,22 @@ public class GameUI : MonoBehaviour
             ShowContainer(revealingContainer);
             revealingUI.ShowOptions(player, answers, onComplete, promptText);
         });
+    }
+
+    public void ShowInPhaseNarration(string text, Action onComplete)
+    {
+        revealingUI.ShowInPhaseNarration(text, onComplete);
+    }
+
+    public void RevealWinnerCard(string winningAnswer, Action onComplete)
+    {
+        revealingUI.RevealWinnerCard(winningAnswer, onComplete);
+    }
+
+    public void ShowReactionsAndAuthor(string winningAnswer, Player author,
+        Dictionary<Player, Reaction> reactions, Action onComplete)
+    {
+        revealingUI.ShowReactionsAndAuthor(winningAnswer, author, reactions, onComplete);
     }
 
     // --- Scoreboard ---

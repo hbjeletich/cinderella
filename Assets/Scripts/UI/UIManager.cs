@@ -158,6 +158,49 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ShowInPhaseNarration(string text, Action onComplete)
+    {
+        EnsureGameUI();
+        if (gameUI != null)
+        {
+            gameUI.ShowInPhaseNarration(text, onComplete);
+        }
+        else
+        {
+            Debug.LogWarning("UIManager: GameUI not found for ShowInPhaseNarration");
+            onComplete?.Invoke();
+        }
+    }
+
+    public void RevealWinnerCard(string winningAnswer, Action onComplete)
+    {
+        EnsureGameUI();
+        if (gameUI != null)
+        {
+            gameUI.RevealWinnerCard(winningAnswer, onComplete);
+        }
+        else
+        {
+            Debug.LogWarning("UIManager: GameUI not found for RevealWinnerCard");
+            onComplete?.Invoke();
+        }
+    }
+
+    public void ShowReactionsAndAuthor(string winningAnswer, Player author,
+        Dictionary<Player, Reaction> reactions, Action onComplete)
+    {
+        EnsureGameUI();
+        if (gameUI != null)
+        {
+            gameUI.ShowReactionsAndAuthor(winningAnswer, author, reactions, onComplete);
+        }
+        else
+        {
+            Debug.LogWarning("UIManager: GameUI not found for ShowReactionsAndAuthor");
+            onComplete?.Invoke();
+        }
+    }
+
     private void OnPlayerCreated(Player player)
     {
         // // todo: switch this to be lobby related!

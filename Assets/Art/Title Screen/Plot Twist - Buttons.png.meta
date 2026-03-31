@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 82cd368e52ece46fab7bd7bbe4ec2195
+guid: f5ad8d438b825416288a5711d75d61fe
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7786509707369155228
-    second: instructionswaiting_page 2_0
+      213: 3488543125974882436
+    second: Plot Twist - Buttons_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,13 +46,13 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
-  spriteBorder: {x: 719, y: 520, z: 682, w: 516}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -113,23 +113,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: instructionswaiting_page 2_0
+      name: Plot Twist - Buttons_0
       rect:
         serializedVersion: 2
-        x: 222
-        y: 148
-        width: 1997
-        height: 1318
+        x: 25
+        y: 5
+        width: 606
+        height: 127
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 60, y: 31, z: 23, w: 31}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c9a8edbf25d3f0c60800000000000000
-      internalID: 7786509707369155228
+      spriteID: 4881d5f6d7bc96030800000000000000
+      internalID: 3488543125974882436
       vertices: []
       indices: 
       edges: []
@@ -138,8 +138,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: f9220567affd04121bb4560cc1b525c6
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      instructionswaiting_page 2_0: 7786509707369155228
+      Plot Twist - Buttons_0: 3488543125974882436
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

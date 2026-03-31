@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     // rising action group reveal state
     private HashSet<string> currentGroupPlayerAnswers;
     private string currentGroupWinningChoice;
+    private Player currentGroupWinningAuthor;
 
     // resolution title phase
     private bool isResolutionTitlePhase = false;
@@ -322,11 +323,15 @@ public class GameManager : MonoBehaviour
         string authorName = (author != null) ? author.playerName : "someone";
         string revealText = $"\"{winningTitle}\" — titled by {authorName}!";
 
-        SetGameState(GameState.Talking);
-
-        UIManager.Instance.ShowNarrative(revealText, onComplete: () => {
-            isResolutionTitlePhase = false;
-            EndRound();
+        // title reveal: pop card, show author (no reactions for titles), then narrate
+        UIManager.Instance.RevealWinnerCard(winningTitle, () => {
+            UIManager.Instance.ShowReactionsAndAuthor(winningTitle, author, null, () => {
+                SetGameState(GameState.Talking);
+                UIManager.Instance.ShowNarrative(revealText, onComplete: () => {
+                    isResolutionTitlePhase = false;
+                    EndRound();
+                });
+            });
         });
     }
 
@@ -413,8 +418,11 @@ public class GameManager : MonoBehaviour
         
         if(currentRound == 5)
         {
-            // climax is done, end round
-            EndRound();
+            // climax — show emotes + author on the already-revealed winner card
+            UIManager.Instance.ShowReactionsAndAuthor(
+                currentGroupWinningChoice, currentGroupWinningAuthor, reactions, () => {
+                    EndRound();
+                });
             return;
         }
         
@@ -428,34 +436,40 @@ public class GameManager : MonoBehaviour
             // record this group's tone for the rising round (game round 2,3,4 → rising 1,2,3)
             int risingRound = currentRound - 1;
             StoryManager.Instance.RecordRisingRoundTone(risingRound, majority);
+
+            // show emotes + author on the already-revealed winner card, then advance
+            UIManager.Instance.ShowReactionsAndAuthor(
+                currentGroupWinningChoice, author, reactions, () => {
+                    RoundManager.Instance.SetCurrentGroupIndex(groupIdx + 1);
             
-            // move to next group
-            RoundManager.Instance.SetCurrentGroupIndex(groupIdx + 1);
-            
-            if(RoundManager.Instance.GetCurrentGroupIndex() >= RoundManager.Instance.GetGroups().Count)
-            {
-                // all groups done
-                EndRound();
-            }
-            else
-            {
-                // next group's voting
-                SetGameState(GameState.Voting);
-                ShowNextGroupVoting();
-            }
+                    if(RoundManager.Instance.GetCurrentGroupIndex() >= RoundManager.Instance.GetGroups().Count)
+                        EndRound();
+                    else
+                    {
+                        SetGameState(GameState.Voting);
+                        ShowNextGroupVoting();
+                    }
+                });
             return;
         }
         
-        // exposition — per-submission tone, then advance
+        // exposition — show emotes + author on the single submission card, then advance
         if(currentSubmissionIndex < shuffledPlayers.Count)
         {
             Player reactedTo = shuffledPlayers[currentSubmissionIndex];
             string submission = currentSubmissions[reactedTo];
             StoryManager.Instance.RecordSubmissionTone(reactedTo, submission, majority);
+
+            UIManager.Instance.ShowReactionsAndAuthor(submission, reactedTo, reactions, () => {
+                currentSubmissionIndex++;
+                ShowNextSubmission();
+            });
         }
-        
-        currentSubmissionIndex++;
-        ShowNextSubmission();
+        else
+        {
+            currentSubmissionIndex++;
+            ShowNextSubmission();
+        }
     }
 
     private void HandleAllVotesSubmitted()
@@ -485,6 +499,8 @@ public class GameManager : MonoBehaviour
             
             // score: author of winning answer gets points (if it was a player, not a decoy)
             Player author = RoundManager.Instance.GetAuthorOfAnswer(groupIdx, winningChoice);
+            currentGroupWinningAuthor = author;
+
             if(author != null)
             {
                 author.score += answerPickedPoints;
@@ -502,18 +518,11 @@ public class GameManager : MonoBehaviour
                 }
             }
             
-            // show winning answer on TV, then reveal author, then react
+            // reveal winner card visually, then send react prompts once it's popped
             SetGameState(GameState.Reacting);
-            
-            string authorName = (author != null) ? author.playerName : "the narrator";
-            string revealText = $"\"{winningChoice}\" — written by {authorName}!";
-            
-            UIManager.Instance.ShowSubmission(author, winningChoice, onComplete: () => {
-                // now show author reveal as narrative, then send react prompts
-                UIManager.Instance.ShowNarrative($"This was {authorName}'s answer!", onComplete: () => {
-                    RoundManager.Instance.SendReactPromptsToAllPlayers(null, winningChoice, prompt?.promptText);
-                });
-            }, promptText: prompt?.promptText);
+            UIManager.Instance.RevealWinnerCard(winningChoice, () => {
+                RoundManager.Instance.SendReactPromptsToAllPlayers(null, winningChoice, prompt?.promptText);
+            });
             
             return;
         }
@@ -536,22 +545,24 @@ public class GameManager : MonoBehaviour
             string protagonistChoice = RoundManager.Instance.GetProtagonistChoice();
             string antagonistChoice = RoundManager.Instance.GetAntagonistChoice();
             
+            // figure out which player's side won
+            Player winningPlayer = null;
             if(cleanChoice == protagonistChoice)
             {
-                Player hero = PlayerManager.Instance.GetHighestScoringPlayer();
-                if(hero != null)
+                winningPlayer = PlayerManager.Instance.GetHighestScoringPlayer();
+                if(winningPlayer != null)
                 {
-                    hero.score += answerPickedPoints;
-                    Debug.Log($"GameManager: {hero.playerName} (hero) earned {answerPickedPoints} pts (answer picked)");
+                    winningPlayer.score += answerPickedPoints;
+                    Debug.Log($"GameManager: {winningPlayer.playerName} (hero) earned {answerPickedPoints} pts (answer picked)");
                 }
             }
             else if(cleanChoice == antagonistChoice)
             {
-                Player villain = PlayerManager.Instance.GetLowestScoringPlayer();
-                if(villain != null)
+                winningPlayer = PlayerManager.Instance.GetLowestScoringPlayer();
+                if(winningPlayer != null)
                 {
-                    villain.score += answerPickedPoints;
-                    Debug.Log($"GameManager: {villain.playerName} (villain) earned {answerPickedPoints} pts (answer picked)");
+                    winningPlayer.score += answerPickedPoints;
+                    Debug.Log($"GameManager: {winningPlayer.playerName} (villain) earned {answerPickedPoints} pts (answer picked)");
                 }
             }
             
@@ -566,13 +577,18 @@ public class GameManager : MonoBehaviour
                 }
             }
 
+            // use the original winningChoice for UI (cards say "Hero: X", not "X")
+            currentGroupWinningChoice = winningChoice;
+            currentGroupWinningAuthor = winningPlayer;
+
             string climaxText = StoryManager.Instance.GetChosenClimax().promptText;
             
             SetGameState(GameState.Reacting);
-            
-            UIManager.Instance.ShowSubmission(null, cleanChoice, onComplete: () => {
+
+            // reveal winner card visually, then send react prompts once it's popped
+            UIManager.Instance.RevealWinnerCard(winningChoice, () => {
                 RoundManager.Instance.SendReactPromptsToAllPlayers(null, cleanChoice, climaxText);
-            }, promptText: climaxText);
+            });
         }
     }
 
@@ -618,9 +634,6 @@ public class GameManager : MonoBehaviour
         }, promptText: promptText);
     }
 
-    /// <summary>
-    /// Rising action group-by-group reveal: show the group's prompt on TV, then send vote options.
-    /// </summary>
     private void ShowNextGroupVoting()
     {
         int groupIdx = RoundManager.Instance.GetCurrentGroupIndex();
@@ -641,12 +654,10 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"GameManager: Showing Group {groupIdx} voting — prompt: {prompt.promptText}, {options.Count} options");
 
-        // show the prompt on TV first, then send vote choices to all players
-        UIManager.Instance.ShowNarrative(prompt.promptText, onComplete: () => {
-            UIManager.Instance.ShowOptions(null, options, onComplete: () => {
-                RoundManager.Instance.SendGroupVoteToAllPlayers(groupIdx, options, prompt.promptText);
-            }, promptText: prompt.promptText);
-        });
+        // stays in revealing phase — no transition to talking
+        UIManager.Instance.ShowOptions(null, options, onComplete: () => {
+            RoundManager.Instance.SendGroupVoteToAllPlayers(groupIdx, options, prompt.promptText);
+        }, promptText: prompt.promptText);
     }
 
     private void EndRound()

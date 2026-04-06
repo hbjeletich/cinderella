@@ -23,6 +23,12 @@ public class ConnectionManager : MonoBehaviour
         }
     }
 
+    public void ResetForNewGame()
+    {
+        readyToStart = false;
+        Debug.Log("ConnectionManager: Reset for new game.");
+    }
+
     // SEND MESSAGES
     #region Send Messages
 
@@ -187,14 +193,20 @@ public class ConnectionManager : MonoBehaviour
     public void HandlePlayerDisconnect(string connectionID)
     {
         Player player = PlayerManager.Instance.GetPlayer(connectionID);
-        if(player == null) return;
+        if (player == null) return;
 
         PlayerManager.Instance.DisconnectPlayer(connectionID);
 
-        // if game is in progress, auto-submit for them so the game doesn't stall
-        if(PlayerManager.Instance.IsGameInProgress())
+        if (PlayerManager.Instance.IsGameInProgress())
         {
             RoundManager.Instance.HandlePlayerDisconnect(player);
+            
+            // if all players disconnected mid-game, return to lobby
+            if (PlayerManager.Instance.GetConnectedPlayers().Count == 0)
+            {
+                Debug.Log("ConnectionManager: All players disconnected — returning to lobby.");
+                GameManager.Instance.ReturnToLobby();
+            }
         }
     }
 

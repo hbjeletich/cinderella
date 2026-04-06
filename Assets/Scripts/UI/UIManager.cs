@@ -158,6 +158,20 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ShowFinalScoreboard(List<Player> sortedPlayers, float holdTime, Action onComplete)
+    {
+        EnsureGameUI();
+        if (gameUI != null)
+        {
+            gameUI.ShowFinalScoreboard(sortedPlayers, holdTime, onComplete);
+        }
+        else
+        {
+            Debug.LogWarning("UIManager: GameUI not found for ShowFinalScoreboard");
+            onComplete?.Invoke();
+        }
+    }
+
     public void ShowInPhaseNarration(string text, Action onComplete)
     {
         EnsureGameUI();

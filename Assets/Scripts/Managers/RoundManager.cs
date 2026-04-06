@@ -282,6 +282,30 @@ public class RoundManager : MonoBehaviour
         ResetAll();
     }
 
+    public void ResetForNewGame()
+    {
+        submissions.Clear();
+        votes.Clear();
+        reactions.Clear();
+        currentVotingOptions.Clear();
+        groups.Clear();
+        groupPrompts.Clear();
+        currentGroupIndex = 0;
+        isClimaxPicking = false;
+        protagonistChoice = null;
+        antagonistChoice = null;
+        protagonistPlayer = null;
+        antagonistPlayer = null;
+        
+        if (activeTimer != null)
+        {
+            StopCoroutine(activeTimer);
+            activeTimer = null;
+        }
+        
+        Debug.Log("RoundManager: Reset for new game.");
+    }
+
     public void StartExpositionRound()
     {
         Debug.Log("RoundManager: Starting exposition round!");

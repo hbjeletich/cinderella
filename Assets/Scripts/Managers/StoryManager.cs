@@ -84,11 +84,25 @@ public class StoryManager : MonoBehaviour
 
         string endText = DialogueManager.Instance.GetDialogue("game_over");
 
-        // probs move this to game manager?
-        // UIManager.Instance.ShowNarrative(endText, onComplete: () =>
-        // {
-        //     // show scores, return to lobby? i'll do this later
-        // });
+        UIManager.Instance.ShowNarrative(endText, onComplete: () =>
+        {
+            List<Player> sorted = PlayerManager.Instance.GetPlayersSortedByScore();
+            UIManager.Instance.ShowFinalScoreboard(sorted, 10f, () =>
+            {
+                GameManager.Instance.ReturnToLobby();
+            });
+        });
+    }
+
+    public void ResetForNewGame()
+    {
+        roundNumber = 0;
+        chosenClimax = null;
+        toneTally.Clear();
+        submissionTones.Clear();
+        risingRoundTones.Clear();
+        storyVariables.Clear();
+        Debug.Log("StoryManager: Reset for new game.");
     }
 
     public void RecordStoryVariable(string key, string value)

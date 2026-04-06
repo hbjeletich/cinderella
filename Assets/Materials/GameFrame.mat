@@ -60,9 +60,9 @@ Material:
     - _step: 0.09
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
-    - _CenterDetailColor: {r: 0.7294118, g: 0.15686275, b: 0.05882353, a: 1}
+    - _CenterDetailColor: {r: 0.5019608, g: 0.65882355, b: 0.5294118, a: 1}
     - _DetailColor: {r: 0.43529412, g: 0.73333335, b: 1, a: 1}
-    - _FrameAccentColor: {r: 0.73333335, g: 0.007843138, b: 0.33333334, a: 1}
+    - _FrameAccentColor: {r: 0.8745098, g: 0.3215686, b: 0.24705878, a: 1}
     - _FrameColor: {r: 0.46593046, g: 0.34042364, b: 0.8490566, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

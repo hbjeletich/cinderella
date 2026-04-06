@@ -211,4 +211,13 @@ public class GameUI : MonoBehaviour
             scoringUI.ShowScoreboard(roundNumber, sortedPlayers, onComplete);
         });
     }
+
+    public void ShowFinalScoreboard(List<Player> sortedPlayers, float holdTime, Action onComplete)
+    {
+        TransitionTo("Scoring", scoringUI, () =>
+        {
+            ShowContainer(scoringContainer);
+            scoringUI.ShowFinalScoreboard(sortedPlayers, holdTime, onComplete);
+        });
+    }
 }

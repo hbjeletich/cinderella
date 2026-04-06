@@ -123,6 +123,17 @@ public class PlayerManager : MonoBehaviour
         return players.Where(p => p.isConnected).ToList();
     }
 
+    public void ResetForNewGame()
+    {
+        foreach (Player p in players)
+        {
+            if (p != null && p.gameObject != null)
+                Destroy(p.gameObject);
+        }
+        players.Clear();
+        Debug.Log("PlayerManager: Reset for new game.");
+    }
+
     public void ResetPlayerReady()
     {
         foreach(Player p in players)

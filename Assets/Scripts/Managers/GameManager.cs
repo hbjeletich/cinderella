@@ -126,6 +126,23 @@ public class GameManager : MonoBehaviour
         OnGameBegin?.Invoke();
     }
 
+    public void ReturnToLobby()
+    {
+        // reset all manager state for a fresh game
+        PlayerManager.Instance.ResetForNewGame();
+        StoryManager.Instance.ResetForNewGame();
+        RoundManager.Instance.ResetForNewGame();
+        ConnectionManager.Instance.ResetForNewGame();
+        
+        isResolutionTitlePhase = false;
+        currentSubmissions = null;
+        shuffledPlayers = null;
+        currentSubmissionIndex = 0;
+        
+        SetGameState(GameState.Lobby);
+        ChangeScene("Lobby");
+    }
+
     public void ChangeScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);

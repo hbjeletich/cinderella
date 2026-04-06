@@ -583,6 +583,7 @@ MonoBehaviour:
   revealingContainer: {fileID: 1880092523}
   scoringContainer: {fileID: 1389816631}
   backgroundController: {fileID: 423541341}
+  frameController: {fileID: 1978943167}
   timerText: {fileID: 1055830133}
   timerContainer: {fileID: 1978674918}
 --- !u!4 &393061904

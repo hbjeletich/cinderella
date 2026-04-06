@@ -12,7 +12,7 @@ RES_RISE_3_DEFAULT,"But time was running out — [time_limit]. [Protagonist] cho
 RES_RISE_3_COMEDY,"Things got weird fast — [time_limit]. [Protagonist] panicked and [escape]. Behind them, forgotten on the ground: [item_left]. Classic.",rising_3,comedy,
 RES_RISE_3_DARK,"The clock was ticking — [time_limit]. There was no choice. [escape]. They left behind [item_left]. It would haunt them.",rising_3,dark,
 RES_RISE_3_CHAOS,"Everything went sideways — [time_limit]. [escape]. [item_left] went flying. Nobody knows where it landed.",rising_3,chaos,
-RES_CLX_01,"Then came the moment of truth. [climax_type]. [climax_choice].",climax,,
+RES_CLX_01,"Then came the moment of truth. [climax_type]. [climax_actor] [climax_choice].",climax,,
 RES_CLOSE_ESC_COMEDY,"And so [Nickname] finally escaped [Antagonist] and never had to [Abuse] again. [Only Friend] got a medal. [Love Interest] got confused. [Stepsiblings] were last seen arguing about who caused it.",closing,comedy,escape
 RES_CLOSE_ESC_DARK,"[Protagonist] got out. But freedom has a price. [Only Friend] was left behind. [Love Interest] waited at [Event Location] for someone who never came back. [Stepsiblings] pretended nothing happened.",closing,dark,escape
 RES_CLOSE_ESC_TRIUMPHANT,"[Nickname] walked free. [Antagonist] could only watch. At last, no more [Abuse]. [Love Interest] was waiting with open arms at [Event Location].",closing,triumphant,escape

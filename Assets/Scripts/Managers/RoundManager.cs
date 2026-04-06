@@ -39,6 +39,8 @@ public class RoundManager : MonoBehaviour
 
     public string GetProtagonistChoice() => protagonistChoice;
     public string GetAntagonistChoice() => antagonistChoice;
+    public Player GetProtagonistPlayer() => protagonistPlayer;
+    public Player GetAntagonistPlayer() => antagonistPlayer;
     public List<List<Player>> GetGroups() => groups;
     public int GetCurrentGroupIndex() => currentGroupIndex;
     public void SetCurrentGroupIndex(int index) => currentGroupIndex = index;

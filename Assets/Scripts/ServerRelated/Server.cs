@@ -114,6 +114,19 @@ public class Server : MonoBehaviour
         }
     }
 
+    public void ResetSession()
+    {
+        sessionId = System.Guid.NewGuid().ToString();
+        Debug.Log($"Server: New session ID: {sessionId}");
+        
+        // tell all connected clients about new session ID so they can reset if needed
+        string msg = $"{{\"type\":\"session\",\"sessionId\":\"{sessionId}\"}}";
+        foreach (var connection in Connections.Values)
+        {
+            connection.Send(msg);
+        }
+    }
+
     public static string GetLocalIPAddress()
     {
         var host = Dns.GetHostEntry(Dns.GetHostName());

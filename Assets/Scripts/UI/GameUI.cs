@@ -19,6 +19,7 @@ public class GameUI : MonoBehaviour
 
     [Header("Background")]
     public BackgroundController backgroundController;
+    public FrameController frameController;
 
     [Header("Timer (overlay — visible across all phases)")]
     public TextMeshProUGUI timerText;
@@ -92,6 +93,11 @@ public class GameUI : MonoBehaviour
                 activeController = controller;
                 activeController?.Activate();
                 onReady?.Invoke();
+            }
+
+            if (frameController != null)
+            {
+                frameController.UpdateFrameColors(phaseName, 1.5f);
             }
         };
 

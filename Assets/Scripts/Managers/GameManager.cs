@@ -128,6 +128,9 @@ public class GameManager : MonoBehaviour
 
     public void ReturnToLobby()
     {
+        // reset server session so old clients can't reconnect to the new game
+        Server.Instance.ResetSession();
+
         // reset all manager state for a fresh game
         PlayerManager.Instance.ResetForNewGame();
         StoryManager.Instance.ResetForNewGame();
@@ -562,6 +565,9 @@ public class GameManager : MonoBehaviour
             StoryManager.Instance.RecordStoryVariable("climax_type", StoryManager.Instance.GetChosenClimax().climaxType);
             StoryManager.Instance.RecordStoryVariable("climax_outcome", StoryManager.Instance.GetChosenClimax().outcomeCategory);
 
+            string protagonistName = StoryManager.Instance.GetStoryVariable("Protagonist");
+            string antagonistName = StoryManager.Instance.GetStoryVariable("Antagonist");
+
             // score the author — check if protagonist or antagonist's choice won
             string protagonistChoice = RoundManager.Instance.GetProtagonistChoice();
             string antagonistChoice = RoundManager.Instance.GetAntagonistChoice();
@@ -575,6 +581,9 @@ public class GameManager : MonoBehaviour
                 {
                     winningPlayer.score += answerPickedPoints;
                     Debug.Log($"GameManager: {winningPlayer.playerName} (hero) earned {answerPickedPoints} pts (answer picked)");
+
+                    StoryManager.Instance.RecordStoryVariable("climax_actor", protagonistName);
+                    StoryManager.Instance.RecordStoryVariable("climax_loser", antagonistName);
                 }
             }
             else if(cleanChoice == antagonistChoice)
@@ -584,6 +593,9 @@ public class GameManager : MonoBehaviour
                 {
                     winningPlayer.score += answerPickedPoints;
                     Debug.Log($"GameManager: {winningPlayer.playerName} (villain) earned {answerPickedPoints} pts (answer picked)");
+
+                    StoryManager.Instance.RecordStoryVariable("climax_actor", antagonistName);
+                    StoryManager.Instance.RecordStoryVariable("climax_loser", protagonistName);
                 }
             }
             

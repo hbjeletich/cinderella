@@ -16,24 +16,30 @@ public class FrameController : MonoBehaviour
     void Awake()
     {
         _frameAccentColorId = Shader.PropertyToID("_FrameAccentColor");
-        _frameMainColorId = Shader.PropertyToID("_FrameMainColor");
-        _frameDetailColorId = Shader.PropertyToID("_eDetailColor");
+        _frameMainColorId = Shader.PropertyToID("_FrameColor");
+        _frameDetailColorId = Shader.PropertyToID("_DetailColor");
         _frameFineDetailColorId = Shader.PropertyToID("_CenterDetailColor");
 
         image = GetComponent<Image>();
         if (image != null)
-            mat = image.material;
+        {
+            // use instance material
+            mat = new Material(image.material);
+            image.material = mat;
+        }
     }
 
     void Start()
     {
         if (colorConfig == null || colorConfig.phases.Length == 0) return;
 
-        var first = colorConfig.phases[0];
-        mat.SetColor(_frameMainColorId, first.mainColor);
-        mat.SetColor(_frameAccentColorId, first.accentColor);
-        mat.SetColor(_frameDetailColorId, first.detailColor);
-        mat.SetColor(_frameFineDetailColorId, first.fineDetailColor);
+        var talking = colorConfig.GetPhase("Talking");
+        if (talking == null) talking = colorConfig.phases[0];
+
+        mat.SetColor(_frameMainColorId, talking.mainColor);
+        mat.SetColor(_frameAccentColorId, talking.accentColor);
+        mat.SetColor(_frameDetailColorId, talking.detailColor);
+        mat.SetColor(_frameFineDetailColorId, talking.fineDetailColor);
     }
 
     public void UpdateFrameColors(string phaseName, float duration)

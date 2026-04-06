@@ -106,6 +106,9 @@ public class ConnectionManager : MonoBehaviour
     {
         var message = JsonUtility.FromJson<JoinMessage>(rawMessage);
         string playerName = FilterText(message.text);
+        // limit name length to prevent UI issues
+        if (playerName.Length > 12)
+            playerName = playerName.Substring(0, 12);
         string deviceId = message.deviceId;
 
         // --- RECONNECT CHECK ---

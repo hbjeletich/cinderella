@@ -16,8 +16,10 @@ public class RevealingUI : BaseGameUI
     public float questionStartScale = 2f;
     public float questionPadding = 40f;
 
-    [Header("Answer Cards (pre-placed in scene)")]
-    public AnswerCard[] cardPool;
+    [Header("Answer Cards")]
+    public GameObject answerCardPrefab;
+    public RectTransform cardGridContainer;   // GridLayoutGroup, 2 col, ContentSizeFitter
+    public RectTransform singleCardParent;    // empty parent centered on screen for solo cards
     public float cardStaggerDelay = 0.3f;
 
     [Header("Reaction Data")]
@@ -27,32 +29,31 @@ public class RevealingUI : BaseGameUI
     public float postRevealHoldTime = 2.5f;
     public float postEmoteHoldTime = 2f;
 
+    [Header("Card Layout")]
+    public float maxCardHeight = 300f;
+    public float xPadding = 150f;
+    public float xSpacing = 0f;
+
     private Vector2 questionRestPos;
-    private Vector2[] cardRestPositions;
     private bool hasStoredPositions;
     private Coroutine activeSequence;
     private MagicText questionMagicText;
     private bool winnerWasPopped;
 
+    private List<AnswerCard> spawnedCards = new List<AnswerCard>();
+
     protected override void Awake()
     {
         base.Awake();
-
-        cardRestPositions = new Vector2[cardPool.Length];
-        for (int i = 0; i < cardPool.Length; i++)
-        {
-            if (cardPool[i] != null)
-            {
-                cardRestPositions[i] = cardPool[i].GetComponent<RectTransform>().anchoredPosition;
-                cardPool[i].gameObject.SetActive(false);
-            }
-        }
 
         if (questionContainer != null)
             questionContainer.gameObject.SetActive(false);
 
         if (questionText != null)
             questionMagicText = questionText.GetComponent<MagicText>();
+
+        if (cardGridContainer != null)
+            cardGridContainer.gameObject.SetActive(false);
     }
 
     private void StoreQuestionPos()
@@ -85,17 +86,11 @@ public class RevealingUI : BaseGameUI
             questionContainer.gameObject.SetActive(false);
         }
 
-        foreach (var card in cardPool)
-        {
-            if (card != null)
-            {
-                card.GetComponent<RectTransform>().DOKill();
-                card.Reset();
-            }
-        }
-
+        ClearCards();
         HideText();
     }
+
+    // --- Public API ---
 
     public void ShowSubmission(Player player, string answer, Action onComplete, string promptText = null)
     {
@@ -128,6 +123,8 @@ public class RevealingUI : BaseGameUI
         activeSequence = StartCoroutine(ReactionsAndAuthorSequence(winningAnswer, author, reactions, onComplete));
     }
 
+    // --- Sequences ---
+
     private IEnumerator InPhaseNarrationSequence(string text, Action onComplete)
     {
         ResetAll();
@@ -147,7 +144,8 @@ public class RevealingUI : BaseGameUI
         if (!string.IsNullOrEmpty(promptText))
             yield return PopInQuestion(promptText);
 
-        AnswerCard card = cardPool[0];
+        // Single card — spawn into singleCardParent so it's centered
+        AnswerCard card = SpawnCard(singleCardParent);
 
         bool popDone = false;
         card.PopInBig(() => popDone = true);
@@ -171,25 +169,68 @@ public class RevealingUI : BaseGameUI
         if (!string.IsNullOrEmpty(promptText))
             yield return PopInQuestion(promptText);
 
-        int count = Mathf.Min(answers.Count, cardPool.Length);
+        cardGridContainer.gameObject.SetActive(true);
 
-        for (int i = 0; i < count; i++)
+        // Manual layout — no GridLayoutGroup needed
+        float containerW = cardGridContainer.rect.width;
+        float containerH = cardGridContainer.rect.height;
+        float xPadding = 150f;
+        //float yPadding = 20f;
+        //float ySpacing = 16f;
+        float xSpacing = 16f;
+
+        int columns = answers.Count > 6 ? 3 : 2;
+        int rows = Mathf.CeilToInt((float)answers.Count / columns);
+
+        float usableW = containerW - (xPadding * 2) - (xSpacing * (columns - 1));
+        float usableH = containerH;
+
+        float cellW = usableW / columns;
+        float cellH = usableH / rows;
+
+        // Cap cell height to original prefab height if there's plenty of room
+        cellH = Mathf.Min(cellH, maxCardHeight);
+
+        // Total grid dimensions (for centering)
+        float gridW = (cellW * columns) + (xSpacing * (columns - 1));
+        float gridH = (cellH * rows);
+
+        float startX = -gridW / 2f + cellW / 2f;
+        float startY = (cellH / 2f);
+
+        for (int i = 0; i < answers.Count; i++)
         {
-            AnswerCard card = cardPool[i];
-            bool popDone = false;
+            int col = i % columns;
+            int row = i / columns;
 
-            if (count == 1)
-                card.PopInBig(() => popDone = true);
-            else
-                card.PopIn(cardRestPositions[i], () => popDone = true);
+            float x = startX + col * (cellW + xSpacing);
+            float y = startY - row * cellH;
 
-            yield return new WaitUntil(() => popDone);
+            AnswerCard card = SpawnCard(cardGridContainer);
+            card.gameObject.SetActive(true);
+
+            RectTransform cardRT = card.GetComponent<RectTransform>();
+            cardRT.anchorMin = new Vector2(0.5f, 0.5f);
+            cardRT.anchorMax = new Vector2(0.5f, 0.5f);
+            cardRT.pivot = new Vector2(0.5f, 0.5f);
+            cardRT.sizeDelta = new Vector2(cellW, cellH);
+            cardRT.anchoredPosition = new Vector2(x, y);
+
+            CanvasGroup cg = card.GetComponent<CanvasGroup>();
+            if (cg == null) cg = card.gameObject.AddComponent<CanvasGroup>();
+
+            cg.alpha = 0f;
+            cardRT.localScale = Vector3.one * 0.5f;
+
+            DOTween.Sequence()
+                .Append(cardRT.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack))
+                .Join(cg.DOFade(1f, 0.2f));
 
             bool revealDone = false;
             card.RevealAnswer(answers[i], () => revealDone = true);
             yield return new WaitUntil(() => revealDone);
 
-            if (i < count - 1)
+            if (i < answers.Count - 1)
                 yield return new WaitForSeconds(cardStaggerDelay);
         }
 
@@ -202,14 +243,14 @@ public class RevealingUI : BaseGameUI
         AnswerCard winnerCard = null;
         List<AnswerCard> loserCards = new List<AnswerCard>();
 
-        for (int i = 0; i < cardPool.Length; i++)
+        foreach (var card in spawnedCards)
         {
-            if (!cardPool[i].gameObject.activeSelf) continue;
+            if (!card.gameObject.activeSelf) continue;
 
-            if (cardPool[i].answerText.text == winningAnswer && winnerCard == null)
-                winnerCard = cardPool[i];
+            if (card.answerText.text == winningAnswer && winnerCard == null)
+                winnerCard = card;
             else
-                loserCards.Add(cardPool[i]);
+                loserCards.Add(card);
         }
 
         if (winnerCard == null)
@@ -221,7 +262,18 @@ public class RevealingUI : BaseGameUI
 
         winnerWasPopped = loserCards.Count > 0;
 
-        // dismiss losers (don't touch the question — leave it as-is)
+        // Pull winner out of grid so layout doesn't fight the tween
+        if (winnerWasPopped)
+        {
+            RectTransform winnerRT = winnerCard.GetComponent<RectTransform>();
+            winnerRT.SetParent(singleCardParent, true);
+        }
+
+        // Hide grid
+        if (cardGridContainer != null)
+            cardGridContainer.gameObject.SetActive(false);
+
+        // Dismiss losers
         if (winnerWasPopped)
         {
             int dismissedCount = 0;
@@ -229,11 +281,8 @@ public class RevealingUI : BaseGameUI
             foreach (var loser in loserCards)
                 loser.Dismiss(() => dismissedCount++);
             yield return new WaitUntil(() => dismissedCount >= totalLosers);
-        }
 
-        // pop winner to center at 2x (skip if it's the only card)
-        if (winnerWasPopped)
-        {
+            // Pop winner to center big
             bool bigDone = false;
             winnerCard.PopToBig(() => bigDone = true);
             yield return new WaitUntil(() => bigDone);
@@ -248,19 +297,13 @@ public class RevealingUI : BaseGameUI
     private IEnumerator ReactionsAndAuthorSequence(string winningAnswer, Player author,
         Dictionary<Player, Reaction> reactions, Action onComplete)
     {
-        // find the winner card (should already be active and visible)
         AnswerCard winnerCard = null;
-        int winnerIndex = -1;
 
-        for (int i = 0; i < cardPool.Length; i++)
+        foreach (var card in spawnedCards)
         {
-            if (!cardPool[i].gameObject.activeSelf) continue;
-
-            if (cardPool[i].answerText.text == winningAnswer && winnerCard == null)
-            {
-                winnerCard = cardPool[i];
-                winnerIndex = i;
-            }
+            if (!card.gameObject.activeSelf) continue;
+            if (card.answerText.text == winningAnswer && winnerCard == null)
+                winnerCard = card;
         }
 
         if (winnerCard == null)
@@ -269,7 +312,7 @@ public class RevealingUI : BaseGameUI
             yield break;
         }
 
-        // emotes
+        // Emotes
         bool hasReactions = reactions != null &&
             reactions.Values.Any(r => r.reactionType != ReactionType.None);
 
@@ -285,7 +328,7 @@ public class RevealingUI : BaseGameUI
             yield return new WaitForSeconds(waveCount * 0.3f + 0.5f);
         }
 
-        // reveal author
+        // Author
         if (author != null)
         {
             winnerCard.RevealAuthor(author);
@@ -296,23 +339,11 @@ public class RevealingUI : BaseGameUI
             yield return new WaitForSeconds(postRevealHoldTime);
         }
 
-        // animate card back to its rest position (only if it was popped big)
-        if (winnerWasPopped && winnerIndex >= 0)
-        {
-            winnerCard.ClearEmotes();
-            RectTransform rt = winnerCard.GetComponent<RectTransform>();
-            bool returnDone = false;
-            Sequence returnSeq = DOTween.Sequence();
-            returnSeq.Append(rt.DOScale(Vector3.one, 0.4f).SetEase(Ease.InOutBack));
-            returnSeq.Join(rt.DOAnchorPos(cardRestPositions[winnerIndex], 0.4f).SetEase(Ease.InOutBack));
-            returnSeq.OnComplete(() => returnDone = true);
-            yield return new WaitUntil(() => returnDone);
-            yield return new WaitForSeconds(0.3f);
-        }
-
         onComplete?.Invoke();
         activeSequence = null;
     }
+
+    // --- Question ---
 
     private IEnumerator PopInQuestion(string text)
     {
@@ -364,16 +395,35 @@ public class RevealingUI : BaseGameUI
         questionContainer.sizeDelta = size;
     }
 
-    private void ResetAll()
+    // --- Card Management ---
+
+    private AnswerCard SpawnCard(RectTransform parent)
     {
-        for (int i = 0; i < cardPool.Length; i++)
+        GameObject cardObj = Instantiate(answerCardPrefab, parent);
+        AnswerCard card = cardObj.GetComponent<AnswerCard>();
+        spawnedCards.Add(card);
+        return card;
+    }
+
+    private void ClearCards()
+    {
+        foreach (var card in spawnedCards)
         {
-            if (cardPool[i] != null)
+            if (card != null)
             {
-                cardPool[i].Reset();
-                cardPool[i].GetComponent<RectTransform>().anchoredPosition = cardRestPositions[i];
+                card.GetComponent<RectTransform>().DOKill();
+                Destroy(card.gameObject);
             }
         }
+        spawnedCards.Clear();
+
+        if (cardGridContainer != null)
+            cardGridContainer.gameObject.SetActive(false);
+    }
+
+    private void ResetAll()
+    {
+        ClearCards();
 
         if (questionContainer != null)
         {

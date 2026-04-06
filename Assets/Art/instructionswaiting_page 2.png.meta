@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 0
   alignment: 0
@@ -118,11 +118,11 @@ TextureImporter:
         serializedVersion: 2
         x: 222
         y: 148
-        width: 1997
-        height: 1318
+        width: 2015
+        height: 1315
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 101, y: 159, z: 230, w: 132}
       customData: 
       outline: []
       physicsShape: []

@@ -68,6 +68,7 @@ public class AnswerMagicText : MonoBehaviour
     private IEnumerator RevealCoroutine(string text, Action onComplete)
     {
         tmp.text = text;
+        yield return null;
         tmp.ForceMeshUpdate();
 
         TMP_TextInfo textInfo = tmp.textInfo;

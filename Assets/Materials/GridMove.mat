@@ -46,9 +46,9 @@ Material:
     - _YSpeed: 0.01
     - _isSwiping: 0
     m_Colors:
-    - _Swipe1_Color: {r: 0.13333334, g: 0.49019608, b: 0.19607843, a: 1}
+    - _Swipe1_Color: {r: 0.8784314, g: 0.28627452, b: 0.2, a: 1}
     - _Swipe1_Threshold: {r: 0.31, g: 0.45, b: 0, a: 0}
-    - _Swipe2_Color: {r: 0.5019608, g: 0.65882355, b: 0.5294118, a: 1}
+    - _Swipe2_Color: {r: 0.7254902, g: 0.45882353, b: 0.41568628, a: 1}
     - _Swipe2_Threshold: {r: 0.26, g: 0.2, b: 0, a: 0}
     - _Swipe3_Color: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

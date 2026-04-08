@@ -322,9 +322,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TalkingUI
   displayText: {fileID: 706496385}
-  baseTextTime: 2
-  timePerCharacter: 0.05
-  sentencePause: 0.8
+  baseTextTime: 1.5
+  timePerCharacter: 0.025
+  sentencePause: 0.5
 --- !u!4 &216974193
 Transform:
   m_ObjectHideFlags: 0
@@ -772,7 +772,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d09b565dc016f428ab7f1c037402006e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0481365cfd8f744a682f72d1596b9ece, type: 2}
   m_sharedMaterial: {fileID: -2075544528372325118, guid: d09b565dc016f428ab7f1c037402006e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -839,7 +839,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &419349722
@@ -1094,7 +1094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BackgroundController
   colorConfig: {fileID: 11400000, guid: 23f45eae9c2534b9d8805f45ba9e947f, type: 2}
-  frameController: {fileID: 0}
+  frameController: {fileID: 1978943167}
 --- !u!1 &472089684
 GameObject:
   m_ObjectHideFlags: 0
@@ -1293,8 +1293,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RevealingUI
   displayText: {fileID: 219325914}
-  baseTextTime: 2
-  timePerCharacter: 0.05
+  baseTextTime: 1.5
+  timePerCharacter: 0.025
   questionContainer: {fileID: 2056875529}
   questionText: {fileID: 219325914}
   questionPopDuration: 0.4
@@ -1307,7 +1307,7 @@ MonoBehaviour:
   reactionData: {fileID: 11400000, guid: 372473a7dab5d486c88de308e801a4a6, type: 2}
   postRevealHoldTime: 2.5
   postEmoteHoldTime: 2
-  maxCardHeight: 300
+  maxCardHeight: 400
   xPadding: 150
   xSpacing: 0
 --- !u!4 &556371628
@@ -1622,7 +1622,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d09b565dc016f428ab7f1c037402006e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0481365cfd8f744a682f72d1596b9ece, type: 2}
   m_sharedMaterial: {fileID: -2075544528372325118, guid: d09b565dc016f428ab7f1c037402006e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1689,7 +1689,7 @@ MonoBehaviour:
   m_margin: {x: 211.81549, y: 0, z: 236.02307, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &706496386
@@ -1776,7 +1776,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d09b565dc016f428ab7f1c037402006e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0481365cfd8f744a682f72d1596b9ece, type: 2}
   m_sharedMaterial: {fileID: -2075544528372325118, guid: d09b565dc016f428ab7f1c037402006e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1843,7 +1843,7 @@ MonoBehaviour:
   m_margin: {x: 211.81549, y: 0, z: 236.02307, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &741993007
@@ -1990,8 +1990,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WritingUI
   displayText: {fileID: 741993006}
-  baseTextTime: 2
-  timePerCharacter: 0.05
+  baseTextTime: 1.5
+  timePerCharacter: 0.025
   timerContainer: {fileID: 1978674919}
   plotDiagramContainer: {fileID: 1399868467}
   plotDiagram: {fileID: 1399868470}
@@ -3085,8 +3085,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoringUI
   displayText: {fileID: 419349721}
-  baseTextTime: 2
-  timePerCharacter: 0.05
+  baseTextTime: 1.5
+  timePerCharacter: 0.025
   scoreCardPrefab: {fileID: 2162401237224360920, guid: cca56618e20bc43e18132e0da4bd7fd1, type: 3}
   cardContainer: {fileID: 19643765}
   cascadeDelay: 0.15
@@ -3633,6 +3633,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3798797918667862065, guid: cca56618e20bc43e18132e0da4bd7fd1, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4940674750822613645, guid: cca56618e20bc43e18132e0da4bd7fd1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -3790,6 +3794,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cca56618e20bc43e18132e0da4bd7fd1, type: 3}
+--- !u!1001 &3208095738386021038
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1402998100141559709, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -14.34125
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402998100141559709, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1446.4537
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402998100141559709, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402998100141559709, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402998100141559709, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402998100141559709, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402998100141559709, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402998100141559709, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402998100141559709, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402998100141559709, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394594417119235634, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
+      propertyPath: m_Name
+      value: Audio Manager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a9401be89b5314f8282a9828ab3a9a62, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3810,6 +3871,7 @@ SceneRoots:
   - {fileID: 1287763315}
   - {fileID: 1729702387}
   - {fileID: 1597036290}
+  - {fileID: 3208095738386021038}
   - {fileID: 1946660920}
   - {fileID: 519420032}
   - {fileID: 619394802}

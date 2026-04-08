@@ -1,7 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using TMPro;
+using System.Collections.Generic;
+using System.Linq;
+using DG.Tweening;
 
 public class PlayerIcon : MonoBehaviour
 {
@@ -64,6 +66,16 @@ public class PlayerIcon : MonoBehaviour
         }
     }
 
+    private void SetAlphaToZero()
+    {
+        uiImage.DOFade(1f, 0.5f);
+    }
+
+    private void SetAlphaToOne()
+    {
+        uiImage.DOFade(1f, 0.5f);
+    }
+
     public void ClearAssignment()
     {
         assignedPlayer = null;
@@ -77,15 +89,15 @@ public class PlayerIcon : MonoBehaviour
 
     public void HideImage()
     {
-        uiImage.color = Color.black;
+        SetAlphaToZero();
     }
 
     public void ShowImage()
     {
-        uiImage.color = Color.white;
+        SetAlphaToOne();
     }
 
-    private IEnumerator DoRotation()
+    private System.Collections.IEnumerator DoRotation()
     {
         Quaternion startRot = transform.rotation;
         float t = 0f;

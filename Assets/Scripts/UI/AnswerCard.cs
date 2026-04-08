@@ -119,12 +119,12 @@ public class AnswerCard : MonoBehaviour
 
     public void RevealAuthor(Player player)
     {
-        if (player == null || player.playerIcon == null) return;
+        if (player == null) return;
 
-        if (playerIconImage != null)
+        if (playerIconImage != null && player.playerSprite != null)
         {
             playerIconImage.gameObject.SetActive(true);
-            playerIconImage.sprite = player.playerIcon.playerIcon;
+            playerIconImage.sprite = player.playerSprite;
             playerIconImage.color = new Color(1, 1, 1, 0);
             playerIconImage.DOFade(1f, authorFadeDuration);
         }
@@ -133,8 +133,8 @@ public class AnswerCard : MonoBehaviour
         {
             playerNameText.gameObject.SetActive(true);
             string displayName = player.playerName;
-            if (displayName.Length > 10)
-                displayName = displayName.Substring(0, 10) + "...";
+            if (displayName.Length > 12)
+                displayName = displayName.Substring(0, 12);
             playerNameText.text = displayName;
             playerNameText.alpha = 0f;
             playerNameText.DOFade(1f, authorFadeDuration);

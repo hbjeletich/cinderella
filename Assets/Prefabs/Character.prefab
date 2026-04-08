@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -311,8 +311,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 878a680cd75f64aa4830e58a0f28639c, type: 2}
-  m_sharedMaterial: {fileID: -2075544528372325118, guid: 878a680cd75f64aa4830e58a0f28639c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2e81eeaf269bb4b37b49d9640449cf66, type: 2}
+  m_sharedMaterial: {fileID: 8558780729933751928, guid: 2e81eeaf269bb4b37b49d9640449cf66, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -342,7 +342,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535

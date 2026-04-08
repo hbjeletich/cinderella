@@ -60,7 +60,8 @@ public class LobbyUI : MonoBehaviour
         {
             int randomIndex = UnityEngine.Random.Range(0, availableIcons.Count);
             PlayerIcon assignedIcon = availableIcons[randomIndex];
-            player.playerIcon = assignedIcon;
+            assignedIcon.AssignPlayer(player);
+            player.playerSprite = assignedIcon.playerIcon; // persist the sprite
             Debug.Log($"{player.playerName} assigned to icon {assignedIcon.gameObject.name}");
             assignedIcon.AssignPlayer(player);
 

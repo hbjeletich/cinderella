@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e4b4e67623748ca8de586c077e08c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  backgroundMusic: {fileID: 8300000, guid: db26dcd0bf8024d7ea9864e5a83d334c, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 5b8de854721aa440a8a102fac74d3567, type: 3}
   backgroundMusicVolume: 0.5
+  backgroundMusicVolumeSlider: {fileID: 0}

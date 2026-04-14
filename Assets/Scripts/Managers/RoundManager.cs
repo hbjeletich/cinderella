@@ -471,7 +471,8 @@ public class RoundManager : MonoBehaviour
     {
         Debug.Log("RoundManager: Starting exposition round!");
 
-        int playerCount = PlayerManager.Instance.GetPlayerCount();
+        List<Player> connectedPlayers = PlayerManager.Instance.GetConnectedPlayers();
+        int playerCount = connectedPlayers.Count;
         List<ExpositionPrompt> expositionPrompts = PromptManager.Instance.GetMultipleRandomPrompts<ExpositionPrompt>(PromptType.Exposition, playerCount);
 
         if(expositionPrompts == null || expositionPrompts.Count() == 0)
@@ -480,7 +481,7 @@ public class RoundManager : MonoBehaviour
             return;
         }
         // assign prompts to players randomly!
-        foreach(Player p in PlayerManager.Instance.players)
+        foreach(Player p in connectedPlayers)
         {
             int newIndex = UnityEngine.Random.Range(0, expositionPrompts.Count());
             SendPromptToPlayer(p, expositionPrompts[newIndex]);
@@ -496,7 +497,8 @@ public class RoundManager : MonoBehaviour
         Debug.Log($"RoundManager: Starting rising action round {round}!");
 
         // create player groups
-        groups = CreateGroups(PlayerManager.Instance.players);
+        List<Player> connectedPlayers = PlayerManager.Instance.GetConnectedPlayers();
+        groups = CreateGroups(connectedPlayers);
         int groupCount = groups.Count;
 
         Debug.Log($"RoundManager: Created {groupCount} groups for {PlayerManager.Instance.GetPlayerCount()} players.");

@@ -12,7 +12,6 @@ public class LobbyUI : MonoBehaviour
     [Header("Player Count Display")]
     public TextMeshProUGUI playerCountText;
     public TextMeshProUGUI maxPlayersText;
-    private int joinedPlayerCount = 0;
     private int maxPlayers;
 
     public Action OnLobbyEntered;
@@ -21,10 +20,23 @@ public class LobbyUI : MonoBehaviour
     void Awake()
     {
         PlayerManager.Instance.OnPlayerCreated += OnPlayerCreated;
+        PlayerManager.Instance.OnPlayerDisconnected += OnPlayerDisconnected;
+        PlayerManager.Instance.OnPlayerReconnected += OnPlayerReconnected;
         availableIcons = new List<PlayerIcon>(playerIcons);
 
         maxPlayers = PlayerManager.Instance.maxPlayers;
         UpdatePlayerCount();
+    }
+
+    void OnDestroy()
+    {
+        // unsubscribe so destroyed LobbyUI doesn't leave ghost listeners
+        if (PlayerManager.Instance != null)
+        {
+            PlayerManager.Instance.OnPlayerCreated -= OnPlayerCreated;
+            PlayerManager.Instance.OnPlayerDisconnected -= OnPlayerDisconnected;
+            PlayerManager.Instance.OnPlayerReconnected -= OnPlayerReconnected;
+        }
     }
 
     public void StartLobby()
@@ -36,8 +48,16 @@ public class LobbyUI : MonoBehaviour
     void OnPlayerCreated(Player newPlayer)
     {
         AssignPlayerIcon(newPlayer);
-        
-        joinedPlayerCount++;
+        UpdatePlayerCount();
+    }
+
+    void OnPlayerDisconnected(Player player)
+    {
+        UpdatePlayerCount();
+    }
+
+    void OnPlayerReconnected(Player player)
+    {
         UpdatePlayerCount();
     }
 
@@ -60,8 +80,7 @@ public class LobbyUI : MonoBehaviour
         {
             int randomIndex = UnityEngine.Random.Range(0, availableIcons.Count);
             PlayerIcon assignedIcon = availableIcons[randomIndex];
-            assignedIcon.AssignPlayer(player);
-            player.playerSprite = assignedIcon.playerIcon; // persist the sprite
+            player.playerIcon = assignedIcon;
             Debug.Log($"{player.playerName} assigned to icon {assignedIcon.gameObject.name}");
             assignedIcon.AssignPlayer(player);
 
@@ -86,10 +105,15 @@ public class LobbyUI : MonoBehaviour
         newIcon.AssignPlayer(player);
     }
 
+    /// <summary>
+    /// Always derive count from PlayerManager — no independent counter to drift.
+    /// </summary>
     public void UpdatePlayerCount()
     {
+        int connectedCount = PlayerManager.Instance.GetPlayerCount();
+
         if (playerCountText != null)
-            playerCountText.text = joinedPlayerCount.ToString();
+            playerCountText.text = connectedCount.ToString();
 
         if (maxPlayersText != null)
             maxPlayersText.text = maxPlayers.ToString();

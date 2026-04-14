@@ -22,6 +22,9 @@ public class RoundManager : MonoBehaviour
     public float reactTimerDuration = 15f;
     public float voteTimerDuration = 20f;
 
+    [Header("Reconnect Settings")]
+    public float reconnectGraceDuration = 15f;
+
     private Coroutine activeTimer;
     private List<string> currentVotingOptions = new List<string>();
 
@@ -37,10 +40,11 @@ public class RoundManager : MonoBehaviour
     private List<RisingActionPrompt> groupPrompts = new List<RisingActionPrompt>();
     private int currentGroupIndex = 0;
 
+    // --- reconnect grace timer tracking ---
+    private Dictionary<Player, Coroutine> pendingAutoSubmits = new Dictionary<Player, Coroutine>();
+
     public string GetProtagonistChoice() => protagonistChoice;
     public string GetAntagonistChoice() => antagonistChoice;
-    public Player GetProtagonistPlayer() => protagonistPlayer;
-    public Player GetAntagonistPlayer() => antagonistPlayer;
     public List<List<Player>> GetGroups() => groups;
     public int GetCurrentGroupIndex() => currentGroupIndex;
     public void SetCurrentGroupIndex(int index) => currentGroupIndex = index;
@@ -59,10 +63,23 @@ public class RoundManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        // subscribe to reconnect events so we can cancel grace timers
+        PlayerManager.Instance.OnPlayerReconnected += HandlePlayerReconnect;
+    }
+
+    private void OnDestroy()
+    {
+        if (PlayerManager.Instance != null)
+            PlayerManager.Instance.OnPlayerReconnected -= HandlePlayerReconnect;
+    }
+
     private void ResetAll()
     {
         Debug.Log("RoundManager: Resetting all round state.");
         StopPhaseTimer();
+        CancelAllGraceTimers();
         PlayerManager.Instance.ResetPlayerReady();
 
         submissions.Clear();
@@ -118,6 +135,10 @@ public class RoundManager : MonoBehaviour
     public void AutoSubmitMissingPrompts()
     {
         Debug.Log("RoundManager: Timer expired — auto-submitting for missing prompt responses.");
+
+        // cancel any remaining grace timers — phase is over
+        CancelAllGraceTimers();
+
         List<Player> missing = new List<Player>();
         foreach(Player p in PlayerManager.Instance.players)
         {
@@ -157,6 +178,8 @@ public class RoundManager : MonoBehaviour
     public void AutoSubmitMissingReactions()
     {
         Debug.Log("RoundManager: Timer expired — auto-submitting for missing reactions.");
+        CancelAllGraceTimers();
+
         List<Player> missing = new List<Player>();
         foreach(Player p in PlayerManager.Instance.players)
         {
@@ -172,6 +195,8 @@ public class RoundManager : MonoBehaviour
     public void AutoSubmitMissingVotes()
     {
         Debug.Log("RoundManager: Timer expired — auto-submitting for missing votes.");
+        CancelAllGraceTimers();
+
         List<Player> missing = new List<Player>();
         foreach(Player p in PlayerManager.Instance.players)
         {
@@ -191,6 +216,8 @@ public class RoundManager : MonoBehaviour
     private void AutoSubmitClimaxPicks()
     {
         Debug.Log("RoundManager: Timer expired — auto-submitting for missing climax picks.");
+        CancelAllGraceTimers();
+
         ClimaxPrompt climax = StoryManager.Instance.GetChosenClimax();
 
         if(protagonistChoice == null && protagonistPlayer != null)
@@ -208,19 +235,29 @@ public class RoundManager : MonoBehaviour
 
     #endregion
 
-    #region Disconnect Handling
+    #region Reconnect Grace Timer
 
-    public void HandlePlayerDisconnect(Player player)
+    private void StartReconnectGraceTimer(Player player)
     {
-        if(player.hasSubmittedThisRound)
-        {
-            Debug.Log($"RoundManager: {player.playerName} disconnected but already submitted this phase.");
-            return;
-        }
+        // cancel any existing grace timer for this player
+        CancelGraceTimer(player);
+
+        Coroutine timer = StartCoroutine(ReconnectGraceCoroutine(player));
+        pendingAutoSubmits[player] = timer;
+        Debug.Log($"RoundManager: Started {reconnectGraceDuration}s grace timer for {player.playerName}");
+    }
+
+    private IEnumerator ReconnectGraceCoroutine(Player player)
+    {
+        yield return new WaitForSeconds(reconnectGraceDuration);
+
+        // grace period expired — player didn't come back, auto-submit now
+        pendingAutoSubmits.Remove(player);
+        Debug.Log($"RoundManager: Grace timer expired for {player.playerName}, auto-submitting.");
+
+        if(player.hasSubmittedThisRound) yield break;
 
         GameState state = GameManager.Instance.CurrentState;
-        Debug.Log($"RoundManager: {player.playerName} disconnected during {state}, auto-submitting.");
-
         switch(state)
         {
             case GameState.Prompting:
@@ -235,13 +272,135 @@ public class RoundManager : MonoBehaviour
             case GameState.Voting:
                 if(isClimaxPicking)
                 {
-                    // if they were protagonist or antagonist, auto-pick
                     AutoSubmitClimaxPicks();
                 }
                 else if(currentVotingOptions.Count > 0)
                 {
                     string randomChoice = currentVotingOptions[UnityEngine.Random.Range(0, currentVotingOptions.Count)];
                     HandleChoiceSubmission(new SubmitMessage { type = "send_choice", text = randomChoice }, player);
+                }
+                break;
+        }
+    }
+
+    private void CancelGraceTimer(Player player)
+    {
+        if(pendingAutoSubmits.TryGetValue(player, out Coroutine timer))
+        {
+            StopCoroutine(timer);
+            pendingAutoSubmits.Remove(player);
+            Debug.Log($"RoundManager: Cancelled grace timer for {player.playerName}");
+        }
+    }
+
+    private void CancelAllGraceTimers()
+    {
+        foreach(var kvp in pendingAutoSubmits)
+        {
+            if(kvp.Value != null)
+                StopCoroutine(kvp.Value);
+        }
+        pendingAutoSubmits.Clear();
+    }
+
+    public bool HasPendingGraceTimer(Player player)
+    {
+        return pendingAutoSubmits.ContainsKey(player);
+    }
+
+    #endregion
+
+    #region Disconnect Handling
+
+    public void HandlePlayerDisconnect(Player player)
+    {
+        if(player.hasSubmittedThisRound)
+        {
+            Debug.Log($"RoundManager: {player.playerName} disconnected but already submitted this phase.");
+            return;
+        }
+
+        GameState state = GameManager.Instance.CurrentState;
+        Debug.Log($"RoundManager: {player.playerName} disconnected during {state}, starting grace timer.");
+
+        // start grace timer instead of immediately auto-submitting
+        StartReconnectGraceTimer(player);
+    }
+
+    public void HandlePlayerReconnect(Player player)
+    {
+        // only relevant during active game phases
+        if(!PlayerManager.Instance.IsGameInProgress()) return;
+
+        bool hadGraceTimer = HasPendingGraceTimer(player);
+        CancelGraceTimer(player);
+
+        GameState state = GameManager.Instance.CurrentState;
+
+        // if they had a grace timer, they haven't submitted yet — let them participate
+        if(hadGraceTimer && !player.hasSubmittedThisRound)
+        {
+            Debug.Log($"RoundManager: {player.playerName} reconnected within grace period during {state}, re-sending prompt.");
+            ResendCurrentPhaseToPlayer(player);
+        }
+        else if(!player.hasSubmittedThisRound)
+        {
+            Debug.Log($"RoundManager: {player.playerName} reconnected during {state}, sending current prompt.");
+            ResendCurrentPhaseToPlayer(player);
+        }
+        else
+        {
+            Debug.Log($"RoundManager: {player.playerName} reconnected but already submitted this phase.");
+        }
+    }
+
+    private void ResendCurrentPhaseToPlayer(Player player)
+    {
+        GameState state = GameManager.Instance.CurrentState;
+
+        switch(state)
+        {
+            case GameState.Prompting:
+                Prompt lastPrompt = player.GetLastPrompt();
+                if(lastPrompt != null)
+                {
+                    SendPromptToPlayer(player, lastPrompt);
+                    Debug.Log($"RoundManager: Re-sent prompt to {player.playerName}");
+                }
+                break;
+
+            case GameState.Reacting:
+                // send a generic "react now" — they missed the reveal but can still react
+                var reactMsg = new ShowAnswersMessage{
+                    type = "show_answer",
+                    text = "React to the current answer!",
+                    promptText = "",
+                    myPrompt = false
+                };
+                ConnectionManager.Instance.SendToPlayer(player, JsonUtility.ToJson(reactMsg));
+                Debug.Log($"RoundManager: Sent react prompt to reconnected {player.playerName}");
+                break;
+
+            case GameState.Voting:
+                if(isClimaxPicking)
+                {
+                    // re-send climax options if they are protagonist or antagonist
+                    ClimaxPrompt climax = StoryManager.Instance.GetChosenClimax();
+                    if(player == protagonistPlayer)
+                        SendClimaxOptionsToPlayer(player, climax.protagonistOptions, "protagonist");
+                    else if(player == antagonistPlayer)
+                        SendClimaxOptionsToPlayer(player, climax.antagonistOptions, "antagonist");
+                }
+                else if(currentVotingOptions.Count > 0)
+                {
+                    var voteMsg = new ShowAnswerChoicesMessage{
+                        type = "show_choices",
+                        text = string.Join("|", currentVotingOptions),
+                        promptText = "",
+                        myPrompt = false
+                    };
+                    ConnectionManager.Instance.SendToPlayer(player, JsonUtility.ToJson(voteMsg));
+                    Debug.Log($"RoundManager: Sent vote options to reconnected {player.playerName}");
                 }
                 break;
         }

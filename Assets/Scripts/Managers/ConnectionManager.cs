@@ -111,6 +111,14 @@ public class ConnectionManager : MonoBehaviour
             playerName = playerName.Substring(0, 12);
         string deviceId = message.deviceId;
 
+        // --- GUARD: reject if no deviceId ---
+        if(string.IsNullOrEmpty(deviceId))
+        {
+            Debug.LogWarning($"ConnectionManager: Rejecting join from '{playerName}' — no deviceId provided.");
+            SendError(id, "Connection error. Please refresh and try again.");
+            return;
+        }
+
         // --- RECONNECT CHECK ---
         Player existing = PlayerManager.Instance.FindByDeviceId(deviceId);
         if(existing != null)
@@ -196,20 +204,13 @@ public class ConnectionManager : MonoBehaviour
     public void HandlePlayerDisconnect(string connectionID)
     {
         Player player = PlayerManager.Instance.GetPlayer(connectionID);
-        if (player == null) return;
+        if(player == null) return;
 
         PlayerManager.Instance.DisconnectPlayer(connectionID);
 
         if (PlayerManager.Instance.IsGameInProgress())
         {
             RoundManager.Instance.HandlePlayerDisconnect(player);
-            
-            // if all players disconnected mid-game, return to lobby
-            if (PlayerManager.Instance.GetConnectedPlayers().Count == 0)
-            {
-                Debug.Log("ConnectionManager: All players disconnected — returning to lobby.");
-                GameManager.Instance.ReturnToLobby();
-            }
         }
     }
 

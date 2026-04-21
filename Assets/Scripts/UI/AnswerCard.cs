@@ -41,6 +41,8 @@ public class AnswerCard : MonoBehaviour
         if (answerText != null)
         {
             // clear prefab default ("New Text") immediately so it never flashes on spawn
+            answerText.text = "";
+
             answerMagicText = answerText.GetComponent<AnswerMagicText>();
             if (answerMagicText == null)
                 answerMagicText = answerText.gameObject.AddComponent<AnswerMagicText>();

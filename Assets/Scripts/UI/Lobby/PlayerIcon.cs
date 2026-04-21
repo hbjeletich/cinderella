@@ -43,6 +43,9 @@ public class PlayerIcon : MonoBehaviour
         {
             uiImage.sprite = playerIcon;
             ShowImage();
+
+            // store the sprite on the Player too, so the reveal card can display it later
+            newPlayer.playerSprite = playerIcon;
         }
 
         // set player name text

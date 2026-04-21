@@ -7,6 +7,7 @@ public class StoryManager : MonoBehaviour
     private ClimaxPrompt chosenClimax;
     private int roundNumber = 0;
     public int RoundNumber => roundNumber;
+    public int skipRisingRoundThreshold = 4; // with 5 or more players, skip the 3rd rising action round and go straight to climax
     public static StoryManager Instance { get; private set; }
 
     // tone tally across all rounds
@@ -66,6 +67,13 @@ public class StoryManager : MonoBehaviour
     public void OnRoundComplete()
     {
         roundNumber++;
+
+        // dynamic rounds: with 4 or more players, do 2 rising action instead of 3
+        if(roundNumber == 4 && PlayerManager.Instance.GetPlayerCount() >= skipRisingRoundThreshold)
+        {
+            Debug.Log($"StoryManager: >= {skipRisingRoundThreshold} players — skipping rising action round 3, jumping to climax.");
+            roundNumber = 5;
+        }
 
         if(roundNumber > 6)
         {
@@ -183,6 +191,14 @@ public class StoryManager : MonoBehaviour
         for(int i = 0; i < risingTypes.Length; i++)
         {
             int risingRound = i + 1;
+
+            // skip rising rounds that didn't actually happen (dynamic round skip for small lobbies)
+            if(!risingRoundTones.ContainsKey(risingRound))
+            {
+                Debug.Log($"StoryManager: Skipping resolution segment for rising round {risingRound} (didn't happen).");
+                continue;
+            }
+
             ReactionType roundTone = GetDominantRisingTone(risingRound);
             string toneStr = " ";
             if(roundTone != ReactionType.None)

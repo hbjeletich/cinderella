@@ -1148,6 +1148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc081f7cde7af4b4f84c85c08a57a0f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StoryManager
+  skipRisingRoundThreshold: 5
 --- !u!4 &594147784
 Transform:
   m_ObjectHideFlags: 0
@@ -3854,8 +3855,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoundManager
   promptTimerDuration: 45
-  reactTimerDuration: 15
+  reactTimerDuration: 8
   voteTimerDuration: 20
+  reconnectGraceDuration: 15
 --- !u!4 &1729702387
 Transform:
   m_ObjectHideFlags: 0

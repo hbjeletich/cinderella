@@ -19,7 +19,7 @@ public class RoundManager : MonoBehaviour
     // timer settings (exposed to Inspector)
     [Header("Timer Settings")]
     public float promptTimerDuration = 45f;
-    public float reactTimerDuration = 15f;
+    public float reactTimerDuration = 8f;
     public float voteTimerDuration = 20f;
 
     [Header("Reconnect Settings")]
